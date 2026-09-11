@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+import { nav, legalNav, strings, type Lang } from '../i18n/nav';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  altHref: string;
+}
+
+const { lang, title, description, altHref } = Astro.props;
+const t = strings[lang];
+const items = nav[lang];
+const legal = legalNav[lang];
+const here = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const year = new Date().getFullYear();
+const isActive = (href: string) => here === (href.replace(/\/+$/, '') || '/');
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" hreflang={lang === 'de' ? 'en' : 'de'} href={altHref} />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#inhalt" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:px-3 focus:py-2">{t.skip}</a>
+
+    <header class="border-b" style="border-color: var(--color-line)">
+      <div class="mx-auto max-w-3xl px-5 py-5 flex flex-wrap items-baseline gap-x-6 gap-y-2">
+        <a href={lang === 'de' ? '/' : '/en'} class="font-semibold tracking-tight">{t.siteName}</a>
+        <nav aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'} class="flex gap-5 text-sm">
+          {items.map((i) => (
+            <a
+              href={i.href}
+              aria-current={isActive(i.href) ? 'page' : undefined}
+              class="hover:underline underline-offset-4"
+              style={isActive(i.href) ? 'color: var(--color-accent); font-weight: 600' : ''}
+            >{i.label}</a>
+          ))}
+        </nav>
+        <a href={altHref} hreflang={lang === 'de' ? 'en' : 'de'} class="ml-auto text-sm hover:underline underline-offset-4" style="color: var(--color-muted)">{t.switch}</a>
+      </div>
+    </header>
+
+    <main id="inhalt" class="mx-auto w-full max-w-3xl px-5 py-12 flex-1">
+      <slot />
+    </main>
+
+    <footer class="border-t mt-16" style="border-color: var(--color-line)">
+      <div class="mx-auto max-w-3xl px-5 py-6 flex flex-wrap gap-x-5 gap-y-2 text-sm" style="color: var(--color-muted)">
+        <span>&copy; {year} Fabio Steyer</span>
+        {legal.map((i) => <a href={i.href} class="hover:underline underline-offset-4">{i.label}</a>)}
+      </div>
+    </footer>
+  </body>
+</html>

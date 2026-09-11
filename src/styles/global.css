@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Basis-Tokens. Das eigentliche Design folgt in Schritt A4.
+   Bewusst nur Systemschriften: keine externen Font-Server, kein Nachladen. */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+
+  --color-paper: #fbfaf8;
+  --color-ink: #16191c;
+  --color-muted: #5b6169;
+  --color-line: #e2dfd9;
+  --color-accent: #0f5f52;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Platzhalter, die vor der Veroeffentlichung verschwinden muessen. */
+.beleg-fehlt {
+  border-left: 3px solid #b45309;
+  background: #fef3c7;
+  color: #78350f;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}

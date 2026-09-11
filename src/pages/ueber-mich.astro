@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+
+const belege = [
+  { fach: 'Python (Pandas, NumPy)', beleg: 'Produktive Pipelines bei Cavator, nicht öffentlich', stufe: 'praktisch genutzt' },
+  { fach: 'Document Parsing und OCR', beleg: 'Rechnungs- und Angebotsabgleich, rund 3.000 Dokumente', stufe: 'praktisch genutzt' },
+  { fach: 'LLM-Integration (Claude, OpenAI)', beleg: 'Eingebaut in eigene Pipelines im Betrieb', stufe: 'praktisch genutzt' },
+  { fach: 'Wissenschaftliche Datenauswertung', beleg: 'B.Sc.-Arbeit, Spektroskopie und Modellanpassung', stufe: 'öffentlich belegbar' },
+  { fach: 'SQL', beleg: 'Studienprojekte, im Aufbau', stufe: 'Lernstand' },
+  { fach: 'Git', beleg: 'Studienprojekte und eigene Arbeit', stufe: 'Lernstand' },
+];
+---
+
+<Base
+  lang="de"
+  title="Über mich — Fabio Steyer"
+  description="Werdegang, Fähigkeiten und deren Belegstufe."
+  altHref="/en/about"
+>
+  <div class="sm:flex sm:items-start sm:gap-8">
+    <div class="flex-1">
+      <h1 class="text-3xl font-semibold tracking-tight">Über mich</h1>
+      <p class="mt-4 leading-relaxed">
+        Ich bin Physiker im Masterstudium an der TU Berlin und arbeite seit 2025 an der
+        Schnittstelle von Datenanalyse und Prozessautomatisierung. Was mich an dieser Arbeit
+        interessiert, ist die Entscheidung vor dem Code: welcher Schritt ein Skript braucht,
+        welcher ein Sprachmodell, und welcher besser gar nicht automatisiert wird.
+      </p>
+    </div>
+    <img
+      src="/foto-fabio-steyer.jpg"
+      alt="Portraitfoto von Fabio Steyer"
+      width="160"
+      height="210"
+      class="mt-6 sm:mt-1 w-32 sm:w-40 rounded"
+      loading="lazy"
+    />
+  </div>
+
+  <section class="mt-14" aria-labelledby="belege">
+    <h2 id="belege" class="text-xl font-semibold tracking-tight">Fähigkeiten und Belege</h2>
+    <p class="mt-3 leading-relaxed" style="color: var(--color-muted)">
+      Jede Zeile nennt, worauf sie sich stützt. „Lernstand" heißt: vorhanden, aber nicht
+      durch ein Projekt belegt.
+    </p>
+    <div class="mt-5 overflow-x-auto">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="text-left border-b" style="border-color: var(--color-line)">
+            <th class="py-2 pr-4 font-semibold">Fähigkeit</th>
+            <th class="py-2 pr-4 font-semibold">Beleg</th>
+            <th class="py-2 font-semibold">Stufe</th>
+          </tr>
+        </thead>
+        <tbody>
+          {belege.map((b) => (
+            <tr class="border-b align-top" style="border-color: var(--color-line)">
+              <td class="py-2 pr-4">{b.fach}</td>
+              <td class="py-2 pr-4" style="color: var(--color-muted)">{b.beleg}</td>
+              <td class="py-2 whitespace-nowrap">{b.stufe}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mt-14" aria-labelledby="ki">
+    <h2 id="ki" class="text-xl font-semibold tracking-tight">Zur KI-Unterstützung</h2>
+    <p class="mt-4 leading-relaxed">
+      Ich arbeite mit KI-Werkzeugen, auch beim Bau dieser Seite. Die fachlichen Entscheidungen,
+      die Auswahl der Inhalte und deren Prüfung liegen bei mir.
+    </p>
+  </section>
+</Base>
