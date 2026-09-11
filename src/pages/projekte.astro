@@ -10,7 +10,7 @@ import Base from '../layouts/Base.astro';
 >
   <h1 class="text-3xl font-semibold tracking-tight">Projekte</h1>
 
-  <p class="mt-4 leading-relaxed">
+  <p class="mt-4 leading-relaxed max-w-2xl">
     Auf dieser Seite steht nur, was sich nachprüfen lässt: Quellcode, eine lauffähige Demo,
     Tests und eine Anleitung, mit der das Projekt in wenigen Minuten selbst startet.
   </p>
@@ -21,15 +21,17 @@ import Base from '../layouts/Base.astro';
     Repository öffentlich ist.
   </div>
 
-  <section class="mt-12" aria-labelledby="geplant">
-    <h2 id="geplant" class="text-xl font-semibold tracking-tight">Was hier entstehen wird</h2>
-    <p class="mt-4 leading-relaxed">
-      Ein Clean-Room-Projekt: neu gebaut, ausschließlich synthetische Beispieldaten, keine
-      Inhalte aus früheren Arbeitsverhältnissen. Es zeigt eine Problemklasse, die ich beruflich
-      bearbeitet habe, ohne betriebliche Daten preiszugeben.
-    </p>
-    <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
-      Jeder Eintrag wird benennen, was das Projekt zeigt — und was es nicht zeigt.
-    </p>
+  <section class="doc-section" aria-labelledby="geplant">
+    <h2 id="geplant" class="doc-section__label">Was hier entstehen wird</h2>
+    <div class="doc-section__body">
+      <p class="leading-relaxed">
+        Ein Clean-Room-Projekt: neu gebaut, ausschließlich synthetische Beispieldaten, keine
+        Inhalte aus früheren Arbeitsverhältnissen. Es zeigt eine Problemklasse, die ich beruflich
+        bearbeitet habe, ohne betriebliche Daten preiszugeben.
+      </p>
+      <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
+        Jeder Eintrag wird benennen, was das Projekt zeigt — und was es nicht zeigt.
+      </p>
+    </div>
   </section>
 </Base>

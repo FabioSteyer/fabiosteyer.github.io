@@ -15,25 +15,29 @@ import Base from '../../layouts/Base.astro';
     site. It is not a reviewed privacy policy and must be completed before publication.
   </div>
 
-  <section class="mt-10" aria-labelledby="technical">
-    <h2 id="technical" class="text-xl font-semibold tracking-tight">Technical state of this site</h2>
-    <ul class="mt-4 space-y-2 list-disc pl-5 leading-relaxed">
-      <li>Fully static site. No backend, no database, no contact form.</li>
-      <li>No cookies, no tracking, no analytics, no social media embeds.</li>
-      <li>No external fonts. System fonts only.</li>
-      <li>No third-party scripts or stylesheets.</li>
-    </ul>
+  <section class="doc-section" aria-labelledby="technical">
+    <h2 id="technical" class="doc-section__label">Technical state of this site</h2>
+    <div class="doc-section__body">
+      <ul class="space-y-2 list-disc pl-5 leading-relaxed">
+        <li>Fully static site. No backend, no database, no contact form.</li>
+        <li>No cookies, no tracking, no analytics, no social media embeds.</li>
+        <li>No external fonts. System fonts only.</li>
+        <li>No third-party scripts or stylesheets.</li>
+      </ul>
+    </div>
   </section>
 
-  <section class="mt-10" aria-labelledby="hosting">
-    <h2 id="hosting" class="text-xl font-semibold tracking-tight">Hosting</h2>
-    <p class="mt-4 leading-relaxed">
-      The site is served by GitHub Pages, a service of GitHub, Inc. On each request the provider
-      processes technically necessary connection data, including the IP address. I have no
-      influence over the scope or retention of that processing.
-    </p>
-    <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
-      The German version of this page is authoritative.
-    </p>
+  <section class="doc-section" aria-labelledby="hosting">
+    <h2 id="hosting" class="doc-section__label">Hosting</h2>
+    <div class="doc-section__body">
+      <p class="leading-relaxed">
+        The site is served by GitHub Pages, a service of GitHub, Inc. On each request the provider
+        processes technically necessary connection data, including the IP address. I have no
+        influence over the scope or retention of that processing.
+      </p>
+      <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
+        The German version of this page is authoritative.
+      </p>
+    </div>
   </section>
 </Base>

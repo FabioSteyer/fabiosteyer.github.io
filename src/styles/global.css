@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
-/* Basis-Tokens. Das eigentliche Design folgt in Schritt A4.
-   Bewusst nur Systemschriften: keine externen Font-Server, kein Nachladen. */
+/* Systemschriften: keine externen Font-Server, kein Nachladen.
+   Sans fuer Fliesstext und Ueberschriften, Mono fuer Metadaten,
+   Randnotizen und Tabellenwerte - zwei Stimmen, ein Satz Schriften. */
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
 
-  --color-paper: #fbfaf8;
-  --color-ink: #16191c;
+  --color-paper: #faf9f5;
+  --color-paper-raised: #f1efe8;
+  --color-ink: #14181b;
   --color-muted: #5b6169;
-  --color-line: #e2dfd9;
+  --color-line: #dcd8ce;
   --color-accent: #0f5f52;
 }
 
@@ -21,7 +23,24 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
 }
 
 :focus-visible {
@@ -29,11 +48,171 @@ body {
   outline-offset: 2px;
 }
 
-/* Platzhalter, die vor der Veroeffentlichung verschwinden muessen. */
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-link {
+  padding-bottom: 2px;
+  box-shadow: inset 0 -2px 0 transparent;
+  transition: box-shadow 0.15s ease;
+}
+
+.nav-link:hover {
+  box-shadow: inset 0 -2px 0 var(--color-line);
+}
+
+.nav-link[aria-current="page"] {
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+}
+
+/* Randnotiz-Muster: Ueberschrift links als kleines Label (wie eine
+   Randbemerkung im wissenschaftlichen Dokument), Inhalt rechts.
+   Faellt auf mobil zu einer Spalte zusammen. */
+.doc-section {
+  margin-top: 3.25rem;
+}
+
+.doc-section__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+  margin-bottom: 0.75rem;
+}
+
+.doc-section__body {
+  max-width: 42rem;
+}
+
+@media (min-width: 48rem) {
+  .doc-section {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    column-gap: 2.5rem;
+  }
+
+  .doc-section__label {
+    margin-bottom: 0;
+    padding-top: 0.2rem;
+  }
+}
+
+/* Ausnahme: die Projektliste ist der Schwerpunkt der Startseite,
+   deshalb bekommt sie ein Gewicht, das sonst keine Sektion hat. */
+.doc-feature {
+  margin-top: 3.25rem;
+  border-top: 2px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-paper-raised);
+  padding: 1.75rem 1.5rem;
+}
+
+.doc-feature__label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 40rem) {
+  .doc-feature {
+    padding: 2.25rem 2.5rem;
+  }
+}
+
+.doc-list {
+  list-style: none;
+  padding: 0;
+}
+
+.doc-list > li {
+  position: relative;
+  padding-left: 1.1rem;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.doc-list > li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.doc-list > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.35rem;
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+}
+
+.doc-list > li:first-child::before {
+  top: 0.45rem;
+}
+
+.doc-table {
+  width: 100%;
+  font-size: 0.9375rem;
+  border-collapse: collapse;
+}
+
+.doc-table th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0 1rem 0.6rem 0;
+  border-bottom: 2px solid var(--color-ink);
+}
+
+.doc-table td {
+  padding: 0.65rem 1rem 0.65rem 0;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: top;
+}
+
+.doc-table .doc-level {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.doc-table .doc-level--proven {
+  color: var(--color-accent);
+}
+
+.doc-table .doc-level--learning {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.doc-meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+}
+
+.doc-frame {
+  border: 1px solid var(--color-line);
+  padding: 3px;
+}
+
+/* Platzhalter, die vor der Veroeffentlichung verschwinden muessen.
+   Bewusst auffaellig - kein Designfehler. */
 .beleg-fehlt {
   border-left: 3px solid #b45309;
   background: #fef3c7;
   color: #78350f;
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.beleg-fehlt strong {
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
 }

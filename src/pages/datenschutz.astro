@@ -16,28 +16,32 @@ import Base from '../layouts/Base.astro';
     vervollständigt werden.
   </div>
 
-  <section class="mt-10" aria-labelledby="technisch">
-    <h2 id="technisch" class="text-xl font-semibold tracking-tight">Technischer Stand dieser Seite</h2>
-    <ul class="mt-4 space-y-2 list-disc pl-5 leading-relaxed">
-      <li>Rein statische Seite. Es gibt kein Backend, keine Datenbank und kein Kontaktformular.</li>
-      <li>Keine Cookies, kein Tracking, keine Analysewerkzeuge, keine Einbindung sozialer Netzwerke.</li>
-      <li>Keine externen Schriftarten. Es werden ausschließlich Systemschriften verwendet.</li>
-      <li>Keine externen Skripte oder Stilvorlagen von Drittanbietern.</li>
-    </ul>
+  <section class="doc-section" aria-labelledby="technisch">
+    <h2 id="technisch" class="doc-section__label">Technischer Stand dieser Seite</h2>
+    <div class="doc-section__body">
+      <ul class="space-y-2 list-disc pl-5 leading-relaxed">
+        <li>Rein statische Seite. Es gibt kein Backend, keine Datenbank und kein Kontaktformular.</li>
+        <li>Keine Cookies, kein Tracking, keine Analysewerkzeuge, keine Einbindung sozialer Netzwerke.</li>
+        <li>Keine externen Schriftarten. Es werden ausschließlich Systemschriften verwendet.</li>
+        <li>Keine externen Skripte oder Stilvorlagen von Drittanbietern.</li>
+      </ul>
+    </div>
   </section>
 
-  <section class="mt-10" aria-labelledby="hosting">
-    <h2 id="hosting" class="text-xl font-semibold tracking-tight">Hosting</h2>
-    <p class="mt-4 leading-relaxed">
-      Die Seite wird über GitHub Pages ausgeliefert, einen Dienst der GitHub, Inc.
-      Beim Abruf verarbeitet der Anbieter technisch notwendige Verbindungsdaten,
-      darunter die IP-Adresse. Auf Umfang und Dauer dieser Verarbeitung habe ich
-      keinen Einfluss.
-    </p>
-    <div class="beleg-fehlt mt-4">
-      <strong>ZU ERGÄNZEN:</strong> Verantwortlicher nach Art. 4 Nr. 7 DSGVO, Rechtsgrundlage
-      der Verarbeitung, Betroffenenrechte, Beschwerderecht bei der Aufsichtsbehörde,
-      Verweis auf die Datenschutzhinweise des Hosters.
+  <section class="doc-section" aria-labelledby="hosting">
+    <h2 id="hosting" class="doc-section__label">Hosting</h2>
+    <div class="doc-section__body">
+      <p class="leading-relaxed">
+        Die Seite wird über GitHub Pages ausgeliefert, einen Dienst der GitHub, Inc.
+        Beim Abruf verarbeitet der Anbieter technisch notwendige Verbindungsdaten,
+        darunter die IP-Adresse. Auf Umfang und Dauer dieser Verarbeitung habe ich
+        keinen Einfluss.
+      </p>
+      <div class="beleg-fehlt mt-4">
+        <strong>ZU ERGÄNZEN:</strong> Verantwortlicher nach Art. 4 Nr. 7 DSGVO, Rechtsgrundlage
+        der Verarbeitung, Betroffenenrechte, Beschwerderecht bei der Aufsichtsbehörde,
+        Verweis auf die Datenschutzhinweise des Hosters.
+      </div>
     </div>
   </section>
 </Base>

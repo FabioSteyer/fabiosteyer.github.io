@@ -10,7 +10,7 @@ import Base from '../../layouts/Base.astro';
 >
   <h1 class="text-3xl font-semibold tracking-tight">Projects</h1>
 
-  <p class="mt-4 leading-relaxed">
+  <p class="mt-4 leading-relaxed max-w-2xl">
     This page carries only what can be checked: source code, a runnable demo, tests, and
     instructions that get the project started in a few minutes.
   </p>
@@ -21,15 +21,17 @@ import Base from '../../layouts/Base.astro';
     is public.
   </div>
 
-  <section class="mt-12" aria-labelledby="planned">
-    <h2 id="planned" class="text-xl font-semibold tracking-tight">What will go here</h2>
-    <p class="mt-4 leading-relaxed">
-      A clean-room project: built from scratch, synthetic sample data only, nothing carried over
-      from previous employment. It demonstrates a class of problem I have worked on without
-      exposing any company data.
-    </p>
-    <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
-      Every entry will state what the project shows — and what it does not.
-    </p>
+  <section class="doc-section" aria-labelledby="planned">
+    <h2 id="planned" class="doc-section__label">What will go here</h2>
+    <div class="doc-section__body">
+      <p class="leading-relaxed">
+        A clean-room project: built from scratch, synthetic sample data only, nothing carried over
+        from previous employment. It demonstrates a class of problem I have worked on without
+        exposing any company data.
+      </p>
+      <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
+        Every entry will state what the project shows — and what it does not.
+      </p>
+    </div>
   </section>
 </Base>

@@ -9,18 +9,18 @@ import Base from '../layouts/Base.astro';
   altHref="/en"
 >
   <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">Fabio Steyer</h1>
-  <p class="mt-3 text-lg" style="color: var(--color-muted)">
+  <p class="mt-2 doc-meta-label">
     Data Analytics · Automatisierung · KI-Anwendung
   </p>
 
-  <p class="mt-8 leading-relaxed">
+  <p class="mt-8 leading-relaxed max-w-2xl">
     Physiker (M.Sc. TU Berlin, in Abschlussphase) mit produktiv eingesetzter Prozessautomatisierung
     im Unternehmen. Ich analysiere gewachsene Abläufe, entscheide je Prozessschritt zwischen Skript
     und Sprachmodell und trage die Lösung vom Prototyp bis in den laufenden Betrieb.
   </p>
 
-  <section class="mt-14" aria-labelledby="projekte">
-    <h2 id="projekte" class="text-xl font-semibold tracking-tight">Projekte</h2>
+  <section class="doc-feature" aria-labelledby="projekte">
+    <h2 id="projekte" class="doc-feature__label">Projekte</h2>
 
     <div class="beleg-fehlt mt-4">
       <strong>BELEG FEHLT.</strong> Hier stehen nur Projekte mit öffentlich prüfbarem Artefakt —
@@ -34,26 +34,28 @@ import Base from '../layouts/Base.astro';
     </p>
   </section>
 
-  <section class="mt-14" aria-labelledby="hintergrund">
-    <h2 id="hintergrund" class="text-xl font-semibold tracking-tight">Hintergrund</h2>
-    <ul class="mt-4 space-y-3 leading-relaxed">
-      <li>
-        <strong>Prozessautomatisierung bei Cavator Bauausführung (05/2025–05/2026).</strong>{' '}
-        Python-Pipeline für den Abgleich von rund 3.000 PDF-Rechnungen und -Angeboten;
-        Dokumentengenerator; Extraktionsmodul für Großhändler-Preisdaten.
-      </li>
-      <li>
-        <strong>Bar-Leitung bei Berndhain.</strong>{' '}Führung von zehn Mitarbeitenden,
-        Tagesumsätze guter Wochentage um 30 bis 40 Prozent gesteigert.
-      </li>
-      <li>
-        <strong>Physik.</strong>{' '}M.Sc. an der TU Berlin, Schwerpunkt Theoretische Physik;
-        B.Sc. abgeschlossen 2023 mit experimenteller Arbeit zu UVC-LEDs.
-      </li>
-    </ul>
-    <p class="mt-5 text-sm" style="color: var(--color-muted)">
-      Die Arbeitsprojekte sind betrieblich entstanden und deshalb nicht öffentlich einsehbar.
-      Was davon öffentlich belegbar wird, steht unter Projekte.
-    </p>
+  <section class="doc-section" aria-labelledby="hintergrund">
+    <h2 id="hintergrund" class="doc-section__label">Hintergrund</h2>
+    <div class="doc-section__body">
+      <ul class="doc-list leading-relaxed">
+        <li>
+          <strong>Prozessautomatisierung bei Cavator Bauausführung (05/2025–05/2026).</strong>{' '}
+          Python-Pipeline für den Abgleich von rund 3.000 PDF-Rechnungen und -Angeboten;
+          Dokumentengenerator; Extraktionsmodul für Großhändler-Preisdaten.
+        </li>
+        <li>
+          <strong>Bar-Leitung bei Berndhain.</strong>{' '}Führung von zehn Mitarbeitenden,
+          Tagesumsätze guter Wochentage um 30 bis 40 Prozent gesteigert.
+        </li>
+        <li>
+          <strong>Physik.</strong>{' '}M.Sc. an der TU Berlin, Schwerpunkt Theoretische Physik;
+          B.Sc. abgeschlossen 2023 mit experimenteller Arbeit zu UVC-LEDs.
+        </li>
+      </ul>
+      <p class="mt-5 text-sm" style="color: var(--color-muted)">
+        Die Arbeitsprojekte sind betrieblich entstanden und deshalb nicht öffentlich einsehbar.
+        Was davon öffentlich belegbar wird, steht unter Projekte.
+      </p>
+    </div>
   </section>
 </Base>
