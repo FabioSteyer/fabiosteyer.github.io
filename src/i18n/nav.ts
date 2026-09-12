@@ -1,28 +1,32 @@
 export type Lang = 'de' | 'en';
 
+// Alle internen Pfade mit abschliessendem Schraegstrich. GitHub Pages liefert
+// /projekte/index.html aus und antwortet auf /projekte mit einer 301-Umleitung;
+// jeder Klick kostete sonst einen zusaetzlichen Rundlauf (Lighthouse: "redirects").
+
 export const nav: Record<Lang, { href: string; label: string }[]> = {
   de: [
     { href: '/', label: 'Start' },
-    { href: '/projekte', label: 'Projekte' },
-    { href: '/ueber-mich', label: 'Über mich' },
-    { href: '/kontakt', label: 'Kontakt' },
+    { href: '/projekte/', label: 'Projekte' },
+    { href: '/ueber-mich/', label: 'Über mich' },
+    { href: '/kontakt/', label: 'Kontakt' },
   ],
   en: [
-    { href: '/en', label: 'Home' },
-    { href: '/en/projects', label: 'Projects' },
-    { href: '/en/about', label: 'About' },
-    { href: '/en/contact', label: 'Contact' },
+    { href: '/en/', label: 'Home' },
+    { href: '/en/projects/', label: 'Projects' },
+    { href: '/en/about/', label: 'About' },
+    { href: '/en/contact/', label: 'Contact' },
   ],
 };
 
 export const legalNav: Record<Lang, { href: string; label: string }[]> = {
   de: [
-    { href: '/impressum', label: 'Impressum' },
-    { href: '/datenschutz', label: 'Datenschutz' },
+    { href: '/impressum/', label: 'Impressum' },
+    { href: '/datenschutz/', label: 'Datenschutz' },
   ],
   en: [
-    { href: '/en/legal-notice', label: 'Legal notice' },
-    { href: '/en/privacy', label: 'Privacy' },
+    { href: '/en/legal-notice/', label: 'Legal notice' },
+    { href: '/en/privacy/', label: 'Privacy' },
   ],
 };
 

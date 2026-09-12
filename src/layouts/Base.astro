@@ -16,6 +16,12 @@ const legal = legalNav[lang];
 const here = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const year = new Date().getFullYear();
 const isActive = (href: string) => here === (href.replace(/\/+$/, '') || '/');
+
+// Lighthouse verlangt fuer hreflang voll qualifizierte URLs und einen
+// selbstbezueglichen Eintrag. Relative Pfade bestehen den Audit nicht.
+const selfUrl = new URL(Astro.url.pathname, Astro.site).href;
+const altUrl = new URL(altHref, Astro.site).href;
+const altLang = lang === 'de' ? 'en' : 'de';
 ---
 
 <!doctype html>
@@ -26,7 +32,9 @@ const isActive = (href: string) => here === (href.replace(/\/+$/, '') || '/');
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" hreflang={lang === 'de' ? 'en' : 'de'} href={altHref} />
+    <link rel="alternate" hreflang={lang} href={selfUrl} />
+    <link rel="alternate" hreflang={altLang} href={altUrl} />
+    <link rel="alternate" hreflang="x-default" href={lang === 'de' ? selfUrl : altUrl} />
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body class="min-h-screen flex flex-col">

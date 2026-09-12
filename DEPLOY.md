@@ -11,13 +11,17 @@ Eine Datei `.nojekyll` verhindert, dass GitHub die Dateien durch Jekyll schickt.
 **Ein Commit auf `main` ändert die Live-Seite nicht.** Nach jeder inhaltlichen Änderung:
 
 ```powershell
-npm run build
-New-Item -ItemType File -Path dist\.nojekyll -Force
-git worktree add --orphan -b gh-pages-neu ..\_gh-pages-wt
-Copy-Item dist\* ..\_gh-pages-wt -Recurse -Force
-Copy-Item dist\.nojekyll ..\_gh-pages-wt -Force
-cd ..\_gh-pages-wt; git add -A; git commit -m "Build"; git push -f origin HEAD:gh-pages
-cd ..\portfolio-website; git worktree remove ..\_gh-pages-wt --force
+npm run deploy
+```
+
+Das Skript `scripts/deploy-gh-pages.ps1` baut die Seite, legt `.nojekyll` an, schiebt den Build
+per Force-Push auf `gh-pages`, räumt die Arbeitskopie wieder weg und stößt den Pages-Build an.
+Es bricht bei jedem Fehlschlag ab, statt weiterzulaufen.
+
+Status danach:
+
+```powershell
+gh api repos/FabioSteyer/fabiosteyer.github.io/pages/builds/latest
 ```
 
 ## Warum dieser Umweg
@@ -35,4 +39,5 @@ Die Abrechnungssperre betrifft GitHub-Actions-Läufe. Der klassische Pages-Build
 
 1. Pages-Quelle zurückstellen: `gh api -X PUT repos/FabioSteyer/fabiosteyer.github.io/pages -f build_type=workflow`
 2. Workflow starten: `gh workflow run deploy.yml`
-3. Branch `gh-pages` löschen und diese Datei entfernen.
+3. Branch `gh-pages` löschen, `scripts/deploy-gh-pages.ps1` und das `deploy`-Skript aus
+   `package.json` entfernen, diese Datei löschen und den Hinweis in `deploy.yml` zurücknehmen.

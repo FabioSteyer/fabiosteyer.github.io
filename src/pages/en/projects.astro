@@ -7,7 +7,7 @@ import { projects } from '../../data/projects';
   lang="en"
   title="Projects — Fabio Steyer"
   description="Publicly verifiable projects with repository, runnable demo and tests."
-  altHref="/projekte"
+  altHref="/projekte/"
 >
   <h1 class="text-3xl font-semibold tracking-tight">Projects</h1>
 
@@ -41,8 +41,8 @@ import { projects } from '../../data/projects';
       </div>
 
       <div class="project__links">
-        <a href={project.url} rel="noopener noreferrer" aria-label={`View the ${project.repo} repository`}>View repository</a>
-        <a href={`${project.url}#readme`} rel="noopener noreferrer" aria-label={`Decisions in the ${project.repo} README`}>Decisions in the README</a>
+        <a href={project.url} rel="noopener noreferrer" aria-label={`View repository: ${project.repo}`}>View repository</a>
+        <a href={`${project.url}#readme`} rel="noopener noreferrer" aria-label={`Decisions in the README: ${project.repo}`}>Decisions in the README</a>
       </div>
     </article>
   ))}
