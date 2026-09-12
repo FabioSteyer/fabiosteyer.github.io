@@ -201,6 +201,103 @@ table {
   padding: 3px;
 }
 
+/* Ein Projekteintrag. Aufbau folgt der Leserichtung eines Pruefers:
+   Problem, Vorgehen, Ergebnis, Grenzen. Das Ergebnis steht in Mono,
+   weil es eine Messung ist und keine Behauptung. */
+.project {
+  margin-top: 3rem;
+  padding-top: 1.75rem;
+  border-top: 2px solid var(--color-accent);
+}
+
+.project:first-of-type {
+  margin-top: 2.5rem;
+}
+
+.project__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+}
+
+.project__repo {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-accent);
+  word-break: break-all;
+}
+
+.project__stack {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+/* Erst ab Tablet nach rechts ziehen. Auf dem Telefon bricht die Zeile
+   ohnehin um, und rechtsbuendig haengt sie dann in der Luft. */
+@media (min-width: 40rem) {
+  .project__stack {
+    margin-left: auto;
+  }
+}
+
+.project__title {
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 0.35rem;
+  max-width: 34rem;
+}
+
+.project__body {
+  margin-top: 1rem;
+  max-width: 40rem;
+}
+
+.project__body p + p {
+  margin-top: 0.85rem;
+}
+
+.project__result {
+  margin-top: 1.5rem;
+  background: var(--color-paper-raised);
+  border-left: 3px solid var(--color-accent);
+  padding: 1rem 1.25rem;
+  max-width: 40rem;
+}
+
+.project__result p {
+  margin-top: 0.4rem;
+  font-size: 0.9375rem;
+}
+
+.project__limits {
+  margin-top: 1.25rem;
+  max-width: 40rem;
+}
+
+.project__limits p {
+  margin-top: 0.4rem;
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+}
+
+.project__links {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.project__links a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Platzhalter, die vor der Veroeffentlichung verschwinden muessen.
    Bewusst auffaellig - kein Designfehler. */
 .beleg-fehlt {

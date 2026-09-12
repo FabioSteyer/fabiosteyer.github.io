@@ -4,12 +4,15 @@ import { Image } from 'astro:assets';
 import fotoFabio from '../../assets/foto-fabio-steyer.jpg';
 
 const evidence = [
-  { skill: 'Python (Pandas, NumPy)', proof: 'Production pipelines at Cavator, not public', level: 'used in practice' },
-  { skill: 'Document parsing and OCR', proof: 'Invoice and quote reconciliation, ~3,000 documents', level: 'used in practice' },
-  { skill: 'LLM integration (Claude, OpenAI)', proof: 'Built into my own pipelines in daily operation', level: 'used in practice' },
+  { skill: 'Python', proof: 'Production pipelines at Cavator; both projects under Projects', level: 'publicly verifiable' },
+  { skill: 'Document parsing', proof: 'invoice-quote-reconciliation, measured against a ground truth', level: 'publicly verifiable' },
+  { skill: 'Concurrency and data integrity', proof: 'concurrent-file-writes, measured with and without coordination', level: 'publicly verifiable' },
+  { skill: 'Test discipline', proof: '38 tests across both projects, including multi-process runs', level: 'publicly verifiable' },
   { skill: 'Scientific data analysis', proof: 'B.Sc. thesis, spectroscopy and model fitting', level: 'publicly verifiable' },
+  { skill: 'OCR', proof: 'Around 3,000 invoices and quotes at Cavator, not public', level: 'used in practice' },
+  { skill: 'LLM integration (Claude, OpenAI)', proof: 'Built into my own pipelines at work; in neither project here', level: 'used in practice' },
+  { skill: 'Git', proof: 'Two repositories with a readable history', level: 'used in practice' },
   { skill: 'SQL', proof: 'University projects, still building', level: 'learning' },
-  { skill: 'Git', proof: 'University projects and own work', level: 'learning' },
 ];
 ---
 

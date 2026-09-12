@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { projects } from '../data/projects';
 ---
 
 <Base
@@ -22,15 +23,23 @@ import Base from '../layouts/Base.astro';
   <section class="doc-feature" aria-labelledby="projekte">
     <h2 id="projekte" class="doc-feature__label">Projekte</h2>
 
-    <div class="beleg-fehlt mt-4">
-      <strong>BELEG FEHLT.</strong> Hier stehen nur Projekte mit öffentlich prüfbarem Artefakt —
-      Repository, lauffähige Demo, Tests. Solange kein Clean-Room-Repository existiert, bleibt
-      dieser Abschnitt leer. Dieser Hinweis muss vor der Veröffentlichung verschwunden sein.
-    </div>
+    <p class="mt-3 leading-relaxed max-w-2xl">
+      Zwei Projekte, die zeigen statt behaupten: erfundene Daten, offene Anleitung, Tests, die
+      das Ergebnis messen.
+    </p>
 
-    <p class="mt-4 text-sm" style="color: var(--color-muted)">
-      In Arbeit: ein kleines öffentliches Demonstrationsprojekt mit synthetischen Daten,
-      reproduzierbarer Anleitung und Tests.
+    <ul class="doc-list mt-5 leading-relaxed">
+      {projects.map((project) => (
+        <li>
+          <span class="project__repo">{project.repo}</span>
+          <p class="mt-1"><strong>{project.de.title}</strong></p>
+          <p class="mt-1 text-sm" style="color: var(--color-muted)">{project.de.problem}</p>
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-5 project__links">
+      <a href="/projekte">Beide Projekte im Detail</a>
     </p>
   </section>
 

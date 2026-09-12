@@ -4,12 +4,15 @@ import { Image } from 'astro:assets';
 import fotoFabio from '../assets/foto-fabio-steyer.jpg';
 
 const belege = [
-  { fach: 'Python (Pandas, NumPy)', beleg: 'Produktive Pipelines bei Cavator, nicht öffentlich', stufe: 'praktisch genutzt' },
-  { fach: 'Document Parsing und OCR', beleg: 'Rechnungs- und Angebotsabgleich, rund 3.000 Dokumente', stufe: 'praktisch genutzt' },
-  { fach: 'LLM-Integration (Claude, OpenAI)', beleg: 'Eingebaut in eigene Pipelines im Betrieb', stufe: 'praktisch genutzt' },
+  { fach: 'Python', beleg: 'Produktive Pipelines bei Cavator; beide Projekte unter Projekte', stufe: 'öffentlich belegbar' },
+  { fach: 'Document Parsing', beleg: 'invoice-quote-reconciliation, gegen eine Wahrheitstabelle gemessen', stufe: 'öffentlich belegbar' },
+  { fach: 'Nebenläufigkeit und Datenintegrität', beleg: 'concurrent-file-writes, Vergleichslauf mit und ohne Koordination', stufe: 'öffentlich belegbar' },
+  { fach: 'Testdisziplin', beleg: '38 Tests über beide Projekte, inklusive Mehrprozessläufen', stufe: 'öffentlich belegbar' },
   { fach: 'Wissenschaftliche Datenauswertung', beleg: 'B.Sc.-Arbeit, Spektroskopie und Modellanpassung', stufe: 'öffentlich belegbar' },
+  { fach: 'OCR', beleg: 'Rund 3.000 Rechnungen und Angebote bei Cavator, nicht öffentlich', stufe: 'praktisch genutzt' },
+  { fach: 'LLM-Integration (Claude, OpenAI)', beleg: 'Eingebaut in eigene Pipelines im Betrieb; in keinem der Projekte hier', stufe: 'praktisch genutzt' },
+  { fach: 'Git', beleg: 'Zwei Repositories mit nachvollziehbarer Historie', stufe: 'praktisch genutzt' },
   { fach: 'SQL', beleg: 'Studienprojekte, im Aufbau', stufe: 'Lernstand' },
-  { fach: 'Git', beleg: 'Studienprojekte und eigene Arbeit', stufe: 'Lernstand' },
 ];
 ---
 

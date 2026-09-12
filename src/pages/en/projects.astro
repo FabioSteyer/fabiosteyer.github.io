@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { projects } from '../../data/projects';
 ---
 
 <Base
@@ -12,25 +13,57 @@ import Base from '../../layouts/Base.astro';
 
   <p class="mt-4 leading-relaxed max-w-2xl">
     This page carries only what can be checked: source code, a runnable demo, tests, and
-    instructions that get the project started in a few minutes.
+    instructions that get the project started in a few minutes. Both projects work on invented
+    data only; nothing is carried over from previous employment.
   </p>
 
-  <div class="beleg-fehlt mt-8">
-    <strong>EVIDENCE MISSING.</strong> The first public demonstration project has not been built
-    yet. Until then this page stays empty. No project is described here before its repository
-    is public.
+  <div class="beleg-fehlt mt-6">
+    <strong>NOT PUBLIC YET.</strong> The linked repositories are currently private. Before this
+    site is sent anywhere they have to pass the release review and be made public, otherwise the
+    links lead nowhere.
   </div>
 
-  <section class="doc-section" aria-labelledby="planned">
-    <h2 id="planned" class="doc-section__label">What will go here</h2>
+  {projects.map((project) => (
+    <article class="project">
+      <div class="project__head">
+        <span class="project__repo">{project.repo}</span>
+        <span class="project__stack">{project.stackEn}</span>
+      </div>
+      <h2 class="project__title">{project.en.title}</h2>
+
+      <div class="project__body">
+        <p class="leading-relaxed">{project.en.problem}</p>
+        <p class="leading-relaxed">{project.en.approach}</p>
+      </div>
+
+      <div class="project__result">
+        <span class="doc-meta-label">RESULT</span>
+        <p class="leading-relaxed">{project.en.result}</p>
+      </div>
+
+      <div class="project__limits">
+        <span class="doc-meta-label">WHAT IT DOES NOT SHOW</span>
+        <p class="leading-relaxed">{project.en.notShown}</p>
+      </div>
+
+      <div class="project__links">
+        <a href={project.url} rel="noopener noreferrer">View repository</a>
+        <a href={`${project.url}#readme`} rel="noopener noreferrer">Decisions in the README</a>
+      </div>
+    </article>
+  ))}
+
+  <section class="doc-section" aria-labelledby="selection">
+    <h2 id="selection" class="doc-section__label">On the selection</h2>
     <div class="doc-section__body">
       <p class="leading-relaxed">
-        A clean-room project: built from scratch, synthetic sample data only, nothing carried over
-        from previous employment. It demonstrates a class of problem I have worked on without
-        exposing any company data.
+        My process automation work was built inside a company and cannot be shown. Rather than
+        describe it, I rebuilt two classes of problem from it — on invented data, with open
+        instructions and tests that measure instead of claim.
       </p>
       <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
-        Every entry will state what the project shows — and what it does not.
+        Every entry states explicitly what the project does not show. Both READMEs document a
+        mistake that only the measurement uncovered.
       </p>
     </div>
   </section>

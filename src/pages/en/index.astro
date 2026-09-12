@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { projects } from '../../data/projects';
 ---
 
 <Base
@@ -22,15 +23,23 @@ import Base from '../../layouts/Base.astro';
   <section class="doc-feature" aria-labelledby="projects">
     <h2 id="projects" class="doc-feature__label">Projects</h2>
 
-    <div class="beleg-fehlt mt-4">
-      <strong>EVIDENCE MISSING.</strong> This section lists only projects with a publicly
-      verifiable artefact — repository, runnable demo, tests. It stays empty until the first
-      clean-room repository exists. This notice must be gone before publication.
-    </div>
+    <p class="mt-3 leading-relaxed max-w-2xl">
+      Two projects that show rather than claim: invented data, open instructions, and tests that
+      measure the result.
+    </p>
 
-    <p class="mt-4 text-sm" style="color: var(--color-muted)">
-      In progress: a small public demonstration project with synthetic data, a reproducible
-      setup and tests.
+    <ul class="doc-list mt-5 leading-relaxed">
+      {projects.map((project) => (
+        <li>
+          <span class="project__repo">{project.repo}</span>
+          <p class="mt-1"><strong>{project.en.title}</strong></p>
+          <p class="mt-1 text-sm" style="color: var(--color-muted)">{project.en.problem}</p>
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-5 project__links">
+      <a href="/en/projects">Both projects in detail</a>
     </p>
   </section>
 

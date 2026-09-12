@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { projects } from '../data/projects';
 ---
 
 <Base
@@ -11,26 +12,58 @@ import Base from '../layouts/Base.astro';
   <h1 class="text-3xl font-semibold tracking-tight">Projekte</h1>
 
   <p class="mt-4 leading-relaxed max-w-2xl">
-    Auf dieser Seite steht nur, was sich nachprüfen lässt: Quellcode, eine lauffähige Demo,
-    Tests und eine Anleitung, mit der das Projekt in wenigen Minuten selbst startet.
+    Hier steht nur, was sich nachprüfen lässt: Quellcode, eine lauffähige Demo, Tests und eine
+    Anleitung, mit der das Projekt in wenigen Minuten selbst startet. Beide Projekte arbeiten
+    ausschließlich mit erfundenen Daten; nichts stammt aus früheren Arbeitsverhältnissen.
   </p>
 
-  <div class="beleg-fehlt mt-8">
-    <strong>BELEG FEHLT.</strong> Das erste öffentliche Demonstrationsprojekt ist noch nicht gebaut.
-    Bis dahin bleibt diese Seite ohne Einträge. Kein Projekt wird hier beschrieben, bevor sein
-    Repository öffentlich ist.
+  <div class="beleg-fehlt mt-6">
+    <strong>NOCH NICHT ÖFFENTLICH.</strong> Die verlinkten Repositories sind derzeit privat.
+    Vor dem ersten Versand dieser Seite müssen sie die Freigabeprüfung durchlaufen und öffentlich
+    geschaltet werden — sonst führen die Links ins Leere.
   </div>
 
-  <section class="doc-section" aria-labelledby="geplant">
-    <h2 id="geplant" class="doc-section__label">Was hier entstehen wird</h2>
+  {projects.map((project) => (
+    <article class="project">
+      <div class="project__head">
+        <span class="project__repo">{project.repo}</span>
+        <span class="project__stack">{project.stackDe}</span>
+      </div>
+      <h2 class="project__title">{project.de.title}</h2>
+
+      <div class="project__body">
+        <p class="leading-relaxed">{project.de.problem}</p>
+        <p class="leading-relaxed">{project.de.approach}</p>
+      </div>
+
+      <div class="project__result">
+        <span class="doc-meta-label">ERGEBNIS</span>
+        <p class="leading-relaxed">{project.de.result}</p>
+      </div>
+
+      <div class="project__limits">
+        <span class="doc-meta-label">WAS ES NICHT ZEIGT</span>
+        <p class="leading-relaxed">{project.de.notShown}</p>
+      </div>
+
+      <div class="project__links">
+        <a href={project.url} rel="noopener noreferrer">Repository ansehen</a>
+        <a href={`${project.url}#readme`} rel="noopener noreferrer">Entscheidungen in der README</a>
+      </div>
+    </article>
+  ))}
+
+  <section class="doc-section" aria-labelledby="methode">
+    <h2 id="methode" class="doc-section__label">Zur Auswahl</h2>
     <div class="doc-section__body">
       <p class="leading-relaxed">
-        Ein Clean-Room-Projekt: neu gebaut, ausschließlich synthetische Beispieldaten, keine
-        Inhalte aus früheren Arbeitsverhältnissen. Es zeigt eine Problemklasse, die ich beruflich
-        bearbeitet habe, ohne betriebliche Daten preiszugeben.
+        Meine Arbeit an Prozessautomatisierung ist betrieblich entstanden und damit nicht
+        einsehbar. Statt sie zu beschreiben, habe ich zwei Problemklassen daraus neu gebaut —
+        mit erfundenen Daten, offener Anleitung und Tests, die messen statt zu behaupten.
       </p>
       <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
-        Jeder Eintrag wird benennen, was das Projekt zeigt — und was es nicht zeigt.
+        Jeder Eintrag nennt ausdrücklich, was das Projekt nicht zeigt. Beide README-Dateien
+        dokumentieren je einen Fehler, den erst die Messung aufgedeckt hat.
       </p>
     </div>
   </section>
