@@ -11,12 +11,22 @@ import Base from '../../layouts/Base.astro';
   <h1 class="text-3xl font-semibold tracking-tight">Legal notice</h1>
 
   <div class="beleg-fehlt mt-6">
-    <strong>DECISION PENDING.</strong> The content of this page has not been settled. It is open
-    whether German law (§ 5 DDG) requires a legal notice for this site and whether a postal
-    address will be given. This site must not be published while this notice is here.
+    <strong>DECISION PENDING.</strong> The content of this page has not been settled.
+    This page must not be published while this notice is here.
   </div>
 
-  <p class="mt-8 leading-relaxed max-w-2xl" style="color: var(--color-muted)">
-    The German version of this page is authoritative once it is written.
-  </p>
+  <section class="doc-section" aria-labelledby="criterion">
+    <h2 id="criterion" class="doc-section__label">The governing criterion</h2>
+    <div class="doc-section__body">
+      <p class="leading-relaxed">
+        Under German law, § 5(1) DDG ties the disclosure duty to digital services offered on a
+        commercial basis and normally for payment. Whether a job-application site with no payment,
+        no offering and no advertising falls under it is a legal question that is not settled here.
+        The site is publicly reachable via GitHub Pages, not only by the recipients it is sent to.
+      </p>
+      <p class="mt-4 leading-relaxed" style="color: var(--color-muted)">
+        The German version of this page is authoritative.
+      </p>
+    </div>
+  </section>
 </Base>

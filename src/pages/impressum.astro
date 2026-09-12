@@ -12,20 +12,45 @@ import Base from '../layouts/Base.astro';
 
   <div class="beleg-fehlt mt-6">
     <strong>ENTSCHEIDUNG OFFEN.</strong> Der Inhalt dieser Seite ist noch nicht festgelegt.
-    Offen ist, ob für diese Seite eine Impressumspflicht nach § 5 DDG besteht und ob eine
-    ladungsfähige Anschrift genannt wird. Diese Seite darf nicht veröffentlicht werden,
-    solange dieser Hinweis hier steht.
+    Diese Seite darf nicht veröffentlicht werden, solange dieser Hinweis hier steht.
   </div>
 
-  <section class="doc-section" aria-labelledby="offen">
-    <h2 id="offen" class="doc-section__label">Zu klären vor der Veröffentlichung</h2>
+  <section class="doc-section" aria-labelledby="kriterium">
+    <h2 id="kriterium" class="doc-section__label">Maßgebliches Kriterium</h2>
     <div class="doc-section__body">
-      <ul class="space-y-2 list-disc pl-5 leading-relaxed">
-        <li>Gilt diese Seite als geschäftsmäßiger digitaler Dienst im Sinne des § 5 DDG?</li>
-        <li>Wenn ja: vollständige Angaben einschließlich ladungsfähiger Anschrift.</li>
-        <li>Wenn nein: Ob freiwillig Name und E-Mail genannt werden.</li>
-        <li>Verantwortlicher für den Datenschutz nach Art. 13 DSGVO (unabhängig vom Impressum).</li>
-      </ul>
+      <p class="leading-relaxed">
+        § 5 Abs. 1 DDG knüpft die Informationspflicht an „geschäftsmäßige, in der Regel gegen
+        Entgelt angebotene digitale Dienste“. Ob eine Bewerbungsseite ohne Entgelt, ohne Angebot
+        und ohne Werbung darunter fällt, ist eine Rechtsfrage, die hier nicht abschließend
+        beantwortet wird. Die Seite ist über GitHub Pages öffentlich abrufbar, nicht nur für
+        die angeschriebenen Empfänger.
+      </p>
+    </div>
+  </section>
+
+  <section class="doc-section" aria-labelledby="optionen">
+    <h2 id="optionen" class="doc-section__label">Zur Wahl stehende Varianten</h2>
+    <div class="doc-section__body">
+      <ol class="space-y-3 list-decimal pl-5 leading-relaxed">
+        <li>
+          <strong>Vollständige Angaben</strong> mit Name und ladungsfähiger Anschrift.
+          Deckt den Fall ab, dass § 5 DDG greift. Preis: die Privatanschrift ist dauerhaft
+          öffentlich abrufbar und wird von Suchmaschinen und Adressdiensten erfasst.
+        </li>
+        <li>
+          <strong>Name und E-Mail ohne Anschrift.</strong> Nennt einen Ansprechpartner, erfüllt
+          aber § 5 Abs. 1 Nr. 1 DDG nicht, falls die Vorschrift greift.
+        </li>
+        <li>
+          <strong>Kein Impressum</strong> mit der Begründung, dass kein geschäftsmäßiger Dienst
+          vorliegt. Trägt das Risiko, dass diese Einordnung nicht geteilt wird.
+        </li>
+      </ol>
+      <p class="leading-relaxed mt-4">
+        Die Entscheidung wirkt auf die Angabe des Verantwortlichen nach Art. 13 Abs. 1 lit. a
+        DSGVO durch (siehe <a href="/datenschutz">Datenschutz</a>). Eine belastbare Einordnung
+        setzt eine anwaltliche Prüfung oder eine Auskunft der zuständigen IHK voraus.
+      </p>
     </div>
   </section>
 </Base>
