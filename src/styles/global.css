@@ -15,9 +15,10 @@
   --color-accent: #0f5f52;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Kein smooth scrolling. Der einzige Anker dieser Seite ist der Skip-Link,
+   und dort will man sofort ankommen, nicht hingleiten. Bei Tastaturnavigation
+   hinkt die Ansicht dem Fokus sonst um eine knappe Sekunde hinterher, und
+   Bewegungsanimationen sind bei vestibulaeren Stoerungen ein echtes Problem. */
 
 body {
   background-color: var(--color-paper);

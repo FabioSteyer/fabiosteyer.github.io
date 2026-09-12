@@ -47,8 +47,8 @@ import { projects } from '../../data/projects';
       </div>
 
       <div class="project__links">
-        <a href={project.url} rel="noopener noreferrer">View repository</a>
-        <a href={`${project.url}#readme`} rel="noopener noreferrer">Decisions in the README</a>
+        <a href={project.url} rel="noopener noreferrer" aria-label={`View the ${project.repo} repository`}>View repository</a>
+        <a href={`${project.url}#readme`} rel="noopener noreferrer" aria-label={`Decisions in the ${project.repo} README`}>Decisions in the README</a>
       </div>
     </article>
   ))}
