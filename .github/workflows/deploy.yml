@@ -2,6 +2,10 @@ name: Deploy to GitHub Pages
 
 # Bewusst KEIN Push-Trigger: Die Seite geht erst live, wenn die Freigabepruefung
 # (Schritt C1 im Umsetzungsplan) durch ist. Bis dahin nur manuell startbar.
+#
+# STAND 12.09.2026: Dieser Workflow laeuft NICHT. GitHub bricht ihn nach zwei Sekunden ab:
+# "The job was not started because your account is locked due to a billing issue."
+# Die Seite wird stattdessen aus dem Branch gh-pages ausgeliefert. Siehe DEPLOY.md.
 on:
   workflow_dispatch:
 
