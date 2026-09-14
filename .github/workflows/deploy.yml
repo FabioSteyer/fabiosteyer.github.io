@@ -3,9 +3,10 @@ name: Deploy to GitHub Pages
 # Bewusst KEIN Push-Trigger: Die Seite geht erst live, wenn die Freigabepruefung
 # (Schritt C1 im Umsetzungsplan) durch ist. Bis dahin nur manuell startbar.
 #
-# STAND 12.09.2026: Dieser Workflow laeuft NICHT. GitHub bricht ihn nach zwei Sekunden ab:
-# "The job was not started because your account is locked due to a billing issue."
-# Die Seite wird stattdessen aus dem Branch gh-pages ausgeliefert. Siehe DEPLOY.md.
+# STAND 14.09.2026: Die Abrechnungssperre ist weg — der Lauf 34881022022 wurde tatsaechlich
+# ausgefuehrt (16 s) statt nach zwei Sekunden abgebrochen. Er scheiterte am Node-Stand,
+# siehe Kommentar unten. Die Seite wird weiterhin aus dem Branch gh-pages ausgeliefert;
+# die Pages-Quelle steht noch auf legacy/gh-pages. Siehe DEPLOY.md.
 on:
   workflow_dispatch:
 
@@ -26,6 +27,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Build with Astro
         uses: withastro/action@v3
+        with:
+          # withastro/action startet sonst mit Node 20; Astro 7.3.2 verlangt >= 22.12.0
+          # (package.json engines). Ohne diese Zeile bricht "astro build" sofort ab.
+          node-version: 22
 
   deploy:
     needs: build
