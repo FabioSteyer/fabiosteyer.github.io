@@ -3,10 +3,9 @@ name: Deploy to GitHub Pages
 # Bewusst KEIN Push-Trigger: Die Seite geht erst live, wenn die Freigabepruefung
 # (Schritt C1 im Umsetzungsplan) durch ist. Bis dahin nur manuell startbar.
 #
-# STAND 14.09.2026: Die Abrechnungssperre ist weg — der Lauf 34881022022 wurde tatsaechlich
-# ausgefuehrt (16 s) statt nach zwei Sekunden abgebrochen. Er scheiterte am Node-Stand,
-# siehe Kommentar unten. Die Seite wird weiterhin aus dem Branch gh-pages ausgeliefert;
-# die Pages-Quelle steht noch auf legacy/gh-pages. Siehe DEPLOY.md.
+# STAND 14.09.2026: Dieser Workflow ist wieder der Lieferweg. Die Abrechnungssperre ist weg,
+# Pages steht auf build_type=workflow, Lauf 34882189100 lief gruen durch (Build und Deploy).
+# Branch gh-pages und scripts/deploy-gh-pages.ps1 bleiben als Rueckfallebene. Siehe DEPLOY.md.
 on:
   workflow_dispatch:
 
