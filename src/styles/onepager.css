@@ -63,7 +63,11 @@
       position: sticky; top: 0; z-index: 20;
       display: flex; align-items: center; gap: 40px;
       padding: 18px clamp(24px, 5vw, 72px);
-      background: rgba(15,42,36,0.82);
+      /* 0.82 liess durchlaufenden Text sichtbar durchscheinen; auf dem Telefon,
+         wo die Kopfzeile anteilig mehr Flaeche einnimmt, wirkte das unruhig.
+         0.96 deckt, der Weichzeichner bleibt als Tiefenwirkung erhalten.
+         Entscheid Fabio, 16.09.2026. */
+      background: rgba(15,42,36,0.96);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
     }

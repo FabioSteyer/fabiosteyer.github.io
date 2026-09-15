@@ -4,18 +4,17 @@ export type Lang = 'de' | 'en';
 // /projekte/index.html aus und antwortet auf /projekte mit einer 301-Umleitung;
 // jeder Klick kostete sonst einen zusaetzlichen Rundlauf (Lighthouse: "redirects").
 
+// Nur noch Start und Über mich: Projekte und Kontakt sind seit dem 16.09.2026
+// Abschnitte der One-Pager-Startseite und keine eigenen Seiten mehr. Eine
+// Navigation, die auf Weiterleitungen zeigt, schickt den Leser im Kreis.
 export const nav: Record<Lang, { href: string; label: string }[]> = {
   de: [
     { href: '/', label: 'Start' },
-    { href: '/projekte/', label: 'Projekte' },
     { href: '/ueber-mich/', label: 'Über mich' },
-    { href: '/kontakt/', label: 'Kontakt' },
   ],
   en: [
     { href: '/en/', label: 'Home' },
-    { href: '/en/projects/', label: 'Projects' },
     { href: '/en/about/', label: 'About' },
-    { href: '/en/contact/', label: 'Contact' },
   ],
 };
 
