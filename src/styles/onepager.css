@@ -215,7 +215,6 @@
     .cap b { display: block; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
 
     /* ---------- Kennzahlen ---------- */
-    @property --n { syntax: "<integer>"; inherits: false; initial-value: 0; }
     .kpis { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: clamp(16px, 2vw, 28px); }
     .kpi { padding-top: 22px; border-top: 1px solid rgba(243,237,228,.14); display: flex; flex-direction: column; gap: 8px; }
     .kpi .num { font-family: 'Newsreader', Georgia, serif; font-size: clamp(36px, 3.8vw, 54px); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
@@ -227,9 +226,16 @@
     .src-oeff { color: var(--sage); }
     .src-betr { color: var(--muted); }
     .kpi .pre { font-family: 'Karla', sans-serif; font-size: 16px; color: var(--muted); margin-right: 8px; vertical-align: 8px; }
-    .count { counter-reset: n var(--n); animation: countTo linear both; animation-timeline: view(); animation-range: entry 10% entry 85%; }
-    .count::after { content: counter(n); }
-    @keyframes countTo { to { --n: var(--to); } }
+    /* Die Kennzahl steht als Text im HTML und wird nicht mehr hochgezaehlt.
+       Der Entwurf zaehlte ueber eine registrierte Property: counter-reset: n var(--n)
+       plus @keyframes countTo { to { --n: var(--to); } }. Chromium loest var() in
+       einem Keyframe-Wert fuer eine animierte Custom Property nicht auf, --n blieb
+       auf dem Initialwert 0, und counter(n) gab entsprechend 0 aus. Live gemessen
+       am 16.09.2026 in Chrome 152: die vier Kennzahlen zeigten "rund 0.000",
+       "0 / 4", "0" und "0" statt 3.000, 4/4, 38 und 0 - also falsche Zahlen, die
+       schlechter sind als die Wahrheit. Ein Zaehleffekt ist das nicht wert.
+       Die Reihe blendet weiterhin ueber .rise-up ein. */
+    .count::after { content: attr(data-fallback); }
 
     /* ---------- Projekte ---------- */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; }
@@ -314,6 +320,37 @@
       .nav { gap: 14px; font-size: 13px; flex-wrap: wrap; justify-content: flex-end; }
       .nav a.n4 { display: none; }
       .rail { display: none; }
+
+      /* --- Ergaenzt 16.09.2026 nach der Messung am Telefon ---
+         Gemessen bei 375 und 390 px: die Seite lief 418 px breit und liess sich
+         seitwaerts schieben, der Kartentext war rechts abgeschnitten, und die
+         vier Kennzahlen standen in 52 px schmalen Spalten nebeneinander.
+         Ursachen: der Seitenrand aus clamp(58px, ...) frisst bei 375 px schon
+         116 px, und beide Raster hatten feste Mindest- bzw. Spaltenzahlen. */
+
+      /* 58 px Rand je Seite lassen auf einem 375-px-Display 259 px Inhalt. */
+      .wrap { padding: 0 20px; }
+
+      /* minmax(360px, 1fr) erzwingt 360 px, auch wenn nur 335 da sind. */
+      .cards { grid-template-columns: 1fr; }
+
+      /* Vier Spalten sind auf dem Telefon keine Kennzahlenreihe mehr. */
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 26px; }
+      .caption-row { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 18px 18px 20px; }
+
+      /* Der Name brach zwischen Vor- und Nachname um und schob die Kopfzeile
+         auf zwei Zeilen, die in den Inhalt ragten. */
+      .brand { font-size: 18px; white-space: nowrap; }
+      .topbar { padding-top: 10px; padding-bottom: 10px; }
+
+      .three, .contact { grid-template-columns: 1fr; }
+      .figures { gap: 14px; font-size: 12px; }
+      .stage-head { flex-wrap: wrap; gap: 6px; }
+
+      /* Die Pipeline-Grafik bleibt lesbar, wenn sie nicht unter 300 px faellt;
+         darunter schrumpfen die Beschriftungen unter die Lesbarkeit. */
+      .stage-body { overflow-x: auto; }
+      .rails { min-width: 620px; }
     }
 
     /* ---------- Steigerung 3: Karten bauen sich von innen auf ----------
@@ -352,8 +389,6 @@
       .rail-head, .progress, .beleg { display: none; }
       .stop, .stop b { animation: none !important; opacity: 1; }
       .depth-up { opacity: .85; animation: none !important; }
-      .count { animation: none !important; }
-      .count::after { content: attr(data-fallback); }
       .halo { display: none; }
       .sink, .card > *, .wipe { opacity: 1 !important; transform: none !important; clip-path: none !important; animation: none !important; }
       .nav a.spy::before { display: none; }
@@ -369,13 +404,6 @@
       .stop, .stop b { animation: none !important; opacity: 1; }
       .rail-head { display: none; }
       .depth-up { opacity: .85; animation: none !important; }
-      .count { animation: none !important; }
-      /* Ohne diese Zeile bleiben alle vier Kennzahlen leer, sobald jemand
-         Bewegungsreduzierung aktiviert hat: der Zaehler laeuft dann nicht und
-         counter(n) gibt nichts aus. Der @supports-Block oben hat diesen
-         Fallback, der reduced-motion-Block hatte ihn nicht.
-         Gemessen und behoben am 16.09.2026. */
-      .count::after { content: attr(data-fallback); }
       .halo { display: none; }
       .sink, .card > *, .wipe { opacity: 1 !important; transform: none !important; clip-path: none !important; animation: none !important; }
       .nav a.spy::before { display: none; }
