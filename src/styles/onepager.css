@@ -130,7 +130,12 @@
     /* Der letzte Abschnitt erreicht nie volle Eintrittstiefe: kurzer Bereich, sonst bleibt er versetzt stehen. */
     .last { animation-range: entry 0% entry 26% !important; }
 
-    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .1em; color: var(--copper); display: inline-flex; align-items: center; gap: 12px; }
+    /* Traegt teils ein <span>, teils ein <h2>: Die Stationen 02 bis 04 hatten
+       ueberhaupt keine Ueberschrift, wodurch die Seite von h1 direkt auf die
+       h3 der Projektkarten sprang (Lighthouse heading-order, 16.09.2026).
+       Die Marke sieht in beiden Faellen gleich aus, deshalb hier die
+       Browser-Vorgaben fuer h2 zuruecksetzen. */
+    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 400; letter-spacing: .1em; color: var(--copper); display: inline-flex; align-items: center; gap: 12px; margin: 0; }
 
     /* ---------- Hero ---------- */
     .hero { min-height: 88vh; display: flex; flex-direction: column; justify-content: center; padding: 8vh 0 6vh; }
