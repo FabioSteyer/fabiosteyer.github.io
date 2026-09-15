@@ -57,6 +57,16 @@ npm run deploy
 Der Inhalt von `gh-pages` ist ab dem 14.09.2026 nicht mehr automatisch aktuell — `npm run deploy`
 baut ihn aber ohnehin neu.
 
+**Zwei Nachträge vom 15.09.2026:**
+
+- `scripts/deploy-gh-pages.ps1` stößt den klassischen Pages-Build **nur noch an, wenn
+  `build_type` tatsächlich `legacy` ist**. Vorher tat es das bedingungslos — im jetzigen
+  Zustand hätte ein versehentlicher `npm run deploy` die Auslieferung unbemerkt von Actions
+  auf `gh-pages` zurückgezogen. Deshalb steht im Rückweg oben das Umstellen **vor** dem Deploy.
+- `gh-pages` wurde am 15.09.2026 einmal auf den aktuellen Stand gebracht (Build `2d88f10`),
+  damit die Rückfallebene nicht mit einem zwei Stände alten Build dasteht. Das ersetzt die
+  offene Entscheidung unten nicht, es entschärft nur ihre Kosten.
+
 **Offene Entscheidung:** Ob `gh-pages`, das Skript und der `deploy`-Eintrag in `package.json`
 irgendwann ganz entfallen, ist nicht entschieden. Dafür spricht, dass zwei Wege zum selben Ziel
 auseinanderlaufen können. Dagegen spricht, dass der klassische Pages-Builder von
