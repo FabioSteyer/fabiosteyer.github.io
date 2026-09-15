@@ -39,10 +39,21 @@ finally {
     git branch -D $tmpBranch 2>$null | Out-Null
 }
 
-Write-Host "== Pages-Build anstossen =="
-gh api -X POST repos/FabioSteyer/fabiosteyer.github.io/pages/builds | Out-Null
+# Seit 14.09.2026 liefert Pages wieder ueber den Actions-Workflow aus (build_type=workflow).
+# In diesem Zustand darf hier KEIN Legacy-Build angestossen werden - der wuerde die
+# Auslieferungsquelle unbemerkt auf gh-pages zurueckziehen. Deshalb erst den Modus lesen.
+$buildType = (gh api repos/FabioSteyer/fabiosteyer.github.io/pages --jq '.build_type' 2>$null)
 
-Write-Host ""
-Write-Host "Fertig. Der Pages-Build laeuft etwa 20 Sekunden."
+if ($buildType -eq 'legacy') {
+    Write-Host "== Pages-Build anstossen (build_type=legacy) =="
+    gh api -X POST repos/FabioSteyer/fabiosteyer.github.io/pages/builds | Out-Null
+    Write-Host ""
+    Write-Host "Fertig. Der Pages-Build laeuft etwa 20 Sekunden."
+} else {
+    Write-Host ""
+    Write-Host "Branch gh-pages ist aktualisiert. Kein Pages-Build angestossen:"
+    Write-Host "  build_type = $buildType (ausgeliefert wird ueber den Actions-Workflow)."
+    Write-Host "  Zum Umschalten auf diese Rueckfallebene siehe DEPLOY.md."
+}
 Write-Host "Status pruefen:  gh api repos/FabioSteyer/fabiosteyer.github.io/pages/builds/latest"
 Write-Host "Seite:           https://fabiosteyer.github.io/"
