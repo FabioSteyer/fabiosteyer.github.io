@@ -10,8 +10,8 @@
  *                   wechselt je Abschnitt die Tiefe, Paar-Abgleich als Hero-Grafik,
  *                   Seitenwechsel als Wischen.
  *
- * Bauen: PUBLIC_VARIANT=b npm run build (Standard: a).
+ * Bauen: PUBLIC_VARIANT=a npm run build (Standard seit 16.09.2026, Entscheid Fabio: b).
  */
 export type Variant = 'a' | 'b' | 'c';
-const raw = (import.meta.env.PUBLIC_VARIANT ?? 'a') as string;
-export const variant: Variant = raw === 'b' || raw === 'c' ? raw : 'a';
+const raw = (import.meta.env.PUBLIC_VARIANT ?? 'b') as string;
+export const variant: Variant = raw === 'a' || raw === 'c' ? raw : 'b';
