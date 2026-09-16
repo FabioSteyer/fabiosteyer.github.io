@@ -1,7 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import fotoFabio from '../assets/foto-fabio-steyer.jpg';
+
+// Vollaufloesung fuer den Klick auf das Foto: gleiche Quelle, nicht skaliert,
+// JPEG mit Qualitaet 92 (Entscheid Fabio 16.09.2026: ein scharfes Foto statt der
+// kleinen Vorschau). Metadaten werden beim Build entfernt.
+const fotoVoll = await getImage({ src: fotoFabio, format: 'jpeg', quality: 92 });
 
 const belege = [
   { fach: 'Python', beleg: 'Produktive Pipelines bei Cavator; beide Projekte unter Projekte', stufe: 'öffentlich belegbar' },
@@ -33,7 +38,14 @@ const belege = [
         welcher ein Sprachmodell, und welcher besser gar nicht automatisiert wird.
       </p>
     </div>
-    <div class="doc-frame w-32 sm:w-44 shrink-0">
+    <a
+      href={fotoVoll.src}
+      class="doc-frame doc-frame--link w-32 sm:w-44 shrink-0"
+      target="_blank"
+      rel="noopener"
+      aria-label="Portraitfoto in voller Auflösung öffnen (neuer Tab)"
+      title="Foto in voller Auflösung öffnen"
+    >
       <Image
         src={fotoFabio}
         alt="Portraitfoto von Fabio Steyer"
@@ -41,7 +53,7 @@ const belege = [
         densities={[1, 2]}
         class="w-full h-auto"
       />
-    </div>
+    </a>
   </div>
 
   <section class="doc-section" aria-labelledby="belege">

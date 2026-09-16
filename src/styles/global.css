@@ -178,6 +178,16 @@ table {
   background: var(--color-paper-raised);
 }
 
+.doc-frame--link {
+  display: block;
+  cursor: zoom-in;
+}
+
+.doc-frame--link:hover,
+.doc-frame--link:focus-visible {
+  border-color: #efc79f;
+}
+
 .page .text-link {
   color: #efc79f;
   text-decoration: none;

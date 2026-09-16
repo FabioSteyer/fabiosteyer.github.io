@@ -1,7 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import fotoFabio from '../../assets/foto-fabio-steyer.jpg';
+
+// Full resolution for the click on the photo: same source, not scaled, JPEG at
+// quality 92 (decision Fabio 16.09.2026). Metadata is stripped at build time.
+const fotoVoll = await getImage({ src: fotoFabio, format: 'jpeg', quality: 92 });
 
 const evidence = [
   { skill: 'Python', proof: 'Production pipelines at Cavator; both projects under Projects', level: 'publicly verifiable' },
@@ -32,7 +36,14 @@ const evidence = [
         which step needs a script, which needs a language model, and which is better left alone.
       </p>
     </div>
-    <div class="doc-frame w-32 sm:w-44 shrink-0">
+    <a
+      href={fotoVoll.src}
+      class="doc-frame doc-frame--link w-32 sm:w-44 shrink-0"
+      target="_blank"
+      rel="noopener"
+      aria-label="Open portrait photograph in full resolution (new tab)"
+      title="Open photo in full resolution"
+    >
       <Image
         src={fotoFabio}
         alt="Portrait photograph of Fabio Steyer"
@@ -40,7 +51,7 @@ const evidence = [
         densities={[1, 2]}
         class="w-full h-auto"
       />
-    </div>
+    </a>
   </div>
 
   <section class="doc-section" aria-labelledby="evidence">
