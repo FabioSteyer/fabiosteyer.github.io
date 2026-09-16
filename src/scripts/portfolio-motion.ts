@@ -317,7 +317,15 @@ export function createMotion(initiallyReduced: boolean) {
         });
       }
 
-      gsap.to('.note-symbol', { rotation: 180, ease: 'none', scrollTrigger: { trigger: '.ai-note', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+      // KI-Notiz: der Kupferrand zieht sich von oben auf, Titel und Zeilen folgen ihm.
+      // Zeitbasiert (einmalig), damit nichts am Mausrad haengt.
+      document.querySelectorAll<HTMLElement>('.ai-note').forEach(note => {
+        const rule = note.querySelector<HTMLElement>('.note-rule');
+        if (!rule) return;
+        gsap.timeline({ scrollTrigger: { trigger: note, start: 'top 86%', once: true } })
+          .from(rule, { scaleY: 0, transformOrigin: 'top', duration: .9, ease: 'power3.inOut' }, 0)
+          .from(note.querySelectorAll('h3,p,.micro'), { y: 18, opacity: .85, duration: .7, stagger: .12, ease: 'power3.out', clearProps: 'transform,opacity' }, .25);
+      });
       if (variant !== 'b') gsap.to('.ambient', { y: 320, ease: 'none', scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 1 } });
     });
   };
