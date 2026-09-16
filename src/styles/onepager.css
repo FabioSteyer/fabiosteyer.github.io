@@ -143,12 +143,16 @@
 
     /* ---------- Hero ---------- */
     .hero { min-height: 88vh; display: flex; flex-direction: column; justify-content: center; padding: 8vh 0 6vh; }
-    .hero h1 { margin: 22px 0 0; font-family: 'Newsreader', Georgia, serif; font-weight: 400; font-size: clamp(42px, 6.4vw, 92px); line-height: .98; letter-spacing: -.025em; max-width: 15ch; }
+    /* Vier statt drei Zeilen und laengere Zeilen als im Entwurf (16.09.2026).
+       Jede .line muss genau eine sichtbare Zeile bleiben: bricht sie intern um,
+       schiebt die Einblendanimation zwei Zeilen als Block und der Aufbau geht
+       verloren. Gemessen bei 1280 und 390 px, longest line 23 Zeichen. */
+    .hero h1 { margin: 22px 0 0; font-family: 'Newsreader', Georgia, serif; font-weight: 400; font-size: clamp(30px, 5.4vw, 72px); line-height: 1.02; letter-spacing: -.025em; max-width: 25ch; }
     .hero h1 em { font-style: italic; color: var(--copper); }
     .line { display: block; overflow: hidden; }
     .line > span { display: block; animation: lineUp 1.05s cubic-bezier(.22,1,.36,1) backwards; }
     @keyframes lineUp { from { transform: translateY(106%); } to { transform: translateY(0); } }
-    .l1 > span { animation-delay: .25s; } .l2 > span { animation-delay: .40s; } .l3 > span { animation-delay: .55s; }
+    .l1 > span { animation-delay: .25s; } .l2 > span { animation-delay: .40s; } .l3 > span { animation-delay: .55s; } .l4 > span { animation-delay: .70s; }
     .lede { margin: 34px 0 0; max-width: 62ch; font-size: clamp(16px, 1.25vw, 18.5px); line-height: 1.65; color: #c9d2cb; text-wrap: pretty; }
 
     .cta-row { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
