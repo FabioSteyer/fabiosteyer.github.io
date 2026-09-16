@@ -1,0 +1,22 @@
+---
+import type { Lang } from '../data/portfolio';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = (de: string, en: string) => lang === 'de' ? de : en;
+---
+<div class="demo concurrency-demo" data-concurrency data-lang={lang}>
+  <div class="demo-top"><span class="micro">{t('02 / GLEICHZEITIGE ZUGRIFFE', '02 / CONCURRENT WRITES')}</span><span class="demo-tag">{t('Vier Prozesse', 'Four processes')}</span></div>
+  <fieldset class="demo-controls" data-controls hidden>
+    <legend>{t('Wer darf wann schreiben?', 'Who gets to write when?')}</legend>
+    <div class="segmented"><button type="button" data-mode="unsafe" aria-pressed="true">{t('Ohne Absprache', 'Uncoordinated')}</button><button type="button" data-mode="safe" aria-pressed="false">{t('Mit Koordination', 'Coordinated')}</button></div>
+  </fieldset>
+  <div class="write-scene">
+    <div class="processes" aria-label={t('Vier schreibende Prozesse', 'Four writing processes')}>
+      {['A', 'B', 'C', 'D'].map(id => <div class="process" data-process={id}><span>{id}</span><small data-process-state>{t('geschrieben', 'written')}</small></div>)}
+    </div>
+    <div class="write-bridge" aria-hidden="true"><span></span><i class="write-packet"></i><b data-bridge-label>{t('GLEICHER ALTER STAND', 'SAME STALE SNAPSHOT')}</b></div>
+    <div class="file-store"><div class="file-label"><span>data.json</span><span>{t('Gespeicherte Einträge', 'Saved entries')}</span></div><div class="file-entries" role="img" data-file-entries aria-label={t('Eintrag D erhalten', 'Entry D retained')}><span class="file-entry lost" data-entry="A" aria-hidden="true">A</span><span class="file-entry lost" data-entry="B" aria-hidden="true">B</span><span class="file-entry lost" data-entry="C" aria-hidden="true">C</span><span class="file-entry" data-entry="D" aria-hidden="true">D</span></div></div>
+  </div>
+  <div class="demo-result" data-write-result data-state="difference" role="status" aria-live="polite" aria-atomic="true"><span class="result-icon" data-result-icon aria-hidden="true">!</span><div><strong data-result-title>{t('1 von 4 Einträgen bleibt.', '1 of 4 entries survives.')}</strong><p data-result-reason>{t('Alle lesen denselben alten Stand. Jeder überschreibt die Einträge der anderen.', 'All read the same old state. Each overwrites the other processes’ entries.')}</p></div></div>
+  <div class="demo-bottom"><p class="demo-caption">{t('Vereinfachter Ablauf: vier Prozesse, je ein Eintrag. Kein echter Mehrprozesslauf im Browser.', 'Simplified schedule: four processes, one entry each. Not a real multiprocess run in the browser.')}</p><button type="button" class="replay" data-replay hidden>{t('Ablauf wiederholen', 'Replay sequence')} <span aria-hidden="true">↻</span></button></div>
+</div>

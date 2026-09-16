@@ -2,18 +2,16 @@
 /**
  * Layout der One-Pager-Startseite (DE und EN).
  *
- * Bewusst getrennt von Base.astro: Der One-Pager traegt ein eigenes,
- * dunkles Register und eine eigene Kopfzeile mit Ankernavigation, waehrend
- * Base.astro die hellen Rechtsseiten bedient.
+ * Eigene Ankernavigation; Base.astro bedient die Profil- und Rechtsseiten.
  *
- * Kein Client-JavaScript. Die Bewegung laeuft vollstaendig ueber CSS
- * (scroll- und view-timeline); Browser ohne Unterstuetzung bekommen ueber
- * @supports den statischen Endzustand, prefers-reduced-motion ebenfalls.
+ * Statisch lesbarer Inhalt mit lokal ausgelieferten interaktiven Beispielen.
+ * GSAP erweitert optional die Darstellung und respektiert reduzierte Bewegung.
  *
  * Schriften liegen lokal unter /fonts/ (siehe public/fonts/fonts.css).
  * Es geht keine Anfrage an fonts.googleapis.com oder fonts.gstatic.com.
  */
 import '../styles/onepager.css';
+import '../styles/transitions.css';
 
 interface Props {
   lang: 'de' | 'en';

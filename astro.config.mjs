@@ -21,6 +21,8 @@ export default defineConfig({
     '/en/contact': '/en/#kontakt',
   },
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    // GSAP's upstream copyright and license notices must survive minification.
+    build: { rolldownOptions: { output: { comments: { legal: true } } } }
   }
 });

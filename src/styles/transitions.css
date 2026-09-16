@@ -1,0 +1,10 @@
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: page-out .18s ease both; }
+::view-transition-new(root) { animation: page-in .35s ease both; }
+@keyframes page-out { to { opacity: 0; transform: translateY(-5px); } }
+@keyframes page-in { from { opacity: 0; transform: translateY(9px); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+html[data-reduced-motion=true]::view-transition-old(root),
+html[data-reduced-motion=true]::view-transition-new(root) { animation: none; }

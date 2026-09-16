@@ -1,73 +1,59 @@
 # fabiosteyer.github.io
 
-Portfolio site of Fabio Steyer — German and English, six pages each.
-Live at <https://fabiosteyer.github.io/>.
+Fabio Steyer's bilingual portfolio. Live at https://fabiosteyer.github.io/.
 
-The site exists to link to things that can be checked: source code, a runnable
-demo, tests and a measured result. It carries an evidence table that states, per
-skill, how strong the evidence actually is — and says so plainly where the
-evidence is only my own word.
+The site links claims to source code, measured results and explicit limitations.
+The two browser examples use synthetic data. They illustrate project logic;
+they do not run the Python repositories or process uploaded documents.
 
-## What the site is built from
+## Architecture
 
-| | |
-|---|---|
-| Framework | Astro 7, static output |
-| Styling | Tailwind 4, design tokens in `src/styles/global.css` |
-| Fonts | System fonts only — no `@font-face`, no font files, no external request |
-| Client-side JavaScript | none — 0 `<script>` tags in the build |
-| Third-party requests | none |
-| Indexing | `noindex, nofollow` on every page, deliberately |
+- Astro 7 static output, Tailwind 4 on the profile/legal pages.
+- One shared homepage component with German and English content.
+- Local Newsreader, Karla and JetBrains Mono font files.
+- Small local interaction module, optional GSAP/ScrollTrigger animation bundle.
+- No backend, tracking, cookies, remote fonts or third-party runtime requests.
+- Intentional `noindex, nofollow` on every page.
+- Eight content pages and four redirects preserving the old project/contact URLs.
+- Ordinary scrolling, keyboard controls, native details, reduced-motion support.
+- If JavaScript is blocked, content and illustrative results remain readable.
 
-The evidence table and the German/English project copy share one source,
-`src/data/projects.ts`, so the two language versions cannot drift apart.
+## Development and verification
 
-## Measured, not claimed
+Node.js >=22.12.0.
 
-Lighthouse 12.8.2, mobile, against the live URL:
-
-```
-Performance      100
-Accessibility    100
-Best Practices   100
-SEO               60
+```powershell
+npm ci
+npm run check       # Astro and TypeScript diagnostics
+npm test            # production build + 9 Node tests
+npm run dev -- --background
+npm run preview     # production build at localhost:4321
+npm run preview:no-js # same build, scripts blocked by CSP, localhost:4322
 ```
 
-SEO is capped by `is-crawlable` — the deliberate `noindex`. Without it the
-score is 100. First Contentful Paint and Largest Contentful Paint 0.9 s, Total
-Blocking Time 0 ms, Cumulative Layout Shift 0.
+The no-JavaScript preview binds to localhost only. Stop it with Ctrl+C.
+See `docs/verification-2026-09-16.md` for the actual review evidence.
+Historical Lighthouse scores describe earlier builds, not the current one.
 
-Two accessibility findings came out of that run and are fixed:
+Deployment uses the manually triggered GitHub Actions workflow.
+A push alone does not publish. See `DEPLOY.md`.
 
-- `label-content-name-mismatch` — an `aria-label` added a day earlier to
-  disambiguate repeated link texts did not contain the visible label as a
-  substring. Speech-input users saying "click Repository ansehen" would not
-  have hit the link. That is WCAG 2.5.3 *Label in Name*, level A. The fix was
-  a label that starts with the visible text.
-- `hreflang` — the alternate-language link was relative and had no
-  self-reference. Now three absolute entries per page, including `x-default`.
+## Content and evidence
 
-A keyboard walkthrough before that removed `scroll-behavior: smooth`: the
-viewport lagged roughly a second behind the focused element, measured with
-`getBoundingClientRect` right after the key press and again 1.2 s later.
+`src/data/portfolio.ts` holds homepage copy. `src/data/projects.ts` holds
+case studies, measured results and limits. The browser illustrations use
+`src/lib/demo-model.mjs`, tested independently of animation.
 
-## Local development
+The 38 tests stated on the website belong to the two Python repositories.
+They do not include this website's own tests. The simplified four-write
+illustration is explicitly distinct from the documented 20-write comparison.
 
-```bash
-npm install
-npm run dev      # http://localhost:4321
-npm run build    # static output in dist/
-```
+## AI assistance and licensing
 
-Deployment does not run through the Actions workflow in `.github/workflows/`.
-See `DEPLOY.md` for what is actually wired up and why.
+This site was built with AI assistance. Requirements, content, evidence levels
+and review remain my responsibility.
 
-## On AI assistance
-
-This site was built with AI assistance. The requirements, the content, the
-evidence levels and the checking of the result are mine. Where a measurement is
-quoted here or on the site, it comes from an actual run, not from an estimate.
-
-## Licence
-
-No licence granted. The code is public so it can be read, not reused.
+No licence is granted for the site's original code or content. The code is
+public for inspection. Third-party dependencies and fonts retain their own
+licences. GSAP's copyright and licence notices are preserved in the production
+bundle, with a regression test guarding against removal by the minifier.

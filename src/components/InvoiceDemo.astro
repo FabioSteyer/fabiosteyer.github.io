@@ -1,0 +1,39 @@
+---
+import type { Lang } from '../data/portfolio';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = (de: string, en: string) => lang === 'de' ? de : en;
+---
+<div class="demo invoice-demo" data-invoice data-lang={lang}>
+  <div class="demo-top"><span class="micro">{t('01 / BELEGABGLEICH', '01 / DOCUMENT RECONCILIATION')}</span><span class="demo-tag">{t('Erfundene Daten', 'Synthetic data')}</span></div>
+  <fieldset class="demo-controls" data-controls hidden>
+    <legend>{t('Was ändert sich auf der Rechnung?', 'What changes on the invoice?')}</legend>
+    <div class="segmented">
+      <button type="button" data-case="price" aria-pressed="true">{t('Anderer Preis', 'Changed price')}</button>
+      <button type="button" data-case="split" aria-pressed="false">{t('Teillieferung', 'Partial delivery')}</button>
+      <button type="button" data-case="units" aria-pressed="false">{t('Andere Einheit', 'Changed unit')}</button>
+    </div>
+  </fieldset>
+  <div class="document-flow">
+    <div class="paper" data-paper="quote">
+      <div class="paper-heading"><span>{t('Angebot', 'Quote')}</span><span class="paper-id">A-001</span></div>
+      <span class="paper-rule"></span><span class="paper-rule short"></span>
+      <p class="paper-item">{t('Montagewinkel · Pos. 01', 'Mounting bracket · Item 01')}</p>
+      <div class="paper-quantity" data-quote-line>120 × {lang === 'de' ? '2,00 €' : '€2.00'}</div>
+      <div class="paper-total"><span>{t('Vereinbart', 'Agreed')}</span><strong data-quote-total>{lang === 'de' ? '240,00 €' : '€240.00'}</strong></div>
+    </div>
+    <div class="match-node" aria-hidden="true"><div class="match-orbit"></div><span>≍</span><small>{t('ABGLEICH', 'MATCH')}</small></div>
+    <div class="paper invoice-paper" data-paper="invoice">
+      <div class="paper-heading"><span data-invoice-title>{t('Rechnung', 'Invoice')}</span><span class="paper-id">R-001</span></div>
+      <span class="paper-rule"></span><span class="paper-rule short"></span>
+      <p class="paper-item">{t('Montagewinkel · Pos. 01', 'Mounting bracket · Item 01')}</p>
+      <div class="paper-quantity" data-invoice-line>120 × {lang === 'de' ? '2,20 €' : '€2.20'}</div>
+      <div class="paper-total"><span>{t('Berechnet', 'Invoiced')}</span><strong data-invoice-total>{lang === 'de' ? '264,00 €' : '€264.00'}</strong></div>
+    </div>
+  </div>
+  <div class="demo-result" data-invoice-result data-state="difference" role="status" aria-live="polite" aria-atomic="true">
+    <span class="result-icon" aria-hidden="true" data-result-icon>!</span>
+    <div><strong data-result-title>{t('24,00 € zu viel berechnet', '€24.00 overcharged')}</strong><p data-result-reason>{t('120 Stück × 0,20 € Preisdifferenz. Dieselbe Position, ein anderer Preis.', '120 pieces × €0.20 price difference. The same item, a different price.')}</p></div>
+  </div>
+  <p class="demo-caption">{t('Vereinfachtes Rechenbeispiel. Hier werden keine PDFs verarbeitet oder Daten übertragen.', 'Simplified calculation. No PDFs are processed or data transmitted here.')}</p>
+</div>
