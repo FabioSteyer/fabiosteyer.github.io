@@ -30,7 +30,7 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
 .availability {font-size:10px;letter-spacing:.015em;color:var(--muted);margin-top:22px;display:flex;align-items:center;gap:9px}
 .availability i {width:5px;height:5px;flex-shrink:0;border-radius:50%;background:var(--sage);box-shadow:0 0 0 4px #9fd3b80b}
 .hero-art {position:relative;aspect-ratio:1;min-width:0;isolation:isolate}
-.art-grid {position:absolute;inset:0;opacity:.35;background-image:radial-gradient(var(--muted) .65px,transparent .65px);background-size:23px 23px;mask-image:radial-gradient(ellipse,black,transparent 70%)}
+.art-grid {position:absolute;inset:0;opacity:.35;background-image:radial-gradient(var(--muted) .65px,transparent .65px);background-size:23px 23px;-webkit-mask-image:radial-gradient(ellipse,black,transparent 70%);mask-image:radial-gradient(ellipse,black,transparent 70%)}
 .art-orbit {position:absolute;border:1px solid #9fd3b81b;border-radius:50%;inset:8%;transform:rotate(-25deg)}
 .orbit-two {inset:0 24%;transform:rotate(32deg)}
 .hero-document {position:absolute;padding:20px;width:55%;aspect-ratio:.83;background:var(--surface);border:1px solid #59736377;box-shadow:0 20px 55px #0005;font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:10px;overflow:hidden}
