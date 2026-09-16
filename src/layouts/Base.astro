@@ -1,22 +1,29 @@
 ---
+/**
+ * Layout der Unterseiten (Ueber mich, Impressum, Datenschutz).
+ *
+ * Kopf- und Fusszeile sind dieselben Komponenten wie auf der Startseite
+ * (SiteHeader, SiteFooter), damit der Wechsel zwischen One-Pager und
+ * Unterseite kein Wechsel des Registers ist. Das Seitengeruest teilt sich
+ * shell.css mit der Startseite; global.css traegt nur die Typografie und die
+ * Dokumentmuster der Unterseiten.
+ */
+import '../styles/shell.css';
 import '../styles/global.css';
 import '../styles/transitions.css';
-import { nav, legalNav, strings, type Lang } from '../i18n/nav';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import type { Lang } from '../data/portfolio';
 
 interface Props {
   lang: Lang;
   title: string;
   description: string;
   altHref: string;
+  eyebrow?: string;
 }
 
-const { lang, title, description, altHref } = Astro.props;
-const t = strings[lang];
-const items = nav[lang];
-const legal = legalNav[lang];
-const here = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const year = new Date().getFullYear();
-const isActive = (href: string) => here === (href.replace(/\/+$/, '') || '/');
+const { lang, title, description, altHref, eyebrow } = Astro.props;
 
 // Lighthouse verlangt fuer hreflang voll qualifizierte URLs und einen
 // selbstbezueglichen Eintrag. Relative Pfade bestehen den Audit nicht.
@@ -39,38 +46,12 @@ const altLang = lang === 'de' ? 'en' : 'de';
     <meta name="robots" content="noindex, nofollow" />
     <link rel="stylesheet" href="/fonts/fonts.css" />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <a href="#inhalt" class="skip-link">{t.skip}</a>
-
-    <header class="border-b" style="border-color: var(--color-line)">
-      <div class="mx-auto max-w-3xl px-5 py-4 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-        <a
-          href={lang === 'de' ? '/' : '/en/'}
-          class="text-sm"
-          style="font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.01em"
-        >{t.siteName}</a>
-        <nav aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'} class="flex gap-5 text-sm">
-          {items.map((i) => (
-            <a
-              href={i.href}
-              aria-current={isActive(i.href) ? 'page' : undefined}
-              class="nav-link"
-            >{i.label}</a>
-          ))}
-        </nav>
-        <a href={altHref} hreflang={lang === 'de' ? 'en' : 'de'} class="ml-auto text-sm hover:underline underline-offset-4" style="color: var(--color-muted)">{t.switch}</a>
-      </div>
-    </header>
-
-    <main id="inhalt" class="mx-auto w-full max-w-3xl px-5 py-12 sm:py-16 flex-1">
+  <body class="page-body">
+    <SiteHeader lang={lang} altHref={altHref} />
+    <main id="inhalt" class="page wrap">
+      {eyebrow && <p class="eyebrow page-eyebrow">{eyebrow}</p>}
       <slot />
     </main>
-
-    <footer class="border-t mt-16" style="border-color: var(--color-line)">
-      <div class="mx-auto max-w-3xl px-5 py-6 flex flex-wrap gap-x-5 gap-y-2 text-sm" style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-muted)">
-        <span>&copy; {year} Fabio Steyer</span>
-        {legal.map((i) => <a href={i.href} class="hover:underline underline-offset-4">{i.label}</a>)}
-      </div>
-    </footer>
+    <SiteFooter lang={lang} />
   </body>
 </html>

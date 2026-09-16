@@ -1,0 +1,16 @@
+---
+/** Gemeinsame Fusszeile aller Seiten. Der Bewegungsschalter existiert nur auf
+ *  der Startseite, weil nur dort Skript und Animation laufen. */
+import { copy, type Lang } from '../data/portfolio';
+interface Props { lang: Lang; home?: boolean }
+const { lang, home = false } = Astro.props;
+const t = copy[lang];
+const label = (de: string, en: string) => lang === 'de' ? de : en;
+---
+<footer class="footer wrap">
+  <span>© {new Date().getFullYear()} Fabio Steyer</span>
+  <a href={t.legalPath}>{t.legal}</a>
+  <a href={t.privacyPath}>{t.privacy}</a>
+  {home && <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>{label('Bewegung reduzieren', 'Reduce motion')}</button>}
+  <a class="back-top" href={home ? '#start' : '#top'}>{label('Nach oben', 'Back to top')} ↑</a>
+</footer>

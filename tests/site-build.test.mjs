@@ -37,3 +37,21 @@ test('both languages keep noindex, project destinations and real text evidence',
     assert.doesNotMatch(html, /Physicist \(M.Sc., TU Berlin\)|Physiker \(M.Sc., TU Berlin\)/);
   }
 });
+
+test('every content page shares the same header, navigation and footer shell', async () => {
+  const pages = ['index.html', 'en/index.html', 'ueber-mich/index.html', 'en/about/index.html', 'impressum/index.html', 'datenschutz/index.html', 'en/legal-notice/index.html', 'en/privacy/index.html'];
+  for (const path of pages) {
+    const html = await readFile(new URL(path, output), 'utf8');
+    assert.match(html, /<header class="topbar"/, path + ' has the shared header');
+    assert.match(html, /class="about-link"/, path + ' links to the evidence page');
+    assert.match(html, /class="language"/, path + ' has the language switch');
+    assert.match(html, /<footer class="footer wrap"/, path + ' has the shared footer');
+    assert.equal((html.match(/<h1\b/g) || []).length, 1, path + ' has exactly one h1');
+  }
+  const home = await readFile(new URL('index.html', output), 'utf8');
+  const about = await readFile(new URL('ueber-mich/index.html', output), 'utf8');
+  assert.match(home, /href="#projekte"/);
+  assert.match(about, /href="\/#projekte"/);
+  assert.match(about, /aria-current="page"/);
+  assert.doesNotMatch(about, /data-motion-toggle/, 'pages without scripts do not show the motion control');
+});

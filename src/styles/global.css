@@ -1,185 +1,132 @@
 @import "tailwindcss";
 
-/* Schriften liegen seit dem 16.09.2026 lokal unter /fonts/ und werden von dort
-   ausgeliefert: weiterhin kein externer Font-Server, keine Verbindung zu
-   Google. Dieselben Familien wie auf der One-Pager-Startseite, damit die
-   Rechtsseiten nicht wie ein anderes Projekt aussehen.
-   Sans fuer Fliesstext und Ueberschriften, Mono fuer Metadaten,
-   Randnotizen und Tabellenwerte - zwei Stimmen, ein Satz Schriften. */
+/* Unterseiten: Ueber mich, Impressum, Datenschutz.
+   Kopf- und Fusszeile, Farbtoken, Sprungmarke und Fokus kommen aus shell.css
+   (gemeinsam mit der Startseite). Hier stehen nur Typografie und die
+   Dokumentmuster der Unterseiten.
+   Schriften liegen lokal unter /fonts/; kein externer Font-Server.
+   Dieselben drei Stimmen wie auf der Startseite: Newsreader fuer Titel,
+   Karla fuer Fliesstext, JetBrains Mono fuer Labels und Messwerte. */
 @theme {
   --font-sans: "Karla", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
 
-  /* Dunkles Register, abgeleitet aus den Tokens der Startseite
-     (--mid, --surface, --ink, --muted, --line, --copper). */
-  --color-paper: #0f2a24;
+  --color-paper: #0b211c;
   --color-paper-raised: #16382f;
   --color-ink: #f3ede4;
   --color-muted: #a9b7ad;
-  --color-line: rgba(243, 237, 228, 0.16);
+  --color-line: rgba(243, 237, 228, 0.14);
   --color-accent: #d98a4f;
 }
 
-/* Kein smooth scrolling. Der einzige Anker dieser Seite ist der Skip-Link,
-   und dort will man sofort ankommen, nicht hingleiten. Bei Tastaturnavigation
-   hinkt die Ansicht dem Fokus sonst um eine knappe Sekunde hinterher, und
-   Bewegungsanimationen sind bei vestibulaeren Stoerungen ein echtes Problem. */
+/* Kein smooth scrolling (Entscheid C1): Tastaturfokus soll sofort ankommen. */
+html {
+  scroll-padding-top: 100px;
+}
 
 body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-h1, h2, h3 {
-  font-weight: 600;
-  letter-spacing: -0.01em;
 }
 
 a {
   color: inherit;
 }
 
-::selection {
-  background: var(--color-accent);
-  color: var(--color-paper);
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
 table {
   font-variant-numeric: tabular-nums;
 }
 
-/* Sprungmarke. Sichtbar erst bei Tastaturfokus. Akzentflaeche mit dunkler
-   Schrift: im dunklen Register waere der fruehere weisse Grund mit hellem
-   Text unlesbar gewesen. */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 50;
-  background: var(--color-accent);
-  color: #0b211c;
-  font-weight: 600;
-  padding: 10px 16px;
-  border-radius: 2px;
-  font-size: 14px;
+/* Seitenkopf im Register der Startseite: Mono-Eyebrow, Serif-Titel ohne
+   Fettung, gedaempfte Einleitung. Die Lesespalte bleibt schmal (max. 62 ch),
+   liegt aber an derselben linken Kante wie die Startseite (.wrap). */
+.page {
+  padding-block: 72px 96px;
 }
 
-.skip-link:focus {
-  left: 12px;
-  top: 12px;
+.page-eyebrow {
+  margin-bottom: 18px;
 }
 
-.nav-link {
-  padding-bottom: 2px;
-  box-shadow: inset 0 -2px 0 transparent;
-  transition: box-shadow 0.15s ease;
+.page-title {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(40px, 4.8vw, 62px);
+  line-height: 1.07;
+  letter-spacing: -0.025em;
+  max-width: 18ch;
 }
 
-.nav-link:hover {
-  box-shadow: inset 0 -2px 0 var(--color-line);
+.page-title em {
+  font-style: italic;
+  color: var(--color-accent);
 }
 
-.nav-link[aria-current="page"] {
-  font-weight: 600;
-  box-shadow: inset 0 -2px 0 var(--color-accent);
+.page-lede {
+  margin-top: 22px;
+  max-width: 62ch;
+  color: var(--color-muted);
+  line-height: 1.65;
 }
 
-/* Randnotiz-Muster: Ueberschrift links als kleines Label (wie eine
-   Randbemerkung im wissenschaftlichen Dokument), Inhalt rechts.
-   Faellt auf mobil zu einer Spalte zusammen. */
+.page-intro {
+  display: grid;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (min-width: 40rem) {
+  .page-intro {
+    grid-template-columns: minmax(0, 640px) auto;
+    justify-content: start;
+    gap: 64px;
+  }
+}
+
+/* Randnotiz-Muster: Label links in Mono (wie die Abschnittsmarken der
+   Startseite), Inhalt rechts. Faellt auf mobil zu einer Spalte zusammen. */
 .doc-section {
-  margin-top: 3.25rem;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--color-line);
 }
 
 .doc-section__label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--color-ink);
-  margin-bottom: 0.75rem;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  line-height: 1.8;
+  text-transform: uppercase;
+  color: #efc79f;
+  margin-bottom: 14px;
 }
 
 .doc-section__body {
-  max-width: 42rem;
+  max-width: 62ch;
+}
+
+.doc-section__body p + p {
+  margin-top: 0.85rem;
 }
 
 @media (min-width: 48rem) {
   .doc-section {
     display: grid;
-    grid-template-columns: 10rem 1fr;
-    column-gap: 2.5rem;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    column-gap: 3rem;
   }
 
   .doc-section__label {
     margin-bottom: 0;
-    padding-top: 0.2rem;
+    padding-top: 0.35rem;
   }
-}
-
-/* Ausnahme: die Projektliste ist der Schwerpunkt der Startseite,
-   deshalb bekommt sie ein Gewicht, das sonst keine Sektion hat. */
-.doc-feature {
-  margin-top: 3.25rem;
-  border-top: 2px solid var(--color-accent);
-  border-bottom: 1px solid var(--color-line);
-  background: var(--color-paper-raised);
-  padding: 1.75rem 1.5rem;
-}
-
-.doc-feature__label {
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-@media (min-width: 40rem) {
-  .doc-feature {
-    padding: 2.25rem 2.5rem;
-  }
-}
-
-.doc-list {
-  list-style: none;
-  padding: 0;
-}
-
-.doc-list > li {
-  position: relative;
-  padding-left: 1.1rem;
-  padding-top: 0.9rem;
-  padding-bottom: 0.9rem;
-  border-top: 1px solid var(--color-line);
-}
-
-.doc-list > li:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-.doc-list > li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 1.35rem;
-  width: 6px;
-  height: 6px;
-  background: var(--color-accent);
-}
-
-.doc-list > li:first-child::before {
-  top: 0.45rem;
 }
 
 .doc-table {
@@ -190,25 +137,34 @@ table {
 
 .doc-table th {
   text-align: left;
-  font-weight: 600;
-  padding: 0 1rem 0.6rem 0;
-  border-bottom: 2px solid var(--color-ink);
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding: 0 1rem 0.7rem 0;
+  border-bottom: 1px solid var(--color-ink);
 }
 
 .doc-table td {
-  padding: 0.65rem 1rem 0.65rem 0;
+  padding: 0.75rem 1rem 0.75rem 0;
   border-bottom: 1px solid var(--color-line);
   vertical-align: top;
 }
 
+/* Belegstufen tragen dieselben Farben wie die Kennzahlen der Startseite:
+   Salbei = oeffentlich nachpruefbar, Kupfer = im Betrieb genutzt,
+   gedaempft kursiv = Lernstand. */
 .doc-table .doc-level {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   white-space: nowrap;
+  color: #efc79f;
 }
 
 .doc-table .doc-level--proven {
-  color: var(--color-accent);
+  color: #9fd3b8;
 }
 
 .doc-table .doc-level--learning {
@@ -216,127 +172,33 @@ table {
   font-style: italic;
 }
 
-.doc-meta-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
-  color: var(--color-muted);
-}
-
 .doc-frame {
   border: 1px solid var(--color-line);
   padding: 3px;
-}
-
-/* Ein Projekteintrag. Aufbau folgt der Leserichtung eines Pruefers:
-   Problem, Vorgehen, Ergebnis, Grenzen. Das Ergebnis steht in Mono,
-   weil es eine Messung ist und keine Behauptung. */
-.project {
-  margin-top: 3rem;
-  padding-top: 1.75rem;
-  border-top: 2px solid var(--color-accent);
-}
-
-.project:first-of-type {
-  margin-top: 2.5rem;
-}
-
-.project__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 1rem;
-}
-
-.project__repo {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--color-accent);
-  word-break: break-all;
-}
-
-.project__stack {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--color-muted);
-}
-
-/* Erst ab Tablet nach rechts ziehen. Auf dem Telefon bricht die Zeile
-   ohnehin um, und rechtsbuendig haengt sie dann in der Luft. */
-@media (min-width: 40rem) {
-  .project__stack {
-    margin-left: auto;
-  }
-}
-
-.project__title {
-  font-size: 1.375rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin-top: 0.35rem;
-  max-width: 34rem;
-}
-
-.project__body {
-  margin-top: 1rem;
-  max-width: 40rem;
-}
-
-.project__body p + p {
-  margin-top: 0.85rem;
-}
-
-.project__result {
-  margin-top: 1.5rem;
   background: var(--color-paper-raised);
-  border-left: 3px solid var(--color-accent);
-  padding: 1rem 1.25rem;
-  max-width: 40rem;
 }
 
-.project__result p {
-  margin-top: 0.4rem;
-  font-size: 0.9375rem;
+.page .text-link {
+  color: #efc79f;
+  text-decoration: none;
+  text-underline-offset: 5px;
 }
 
-.project__limits {
-  margin-top: 1.25rem;
-  max-width: 40rem;
-}
-
-.project__limits p {
-  margin-top: 0.4rem;
-  font-size: 0.9375rem;
-  color: var(--color-muted);
-}
-
-.project__links {
-  margin-top: 1.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-}
-
-.project__links a {
-  color: var(--color-accent);
+.page .text-link:hover {
   text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
-/* Platzhalter, die vor der Veroeffentlichung verschwinden muessen.
-   Bewusst auffaellig - kein Designfehler. */
-.beleg-fehlt {
-  border-left: 3px solid #b45309;
-  background: #fef3c7;
-  color: #78350f;
-  padding: 0.85rem 1.1rem;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-}
+@media (max-width: 760px) {
+  html {
+    scroll-padding-top: 113px;
+  }
 
-.beleg-fehlt strong {
-  font-family: var(--font-mono);
-  letter-spacing: 0.01em;
+  .page {
+    padding-block: 44px 64px;
+  }
+
+  .doc-section {
+    margin-top: 40px;
+    padding-top: 22px;
+  }
 }

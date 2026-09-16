@@ -1,9 +1,5 @@
-:root {
-  --deep:#0b211c; --mid:#0f2a24; --surface:#16382f; --panel:#14332b;
-  --ink:#f3ede4; --muted:#a9b7ad; --copper:#d98a4f; --copper-soft:#efc79f;
-  --sage:#9fd3b8; --rust:#e4735a; --line:rgba(243,237,228,.14);
-  color-scheme:dark;
-}
+/* Gestaltung der One-Pager-Startseite. Farbtoken, Kopf- und Fusszeile liegen
+   in shell.css und gelten fuer alle Seiten. */
 * {box-sizing:border-box}
 html {scroll-padding-top:100px}
 body {margin:0;background:var(--deep);color:var(--ink);font-family:'Karla',system-ui,sans-serif;font-size:17px;line-height:1.6}
@@ -11,30 +7,12 @@ button,a {-webkit-tap-highlight-color:transparent}
 a {color:inherit;text-decoration:none}
 button {font:inherit;color:inherit;cursor:pointer}
 button:disabled {cursor:default}
-[hidden] {display:none!important}
-a:focus-visible,button:focus-visible,summary:focus-visible {outline:2px solid var(--sage);outline-offset:6px;border-radius:2px}
-::selection {background:var(--copper);color:var(--deep)}
 h1,h2,h3,h4,p {margin:0}
 h1,h2,h3 {font-family:'Newsreader',Georgia,serif;font-weight:400;line-height:1.07;letter-spacing:-.025em}
 h2 {font-size:clamp(35px,4.4vw,58px)}
 h2 em {font-weight:400;color:var(--copper);font-style:italic}
-.wrap {width:min(1160px,calc(100% - 96px));margin-inline:auto}
 .eyebrow,.micro,.availability,.demo-tag,.paper-id,.art-caption,.footer,.step-node,.contact-links,.file-label,.process small {font-family:'JetBrains Mono',monospace}
-.eyebrow {font-size:10px;letter-spacing:.15em;line-height:1.8;color:var(--copper-soft)}
-.micro {font-size:10px;letter-spacing:.07em;color:var(--muted)}
-.skip {position:fixed;left:24px;top:-100px;z-index:100;padding:12px 20px;background:var(--ink);color:var(--deep)}
-.skip:focus {top:12px}
 .ambient {position:absolute;top:0;right:0;width:100%;height:1000px;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 80% 30%,#29443477,transparent 55%)}
-.topbar {height:78px;position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:25px;padding-inline:max(48px,calc((100% - 1160px)/2));background:rgba(11,33,28,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
-.brand {font-family:'Newsreader',Georgia,serif;font-size:25px;white-space:nowrap;letter-spacing:-.03em}
-.brand-dot {color:var(--copper)}
-.nav {display:flex;gap:27px;align-items:center;font-size:14px;color:var(--muted)}
-.nav a {padding-block:10px;position:relative}
-.nav a::after {content:"";position:absolute;bottom:4px;left:0;right:0;height:1px;background:var(--copper);transform:scaleX(0);transform-origin:left;transition:transform .25s}
-.nav a:hover,.nav a[aria-current] {color:var(--ink)}
-.nav a:hover::after,.nav a[aria-current]::after {transform:scaleX(1)}
-.nav .language {font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--copper-soft);border-left:1px solid var(--line);padding-left:22px}
-.reading-progress {position:absolute;bottom:-1px;left:0;height:2px;width:100%;background:linear-gradient(90deg,var(--copper),var(--sage));transform:scaleX(0);transform-origin:left}
 .hero {display:grid;grid-template-columns:1.45fr 1fr;align-items:center;gap:24px;padding-block:65px 60px}
 .hero h1 {font-size:clamp(47px,5.4vw,72px);margin-top:24px}
 .hero-line {display:block}
@@ -175,15 +153,9 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
 .contact-email:hover {color:var(--ink)}
 .contact-links {display:flex;flex-direction:column;gap:14px;flex-shrink:0;font-size:12px}
 .contact-links>span {color:var(--muted);font-size:10px}
-.footer {display:flex;flex-wrap:wrap;align-items:center;gap:22px;padding-block:25px 30px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}
-.footer a:hover {color:var(--ink)}
-.motion-toggle {background:transparent;border:1px solid var(--line);font-size:9px;padding:6px 9px;font-family:inherit}
-.motion-toggle[aria-pressed=true] {border-color:var(--sage);color:var(--sage)}
-.back-top {margin-left:auto}
 @media(min-width:1500px) {.hero {padding-block:85px}}
 @media(max-width:1050px) {
-  .wrap {width:calc(100% - 64px)} .topbar {padding-inline:32px}
-  .nav {gap:18px} .hero {grid-template-columns:1.5fr 1fr}
+  .hero {grid-template-columns:1.5fr 1fr}
   .hero h1 {font-size:clamp(43px,5.3vw,58px)} .hero-art {font-size:9px}
   .hero-document {padding:15px} .document-highlight {font-size:9px}
   .project {grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:32px}
@@ -197,10 +169,6 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
 }
 @media(max-width:760px) {
   html {scroll-padding-top:113px}
-  .wrap {width:calc(100% - 40px)}
-  .topbar {height:auto;min-height:99px;flex-wrap:wrap;gap:3px;padding:13px 20px 10px}
-  .brand {font-size:23px} .nav {width:100%;justify-content:space-between;gap:10px;font-size:11px}
-  .nav a {padding-block:6px} .nav .language {padding-left:13px;font-size:10px}
   .hero {grid-template-columns:1fr;gap:15px;padding-block:39px 30px}
   .hero h1 {font-size:clamp(42px,8.5vw,62px);margin-top:21px}
   .hero .eyebrow {font-size:8px;letter-spacing:.1em}
@@ -236,8 +204,7 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
   .background-grid {grid-template-columns:1fr;gap:42px}
   .background-grid h2 {font-size:39px}.ai-note {padding-left:25px}
   .contact-section {display:block}.contact-links {flex-direction:row;flex-wrap:wrap;margin-top:35px;gap:25px}
-  .contact-email {font-size:clamp(20px,6.5vw,27px);gap:10px;max-width:100%}.footer {gap:16px;font-size:9px}
-  .back-top {margin-left:0}
+  .contact-email {font-size:clamp(20px,6.5vw,27px);gap:10px;max-width:100%}
 }
 @media(max-width:420px) {
   .hero-art {width:85%}.hero h1 {font-size:43px}.hero-answer {font-size:22px}
@@ -265,5 +232,3 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
   .file-store {padding:12px}.file-label {font-size:8px}
   .demo-result {min-height:116px}.demo-result strong {font-size:14px}
 }
-@media(prefers-reduced-motion:reduce) {*,*::before,*::after {animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-html[data-reduced-motion=true] *,html[data-reduced-motion=true] *::before,html[data-reduced-motion=true] *::after {animation:none!important;transition:none!important}

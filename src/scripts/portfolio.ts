@@ -5,6 +5,9 @@ let manuallyReduced = false;
 let motion: Awaited<ReturnType<typeof import('./portfolio-motion')['createMotion']>> | undefined;
 const reduced = () => manuallyReduced || preference.matches;
 const select = <T extends Element = HTMLElement>(root: ParentNode, selector: string) => root.querySelector<T>(selector)!;
+type Motion = NonNullable<typeof motion>;
+// Wird abgearbeitet, sobald das optionale Animationsmodul geladen ist.
+const onMotion: ((motion: Motion) => void)[] = [];
 const text = (root: ParentNode, selector: string, value: string) => { select(root, selector).textContent = value; };
 
 document.querySelectorAll<HTMLElement>('[data-invoice]').forEach(root => {
@@ -35,6 +38,7 @@ document.querySelectorAll<HTMLElement>('[data-invoice]').forEach(root => {
     });
   });
   select<HTMLElement>(root, '[data-controls]').hidden = false;
+  onMotion.push(motion => motion.onEnter(root, () => motion.invoice(root)));
 });
 
 document.querySelectorAll<HTMLElement>('[data-concurrency]').forEach(root => {
@@ -78,6 +82,9 @@ document.querySelectorAll<HTMLElement>('[data-concurrency]').forEach(root => {
   select<HTMLButtonElement>(root, '[data-replay]').addEventListener('click', run);
   select<HTMLElement>(root, '[data-controls]').hidden = false;
   select<HTMLElement>(root, '[data-replay]').hidden = false;
+  // Beim ersten Sichtbarwerden laeuft der Ablauf einmal von selbst (nicht bei
+  // reduzierter Bewegung, dann steht das Endergebnis wie bisher sofort da).
+  onMotion.push(motion => motion.onEnter(root, run));
 });
 
 const toggle = document.querySelector<HTMLButtonElement>('[data-motion-toggle]');
@@ -102,11 +109,20 @@ syncPreference();
 // Behavior does not depend on the optional animation bundle loading successfully.
 import('./portfolio-motion').then(({ createMotion }) => {
   motion = createMotion(reduced());
+  onMotion.forEach(register => register(motion!));
 }).catch(() => { /* The static layout and both examples remain fully usable. */ });
 
 document.querySelectorAll('details').forEach(details => {
   details.addEventListener('toggle', () => motion?.refresh());
 });
+
+// Kopfzeile bekommt nach dem ersten Scrollen einen leichten Schatten.
+const topbar = document.querySelector<HTMLElement>('[data-topbar]');
+if (topbar) {
+  const syncTopbar = () => topbar.classList.toggle('is-scrolled', scrollY > 8);
+  addEventListener('scroll', syncTopbar, { passive: true });
+  syncTopbar();
+}
 
 const sections = document.querySelectorAll<HTMLElement>('main section[id]');
 if ('IntersectionObserver' in window) {

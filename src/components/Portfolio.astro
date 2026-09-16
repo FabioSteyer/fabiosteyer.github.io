@@ -4,20 +4,16 @@ import { copy, type Lang } from '../data/portfolio';
 import InvoiceDemo from './InvoiceDemo.astro';
 import ConcurrencyDemo from './ConcurrencyDemo.astro';
 import ProjectCard from './ProjectCard.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = copy[lang];
-const ids = ['arbeitsweise', 'projekte', 'hintergrund', 'kontakt'];
 const label = (de: string, en: string) => lang === 'de' ? de : en;
 ---
 <OnePager lang={lang} title={t.title} description={t.description}>
-  <a class="skip" href="#inhalt">{label('Zum Inhalt springen', 'Skip to content')}</a>
   <div class="ambient" aria-hidden="true"></div>
-  <header class="topbar">
-    <a class="brand" href="#start">Fabio Steyer<span class="brand-dot" aria-hidden="true">.</span></a>
-    <nav class="nav" aria-label={label('Hauptnavigation', 'Main navigation')}>{ids.map((id, i) => <a href={'#' + id}>{t.nav[i]}</a>)}<a class="language" href={lang === 'de' ? '/en/' : '/'} hreflang={lang === 'de' ? 'en' : 'de'} lang={lang === 'de' ? 'en' : 'de'}>{lang === 'de' ? 'EN' : 'DE'}</a></nav>
-    <div class="reading-progress" aria-hidden="true"></div>
-  </header>
+  <SiteHeader lang={lang} home altHref={lang === 'de' ? '/en/' : '/'} />
   <main id="inhalt">
     <section id="start" class="hero wrap">
       <div class="hero-copy"><p class="eyebrow">{t.eyebrow}</p><h1>{t.headline.map((line, i) => <span class:list={['hero-line', i === 2 && 'italic']}>{line}</span>)}</h1><p class="hero-answer">{t.answer}</p><p class="hero-intro">{t.intro}</p><div class="cta-row"><a class="cta" href="#projekte">{t.explore}<span aria-hidden="true">↗</span></a><a class="text-link" href="#kontakt">{t.contact}</a></div><p class="availability"><i aria-hidden="true"></i>{t.availability}</p></div>
@@ -30,10 +26,10 @@ const label = (de: string, en: string) => lang === 'de' ? de : en;
         <span class="art-caption">{label('VON DATEN ZU ENTSCHEIDUNGEN', 'FROM DATA TO DECISIONS')}</span>
       </div>
     </section>
-    <div class="metrics wrap">{[lang === 'de' ? '≈ 3.000' : '≈ 3,000', '4 / 4', '38'].map((value, i) => <div class="metric"><strong>{value}</strong><div><span>{t.metrics[i]}</span><small class:list={[i > 0 && 'public-evidence']}>{i === 0 ? t.privateEvidence : t.publicEvidence}</small></div></div>)}</div>
+    <div class="metrics wrap" data-reveal-group>{[lang === 'de' ? '≈ 3.000' : '≈ 3,000', '4 / 4', '38'].map((value, i) => <div class="metric" data-reveal><strong>{value}</strong><div><span>{t.metrics[i]}</span><small class:list={[i > 0 && 'public-evidence']}>{i === 0 ? t.privateEvidence : t.publicEvidence}</small></div></div>)}</div>
     <section class="section wrap" id="arbeitsweise">
       <div class="section-heading" data-reveal><p class="eyebrow">{t.workLabel}</p><h2>{t.workTitle}<br/><em>{t.workEm}</em></h2><p class="section-intro">{t.workIntro}</p></div>
-      <ol class="approach-track">{t.steps.map(([title, body], i) => <li data-reveal><span class="step-node">0{i + 1}</span><h3>{title}</h3><p>{body}</p></li>)}</ol>
+      <ol class="approach-track" data-reveal-group>{t.steps.map(([title, body], i) => <li data-reveal><span class="step-node">0{i + 1}</span><h3>{title}</h3><p>{body}</p></li>)}</ol>
     </section>
     <div class="flow-divider" aria-hidden="true"><svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path class="flow-base" d="M0 70 C300 70 370 15 650 40 S1100 90 1440 25"/><path class="flow-draw" d="M0 70 C300 70 370 15 650 40 S1100 90 1440 25"/></svg></div>
     <section class="section projects-section wrap" id="projekte">
@@ -44,6 +40,6 @@ const label = (de: string, en: string) => lang === 'de' ? de : en;
     <section class="section background-section" id="hintergrund"><div class="wrap background-grid"><div data-reveal><p class="eyebrow">{t.backgroundLabel}</p><h2>{t.backgroundTitle}<br/><em>{t.backgroundEm}</em></h2><p>{t.background}</p><p>{t.practice}</p><a class="text-link" href={t.aboutPath}>{t.evidence} <span aria-hidden="true">↗</span></a></div><aside class="ai-note" data-reveal><span class="note-symbol" aria-hidden="true">*</span><h3>{t.aiTitle}</h3><p>{t.ai}</p><span class="micro">{label('ENTSCHEIDUNG → CODE → PRÜFUNG', 'DECISION → CODE → VERIFICATION')}</span></aside></div></section>
     <section class="section contact-section wrap" id="kontakt"><div data-reveal><p class="eyebrow">{t.contactLabel}</p><h2>{t.contactTitle}<br/><em>{t.contactEm}</em></h2><p>{t.contactIntro}</p><a class="contact-email" href="mailto:steyerfabio@gmail.com">steyerfabio@gmail.com <span aria-hidden="true">↗</span></a></div><div class="contact-links"><a class="text-link" href="https://www.linkedin.com/in/fabio-steyer-795a0a200">LinkedIn ↗</a><a class="text-link" href="https://github.com/FabioSteyer">GitHub ↗</a><span>{label('Berlin, Deutschland', 'Berlin, Germany')}</span></div></section>
   </main>
-  <footer class="footer wrap"><span>© {new Date().getFullYear()} Fabio Steyer</span><a href={t.legalPath}>{t.legal}</a><a href={t.privacyPath}>{t.privacy}</a><button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>{label('Bewegung reduzieren', 'Reduce motion')}</button><a class="back-top" href="#start">{label('Nach oben', 'Back to top')} ↑</a></footer>
+  <SiteFooter lang={lang} home />
   <script>import '../scripts/portfolio';</script>
 </OnePager>

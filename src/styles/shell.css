@@ -1,0 +1,75 @@
+/* Gemeinsame Huelle aller Seiten: Farbtoken, Kopfzeile, Fusszeile, Sprungmarke,
+   Fokus und Bewegungsreduzierung. Wird von OnePager.astro (Startseite) und
+   Base.astro (Ueber mich, Impressum, Datenschutz) gleichermassen geladen, damit
+   Kopf- und Fusszeile auf jeder Seite dieselben sind und der Seitenwechsel
+   (View Transition) die Kopfzeile stehen lassen kann.
+   Bewusst keine nackten Element-Selektoren fuer Typografie: Base.astro nutzt
+   Tailwind-Layer, und ungeschichtete Regeln wuerden dort Utilities schlagen. */
+:root {
+  --deep:#0b211c; --mid:#0f2a24; --surface:#16382f; --panel:#14332b;
+  --ink:#f3ede4; --muted:#a9b7ad; --copper:#d98a4f; --copper-soft:#efc79f;
+  --sage:#9fd3b8; --rust:#e4735a; --line:rgba(243,237,228,.14);
+  --font-serif:'Newsreader',Georgia,serif;
+  --font-sans:'Karla',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  color-scheme:dark;
+}
+[hidden] {display:none!important}
+a:focus-visible,button:focus-visible,summary:focus-visible {outline:2px solid var(--sage);outline-offset:6px;border-radius:2px}
+::selection {background:var(--copper);color:var(--deep)}
+.wrap {width:min(1160px,calc(100% - 96px));margin-inline:auto}
+.eyebrow,.micro {font-family:var(--font-mono)}
+.eyebrow {font-size:10px;letter-spacing:.15em;line-height:1.8;color:var(--copper-soft);text-transform:uppercase}
+.micro {font-size:10px;letter-spacing:.07em;color:var(--muted)}
+.skip {position:fixed;left:24px;top:-100px;z-index:100;padding:12px 20px;background:var(--ink);color:var(--deep);text-decoration:none}
+.skip:focus {top:12px}
+
+/* Kopfzeile. Auf der Startseite bleibt sie beim Seitenwechsel stehen
+   (view-transition-name), nur der Inhalt blendet ueber. */
+.topbar {height:78px;position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:25px;padding-inline:max(48px,calc((100% - 1160px)/2));background:rgba(11,33,28,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(14px);view-transition-name:topbar;transition:box-shadow .3s ease}
+.topbar.is-scrolled {box-shadow:0 14px 34px -22px #000}
+.brand {font-family:var(--font-serif);font-size:25px;white-space:nowrap;letter-spacing:-.03em;color:inherit;text-decoration:none}
+.brand-dot {color:var(--copper)}
+.nav {display:flex;gap:27px;align-items:center;margin-left:auto;font-family:var(--font-sans);font-size:14px;color:var(--muted)}
+.nav a {padding-block:10px;position:relative;color:inherit;text-decoration:none;white-space:nowrap}
+.nav a::after {content:"";position:absolute;bottom:4px;left:0;right:0;height:1px;background:var(--copper);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav a:hover,.nav a[aria-current] {color:var(--ink)}
+.nav a:hover::after,.nav a[aria-current]::after {transform:scaleX(1)}
+.nav .about-link {border-left:1px solid var(--line);padding-left:22px;color:var(--copper-soft)}
+.nav .about-link:hover,.nav .about-link[aria-current] {color:var(--ink)}
+.topbar .language {font-family:var(--font-mono);font-size:12px;color:var(--copper-soft);border-left:1px solid var(--line);padding-left:22px;padding-block:10px;text-decoration:none;white-space:nowrap}
+.topbar .language:hover {color:var(--ink)}
+.reading-progress {position:absolute;bottom:-1px;left:0;height:2px;width:100%;background:linear-gradient(90deg,var(--copper),var(--sage));transform:scaleX(0);transform-origin:left}
+
+/* Fusszeile */
+.footer {display:flex;flex-wrap:wrap;align-items:center;gap:22px;padding-block:25px 30px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+.footer a {color:inherit;text-decoration:none}
+.footer a:hover {color:var(--ink)}
+.motion-toggle {background:transparent;border:1px solid var(--line);font-size:9px;padding:6px 9px;font:inherit;color:inherit;cursor:pointer;font-size:9px}
+.motion-toggle:disabled {cursor:default}
+.motion-toggle[aria-pressed=true] {border-color:var(--sage);color:var(--sage)}
+.back-top {margin-left:auto}
+
+@media(max-width:1050px) {
+  .wrap {width:calc(100% - 64px)} .topbar {padding-inline:32px}
+  .nav {gap:18px} .nav .about-link,.topbar .language {padding-left:16px}
+}
+@media(max-width:760px) {
+  .wrap {width:calc(100% - 40px)}
+  .topbar {height:auto;min-height:99px;flex-wrap:wrap;gap:3px;padding:13px 20px 10px}
+  .brand {font-size:23px}
+  /* Sprachumschalter in die erste Zeile neben die Marke; die Abschnittslinks
+     bilden die zweite Zeile. Reicht die Breite (unter 360 px) nicht, laesst
+     sich die Zeile seitlich schieben statt umzubrechen. */
+  .topbar .language {order:1;margin-left:auto;border-left:0;padding-left:0;font-size:11px;padding-block:6px;color:var(--copper-soft);font-family:var(--font-mono);text-decoration:none}
+  .nav {order:2;width:100%;justify-content:space-between;gap:10px;font-size:11px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav::-webkit-scrollbar {display:none}
+  .nav a {padding-block:6px} .nav .about-link {padding-left:10px}
+  .footer {gap:16px;font-size:9px}
+  .back-top {margin-left:0}
+}
+@media(max-width:360px) {
+  .nav {font-size:10px;gap:6px} .nav .about-link {padding-left:8px}
+}
+@media(prefers-reduced-motion:reduce) {*,*::before,*::after {animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html[data-reduced-motion=true] *,html[data-reduced-motion=true] *::before,html[data-reduced-motion=true] *::after {animation:none!important;transition:none!important}

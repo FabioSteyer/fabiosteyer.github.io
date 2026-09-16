@@ -1,0 +1,32 @@
+---
+/**
+ * Gemeinsame Kopfzeile aller Seiten (Startseite und Unterseiten).
+ *
+ * Dieselben Abschnittslinks ueberall: auf der Startseite als Anker (#projekte),
+ * auf den Unterseiten mit vorangestellter Startseiten-Adresse (/#projekte).
+ * Dazu der Link auf "Ueber mich" (Belegtabelle und Foto) und der
+ * Sprachumschalter. Die Beschriftungen kommen aus src/data/portfolio.ts,
+ * damit Navigation und Abschnittstitel nicht auseinanderlaufen.
+ */
+import { copy, type Lang } from '../data/portfolio';
+import { strings } from '../i18n/nav';
+interface Props { lang: Lang; home?: boolean; altHref: string }
+const { lang, home = false, altHref } = Astro.props;
+const t = copy[lang];
+const ids = ['arbeitsweise', 'projekte', 'hintergrund', 'kontakt'];
+const root = lang === 'de' ? '/' : '/en/';
+const prefix = home ? '' : root;
+const here = (Astro.url.pathname.replace(/\/+$/, '') || '') + '/';
+const isAbout = here === t.aboutPath;
+const otherLang = lang === 'de' ? 'en' : 'de';
+---
+<a class="skip" href="#inhalt">{strings[lang].skip}</a>
+<header class="topbar" data-topbar>
+  <a class="brand" href={home ? '#start' : root}>Fabio Steyer<span class="brand-dot" aria-hidden="true">.</span></a>
+  <nav class="nav" aria-label={lang === 'de' ? 'Hauptnavigation' : 'Main navigation'}>
+    {ids.map((id, i) => <a href={prefix + '#' + id}>{t.nav[i]}</a>)}
+    <a class="about-link" href={t.aboutPath} aria-current={isAbout ? 'page' : undefined}>{t.aboutLabel}</a>
+  </nav>
+  <a class="language" href={altHref} hreflang={otherLang} lang={otherLang}>{otherLang.toUpperCase()}</a>
+  {home && <div class="reading-progress" aria-hidden="true"></div>}
+</header>
