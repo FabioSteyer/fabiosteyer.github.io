@@ -61,7 +61,7 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
 .section-intro {max-width:60ch;margin-top:24px;color:var(--muted);font-size:17px}
 .approach-track {display:grid;grid-template-columns:repeat(4,1fr);gap:32px;list-style:none;padding:0;margin:48px 0 0}
 .approach-track li {position:relative;border-top:1px solid #d98a4f60;padding-top:28px}
-.step-node {color:var(--copper);font-size:11px;display:block;margin-bottom:26px}
+.step-node {color:var(--copper-soft);font-size:11px;display:block;margin-bottom:26px}
 .approach-track h3 {font-size:27px;letter-spacing:-.015em}
 .approach-track p {font-size:15px;color:var(--muted);margin-top:12px}
 .flow-divider {height:90px;margin-top:-40px;overflow:hidden}

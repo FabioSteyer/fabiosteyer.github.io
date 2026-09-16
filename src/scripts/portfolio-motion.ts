@@ -45,14 +45,54 @@ export function createMotion(initiallyReduced: boolean) {
         gsap.from(element, { ...reveal, scrollTrigger: { trigger: element, start: 'top 94%', once: true } });
       });
       enterHooks.forEach(watchEnter);
+      // Einstieg als Sequenz in eigener Zeit: Zeilen, dann die beiden Belege, dann
+      // zeichnet sich die Kupferlinie vom Angebot zum Abgleich, zuletzt das Haekchen.
+      // Vorher hing die Linie am Scrollweg des Hero und war beim Oeffnen schon zu
+      // rund 60 % gezeichnet (gemessen 16.09.2026) - der Rest verschwand in wenigen
+      // Pixeln Scroll. Bei Ankersprung oder bereits gescrollter Seite bleibt alles statisch.
+      const connector = document.querySelector<SVGPathElement>('.art-connector path');
+      const connectorLength = connector?.getTotalLength() ?? 0;
       if (!window.location.hash && window.scrollY < 50) {
-        gsap.from('.hero-line', { y: 20, opacity: .5, stagger: .09, duration: .8, ease: 'power3.out', clearProps: 'transform,opacity' });
-        gsap.from('.doc-back', { x: -30, rotation: -3, duration: 1.1, ease: 'power3.out' });
-        gsap.from('.doc-front', { y: 45, rotation: 3, duration: 1, delay: .1, ease: 'power3.out' });
-        gsap.from('.art-check', { y: 15, opacity: 0, delay: .6, duration: .5, clearProps: 'transform,opacity' });
+        const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        intro.from('.hero-line', { y: 20, opacity: .5, stagger: .09, duration: .8, clearProps: 'transform,opacity' }, 0)
+          .from('.doc-back', { x: -30, rotation: -3, duration: 1.1 }, 0)
+          .from('.doc-front', { y: 45, rotation: 3, duration: 1 }, .1);
+        if (connector) intro.fromTo(connector, { strokeDasharray: connectorLength, strokeDashoffset: connectorLength }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', clearProps: 'strokeDasharray,strokeDashoffset' }, .75);
+        intro.from('.art-connector circle', { scale: 0, transformOrigin: '50% 50%', duration: .35, ease: 'back.out(2)' }, 1.7)
+          .from('.art-check', { y: 15, opacity: 0, duration: .5, clearProps: 'transform,opacity' }, 1.8);
       }
-      gsap.to('.hero-art', { y: -25, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .5 } });
-      document.querySelectorAll<SVGPathElement>('.flow-draw,.art-connector path').forEach(path => {
+      // Hero verlaesst den Bildschirm im Raum: die Belege kippen und faechern auf,
+      // waehrend die Kennzahlenreihe darunter wie ein Blatt aufgerichtet wird.
+      const mobile = window.innerWidth < 761;
+      gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .6 } })
+        .to('.hero-art', { y: mobile ? -40 : -90, rotateY: mobile ? -18 : -40, rotateX: mobile ? 6 : 14, transformPerspective: 1000, ease: 'none' }, 0)
+        .to('.doc-front', { rotateY: -24, x: -40, z: 60, transformPerspective: 900, ease: 'none' }, 0)
+        .to('.doc-back', { rotateY: 26, x: 36, ease: 'none' }, 0)
+        .to('.hero-copy', { y: -30, opacity: .55, ease: 'none' }, 0);
+      // Deckkraft nicht unter .92: sie multipliziert sich mit der .85 der Einblendung
+      // (data-reveal), und darunter faellt die Kupfer-Schrittmarke unter 4,5:1.
+      // Abschnittswechsel als Blatt im Raum: jeder Abschnitt liegt beim Hereinscrollen
+      // nach hinten (Unterkante weg vom Betrachter) und richtet sich auf; beim Verlassen
+      // kippt er an der Unterkante nach hinten weg. Beide Winkel zeigen von der
+      // Betrachterin weg: Kanten, die naeher kaemen, wuerden perspektivisch breiter
+      // projiziert und die Seite seitlich ueberlaufen lassen (gemessen: 1.778 px bei
+      // 1.440 px Fenster mit +16 Grad). An den Scrollweg gebunden, ohne Festhalten.
+      gsap.utils.toArray<HTMLElement>('.metrics, main .section').forEach(sheet => {
+        const vh = window.innerHeight;
+        const total = sheet.offsetHeight + vh;
+        const enter = Math.min(.45, (vh * .5) / total);
+        const leave = Math.min(.35, (vh * .4) / total);
+        gsap.timeline({ scrollTrigger: { trigger: sheet, start: 'top bottom', end: 'bottom top', scrub: .6 } })
+          .fromTo(sheet, { rotateX: mobile ? -8 : -16, y: mobile ? 32 : 72, opacity: .92, transformOrigin: '50% 0%', transformPerspective: 1100 }, { rotateX: 0, y: 0, opacity: 1, duration: enter, ease: 'power1.out', force3D: false }, 0)
+          .to(sheet, { rotateX: mobile ? -5 : -9, y: mobile ? -16 : -32, opacity: .9, transformOrigin: '50% 100%', duration: leave, ease: 'power1.in', force3D: false }, 1 - leave);
+      });
+      // Die beiden Beispielflaechen schwingen wie an einem Scharnier in die Leseebene:
+      // die erste an der linken, die zweite an der rechten Kante, die freie Kante jeweils
+      // vom Betrachter weg (kein seitlicher Ueberlauf).
+      gsap.utils.toArray<HTMLElement>('.project .demo').forEach((demo, index) => {
+        gsap.from(demo, { rotateY: 22, x: index ? -50 : 50, transformOrigin: index ? '100% 50%' : '0% 50%', transformPerspective: 1200, ease: 'none', scrollTrigger: { trigger: demo, start: 'top 95%', end: 'top 45%', scrub: .6 } });
+      });
+      document.querySelectorAll<SVGPathElement>('.flow-draw').forEach(path => {
         const length = path.getTotalLength();
         gsap.fromTo(path, { strokeDasharray: length, strokeDashoffset: length }, { strokeDashoffset: 0, ease: 'none', scrollTrigger: { trigger: path.closest('div'), start: 'top 90%', end: 'bottom 25%', scrub: .7 } });
       });

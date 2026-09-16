@@ -14,6 +14,10 @@
   --font-mono:'JetBrains Mono',monospace;
   color-scheme:dark;
 }
+/* Sicherheitsnetz fuer die 3D-Uebergaenge: perspektivisch projizierte Kanten
+   erzeugen keinen horizontalen Scrollbalken. clip statt hidden, damit die
+   klebende Kopfzeile weiter funktioniert. */
+html,body {overflow-x:clip}
 [hidden] {display:none!important}
 a:focus-visible,button:focus-visible,summary:focus-visible {outline:2px solid var(--sage);outline-offset:6px;border-radius:2px}
 ::selection {background:var(--copper);color:var(--deep)}
