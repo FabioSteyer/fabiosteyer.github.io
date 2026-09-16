@@ -44,17 +44,18 @@ Keep readable content when JavaScript fails; honor reduced motion and keyboard u
 - [x] Run npm run build and tests. Review the complete diff independently.
 - [x] Inspect production preview in the browser: language parity, all controls,
   responsive widths, keyboard focus, reduced motion, zero unexpected requests.
-- [ ] Commit reviewed source, integrate only if main is clean and unchanged,
+- [x] Commit reviewed source, integrate only if main is clean and unchanged,
   publish through the existing manual workflow and verify the delivered result.
-- [ ] Refresh the gh-pages recovery branch with a normal history-preserving commit and push.
-- [ ] Record final changes and verification in the coordinated Vault project note.
+- [x] Refresh the gh-pages recovery branch with a normal history-preserving commit and push.
+- [x] Record final changes and verification in the coordinated Vault project note.
 
 ## Progress
 
 Baseline build passed on 16 September 2026. Original source is preserved at 389beb9.
 Isolated worktree and branch: codex/interactive-portfolio.
 
-Implementation and independent review are complete. Verification is recorded in
-../../verification-2026-09-16.md. Delivery and the coordinated project-note update
-follow after the final source commit. The existing recovery script force-pushes;
-use a regular fast-forward build commit for this release instead.
+Completed: source b655c59, successful deployment run 35052472911, recovery build
+1910e43. All eight pages and four redirects returned HTTP 200. Interactive
+examples were checked again on the live site. The coordinated project note was
+updated successfully. The previous recovery build remains in branch history;
+no force-push or deployment-source change was used.

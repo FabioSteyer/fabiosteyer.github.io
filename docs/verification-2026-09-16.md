@@ -42,3 +42,16 @@ and privacy descriptions. The green/copper/sage palette and local fonts are reta
 - No new Lighthouse score is claimed. Earlier scores belong to older builds.
 - Real Firefox/Safari and assistive-technology testing remain separate checks.
   This is not a claim of complete WCAG conformance.
+
+## Delivery
+
+Source commit b655c59 was deployed successfully by GitHub Actions run
+35052472911. All eight content pages and four redirects returned HTTP 200.
+The live invoice unit-conversion case and coordinated write example were
+checked again; the browser console was free of application warnings/errors.
+Recovery build 1910e43 contains the same build files, committed as a normal
+successor to c728466 without rewriting history. Pages remains workflow-based.
+
+The workflow reports a maintenance warning about older action runtime targets;
+both build and deployment succeeded. Updating those action versions is separate
+maintenance, not a reason to change the Pages delivery mode.
