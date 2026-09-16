@@ -18,8 +18,9 @@ interface Props {
   lang: 'de' | 'en';
   title: string;
   description: string;
+  variant?: 'a' | 'b' | 'c';
 }
-const { lang, title, description } = Astro.props;
+const { lang, title, description, variant = 'a' } = Astro.props;
 const site = 'https://fabiosteyer.github.io';
 const selfUrl = lang === 'de' ? `${site}/` : `${site}/en/`;
 const altUrl = lang === 'de' ? `${site}/en/` : `${site}/`;
@@ -27,7 +28,7 @@ const altLang = lang === 'de' ? 'en' : 'de';
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-variant={variant}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

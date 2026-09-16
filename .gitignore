@@ -1,5 +1,8 @@
-# build output
+# build output (dist-b, dist-c: Gestaltungsvarianten, siehe src/variant.ts)
 dist/
+dist-*/
+dist-snapshot.tgz
+check.log
 # generated types
 .astro/
 

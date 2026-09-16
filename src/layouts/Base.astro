@@ -14,6 +14,7 @@ import '../styles/transitions.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import type { Lang } from '../data/portfolio';
+import { variant } from '../variant';
 
 interface Props {
   lang: Lang;
@@ -33,7 +34,7 @@ const altLang = lang === 'de' ? 'en' : 'de';
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-variant={variant}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

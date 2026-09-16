@@ -6,24 +6,21 @@ import ConcurrencyDemo from './ConcurrencyDemo.astro';
 import ProjectCard from './ProjectCard.astro';
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
+import HeroArt from './HeroArt.astro';
+import { variant } from '../variant';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = copy[lang];
 const label = (de: string, en: string) => lang === 'de' ? de : en;
 ---
-<OnePager lang={lang} title={t.title} description={t.description}>
+<OnePager lang={lang} title={t.title} description={t.description} variant={variant}>
   <div class="ambient" aria-hidden="true"></div>
   <SiteHeader lang={lang} home altHref={lang === 'de' ? '/en/' : '/'} />
+  <div id="smooth-wrapper"><div id="smooth-content">
   <main id="inhalt">
     <section id="start" class="hero wrap">
       <div class="hero-copy"><p class="eyebrow">{t.eyebrow}</p><h1>{t.headline.map((line, i) => <span class="line-mask"><span class:list={['hero-line', i === 2 && 'italic']}>{line}</span></span>)}</h1><p class="hero-answer">{t.answer}</p><p class="hero-intro">{t.intro}</p><div class="cta-row"><a class="cta" href="#projekte">{t.explore}<span aria-hidden="true">↗</span></a><a class="text-link" href="#kontakt">{t.contact}</a></div><p class="availability"><i aria-hidden="true"></i>{t.availability}</p></div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-grid"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
-        <div class="hero-document doc-back"><div><span>RE-002 / PDF</span><small>02</small></div><i></i><i></i><i></i><div class="document-highlight doc-row"><span>120 × 2,20</span><span>264,00</span></div><i></i><em class="scan"></em><b class="doc-flag">+ 24,00</b></div>
-        <div class="hero-document doc-front"><div><span>AN-001 / PDF</span><small>01</small></div><i></i><i></i><i></i><div class="document-highlight doc-row"><span>120 × 2,00</span><span>240,00</span></div><i></i><em class="scan"></em></div>
-        <div class="art-check"><span>✓</span><div>{label('ABGLEICH', 'RECONCILED')}<small>{label('Jede Abweichung zählt.', 'Every difference counts.')}</small></div></div>
-        <span class="art-caption">{label('VON DATEN ZU ENTSCHEIDUNGEN', 'FROM DATA TO DECISIONS')}</span>
-      </div>
+      <HeroArt lang={lang} />
     </section>
     <div class="metrics wrap" data-reveal-group>{[lang === 'de' ? '≈ 3.000' : '≈ 3,000', '4 / 4', '38'].map((value, i) => <div class="metric" data-reveal><strong data-count>{value}</strong><div><span>{t.metrics[i]}</span><small class:list={[i > 0 && 'public-evidence']}>{i === 0 ? t.privateEvidence : t.publicEvidence}</small></div></div>)}</div>
     <section class="section wrap" id="arbeitsweise">
@@ -40,5 +37,6 @@ const label = (de: string, en: string) => lang === 'de' ? de : en;
     <section class="section contact-section wrap" id="kontakt"><div data-reveal><p class="eyebrow">{t.contactLabel}</p><h2><span class="line-mask"><span class="line">{t.contactTitle}</span></span><span class="line-mask"><span class="line"><em>{t.contactEm}</em></span></span></h2><p>{t.contactIntro}</p><a class="contact-email" href="mailto:steyerfabio@gmail.com">steyerfabio@gmail.com <span aria-hidden="true">↗</span></a></div><div class="contact-links"><a class="text-link" href="https://www.linkedin.com/in/fabio-steyer-795a0a200">LinkedIn ↗</a><a class="text-link" href="https://github.com/FabioSteyer">GitHub ↗</a><span>{label('Berlin, Deutschland', 'Berlin, Germany')}</span></div></section>
   </main>
   <SiteFooter lang={lang} home />
+  </div></div>
   <script>import '../scripts/portfolio';</script>
 </OnePager>

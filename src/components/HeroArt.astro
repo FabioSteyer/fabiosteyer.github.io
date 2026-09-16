@@ -1,0 +1,57 @@
+---
+/**
+ * Hero-Grafik, je Variante eine andere Erzaehlung derselben Sache:
+ * rund 3.000 Belege, vier eingebaute Abweichungen, jede gefunden.
+ *   a  zwei Belege, Pruefstrahl, abweichende Zeile markiert
+ *   b  Belegfeld: 120 Kacheln stehen fuer die Masse, vier leuchten rot
+ *   c  Paar-Abgleich: Angebotszeilen links, Rechnungszeilen rechts, Verbinder
+ * Rein dekorativ (aria-hidden); die Zahlen im Bild sind erfundene Beispieldaten.
+ */
+import type { Lang } from '../data/portfolio';
+import { variant } from '../variant';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const label = (de: string, en: string) => lang === 'de' ? de : en;
+const tiles = Array.from({ length: 120 }, (_, i) => i);
+const flagged = new Set([17, 46, 83, 101]);
+const pairs = [
+  ['Pos. 01', '240,00', '240,00', true],
+  ['Pos. 02', '1.180,50', '1.180,50', true],
+  ['Pos. 03', '96,00', '96,00', true],
+  ['Pos. 04', '412,30', '436,30', false],
+  ['Pos. 05', '58,80', '58,80', true],
+  ['Pos. 06', '2.040,00', '2.040,00', true],
+] as const;
+---
+{variant === 'a' && (
+  <div class="hero-art art-a" aria-hidden="true">
+    <div class="art-grid"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+    <div class="hero-document doc-back"><div><span>RE-002 / PDF</span><small>02</small></div><i></i><i></i><i></i><div class="document-highlight doc-row"><span>120 × 2,20</span><span>264,00</span></div><i></i><em class="scan"></em><b class="doc-flag">+ 24,00</b></div>
+    <div class="hero-document doc-front"><div><span>AN-001 / PDF</span><small>01</small></div><i></i><i></i><i></i><div class="document-highlight doc-row"><span>120 × 2,00</span><span>240,00</span></div><i></i><em class="scan"></em></div>
+    <div class="art-check"><span>✓</span><div>{label('ABGLEICH', 'RECONCILED')}<small>{label('Jede Abweichung zählt.', 'Every difference counts.')}</small></div></div>
+    <span class="art-caption">{label('VON DATEN ZU ENTSCHEIDUNGEN', 'FROM DATA TO DECISIONS')}</span>
+  </div>
+)}
+{variant === 'b' && (
+  <div class="hero-art art-b" aria-hidden="true">
+    <div class="art-grid"></div>
+    <div class="field" data-field>{tiles.map(i => <i class:list={['tile', flagged.has(i) && 'flagged']} style={`--i:${i}`}></i>)}</div>
+    <em class="field-scan"></em>
+    <div class="field-legend"><span><i class="swatch"></i>{label('geprüft', 'checked')}</span><span><i class="swatch flag"></i>{label('Abweichung', 'deviation')}</span></div>
+    <div class="art-check"><span>✓</span><div>{label('ABGLEICH', 'RECONCILED')}<small>{label('Jede Abweichung zählt.', 'Every difference counts.')}</small></div></div>
+    <span class="art-caption">{label('EIN AUSSCHNITT AUS RUND 3.000 BELEGEN', 'A SLICE OF AROUND 3,000 DOCUMENTS')}</span>
+  </div>
+)}
+{variant === 'c' && (
+  <div class="hero-art art-c" aria-hidden="true">
+    <div class="art-grid"></div>
+    <div class="pairs">
+      <div class="pair-col"><span class="pair-head">{label('ANGEBOT', 'QUOTE')}</span>{pairs.map(p => <div class="pair-row"><span>{p[0]}</span><b>{p[1]}</b></div>)}</div>
+      <svg class="pair-links">{pairs.map((p, i) => <path class:list={['link', !p[3] && 'link-miss']} data-row={i} d="M0 0 L0 0" />)}</svg>
+      <div class="pair-col"><span class="pair-head">{label('RECHNUNG', 'INVOICE')}</span>{pairs.map(p => <div class:list={['pair-row', !p[3] && 'miss']}><span>{p[0]}</span><b>{p[2]}</b></div>)}</div>
+    </div>
+    <b class="pair-flag">+ 24,00</b>
+    <div class="art-check"><span>✓</span><div>{label('ABGLEICH', 'RECONCILED')}<small>{label('5 stimmen, 1 weicht ab.', '5 match, 1 deviates.')}</small></div></div>
+    <span class="art-caption">{label('POSITION FÜR POSITION', 'LINE BY LINE')}</span>
+  </div>
+)}

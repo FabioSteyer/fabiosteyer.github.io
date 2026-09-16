@@ -1,13 +1,21 @@
 /* Seitenwechsel innerhalb der Domain (Startseite <-> Unterseiten).
    Die Kopfzeile traegt view-transition-name: topbar (shell.css) und bleibt
-   beim Wechsel stehen; nur der uebrige Inhalt blendet kurz ueber. Browser
-   ohne Unterstuetzung navigieren regulaer. */
+   beim Wechsel stehen; nur der uebrige Inhalt wechselt. Je Variante anders:
+   a Ueberblendung, b Schub von unten, c Wischen von oben. Browser ohne
+   Unterstuetzung navigieren regulaer. */
 @view-transition { navigation: auto; }
+::view-transition-old(topbar), ::view-transition-new(topbar) { animation: none; mix-blend-mode: normal; }
 ::view-transition-old(root) { animation: page-out .18s ease both; }
 ::view-transition-new(root) { animation: page-in .35s ease both; }
-::view-transition-old(topbar), ::view-transition-new(topbar) { animation: none; mix-blend-mode: normal; }
+html[data-variant=b]::view-transition-old(root) { animation: slide-out .25s ease-in both; }
+html[data-variant=b]::view-transition-new(root) { animation: slide-in .5s cubic-bezier(.2,.7,.2,1) both; }
+html[data-variant=c]::view-transition-old(root) { animation: none; }
+html[data-variant=c]::view-transition-new(root) { animation: wipe-in .55s cubic-bezier(.65,0,.35,1) both; }
 @keyframes page-out { to { opacity: 0; transform: translateY(-5px); } }
 @keyframes page-in { from { opacity: 0; transform: translateY(9px); } }
+@keyframes slide-out { to { opacity: 0; transform: translateY(-28px); } }
+@keyframes slide-in { from { opacity: 0; transform: translateY(44px); } }
+@keyframes wipe-in { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }

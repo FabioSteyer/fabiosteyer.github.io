@@ -63,8 +63,6 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
 .approach-line i {position:absolute;inset:0;background:linear-gradient(90deg,var(--copper),var(--sage));transform:scaleX(0);transform-origin:left}
 .approach-track {display:grid;grid-template-columns:repeat(4,1fr);gap:32px;list-style:none;padding:0;margin:-1px 0 0}
 .approach-track li {position:relative;border-top:1px solid #d98a4f60;padding-top:28px;transition:border-color .4s}
-.approach-track li.is-lit {border-top-color:var(--copper)}
-.approach-track li.is-lit .step-node {color:var(--sage)}
 .step-node {color:var(--copper-soft);font-size:11px;display:block;margin-bottom:26px}
 .approach-track h3 {font-size:27px;letter-spacing:-.015em}
 .approach-track p {font-size:15px;color:var(--muted);margin-top:12px}
@@ -235,4 +233,45 @@ h2 em {font-weight:400;color:var(--copper);font-style:italic}
   .processes {gap:6px}.process small {font-size:7px}
   .file-store {padding:12px}.file-label {font-size:8px}
   .demo-result {min-height:116px}.demo-result strong {font-size:14px}
+}
+
+/* ===== Varianten (Build-Schalter PUBLIC_VARIANT, siehe src/variant.ts) ===== */
+
+/* --- b "Fliessend": Kopfzeile fest, Inhalt gleitet in ScrollSmoother-Huelle --- */
+html[data-variant=b] .topbar {position:fixed;left:0;right:0;top:0}
+html[data-variant=b] #smooth-content {padding-top:78px}
+html[data-variant=b] .ambient {position:fixed}
+/* Belegfeld: 120 Kacheln, vier davon Abweichungen */
+.art-b .field {position:absolute;inset:12% 10% 22%;display:grid;grid-template-columns:repeat(12,1fr);gap:6px;align-content:center}
+.art-b .tile {display:block;aspect-ratio:.78;border-radius:1px;background:#a9b7ad22;border:1px solid #a9b7ad1c;position:relative;transition:background-color .35s,border-color .35s,box-shadow .35s}
+.art-b .tile.is-checked {background:#9fd3b81f;border-color:#9fd3b855}
+.art-b .tile.is-flagged {background:#e4735a33;border-color:var(--rust);box-shadow:0 0 0 3px #e4735a22,0 0 18px #e4735a55}
+.art-b .tile::before {content:"";position:absolute;left:22%;right:22%;top:30%;height:1px;background:#a9b7ad44;box-shadow:0 4px 0 #a9b7ad33,0 8px 0 #a9b7ad22}
+.art-b .field-scan {position:absolute;left:10%;right:10%;top:12%;height:18px;opacity:0;pointer-events:none;background:linear-gradient(180deg,transparent,#efc79f2a 45%,#efc79f80 50%,#efc79f2a 55%,transparent);box-shadow:0 0 22px #d98a4f55}
+.art-b .field-legend {position:absolute;left:10%;bottom:12%;display:flex;gap:18px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.art-b .field-legend span {display:flex;align-items:center;gap:7px}
+.art-b .swatch {width:9px;height:11px;border:1px solid #9fd3b855;background:#9fd3b81f}
+.art-b .swatch.flag {border-color:var(--rust);background:#e4735a33}
+.art-b .art-check {bottom:6%}
+/* Paar-Abgleich */
+.art-c .pairs {position:absolute;inset:9% 3% 22%;display:grid;grid-template-columns:1fr 1fr;column-gap:22%;align-items:stretch;font-family:'JetBrains Mono',monospace;font-size:11px}
+.art-c .pair-col {display:grid;grid-auto-rows:1fr;gap:6px}
+.art-c .pair-head {font-size:8px;letter-spacing:.15em;color:var(--copper-soft);align-self:end;padding-bottom:4px}
+.art-c .pair-row {display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 12px;border:1px solid #a9b7ad33;background:#0f2a24;color:var(--muted)}
+.art-c .pair-row b {font-weight:400;color:var(--ink)}
+.art-c .pair-row.miss {border-color:#e4735a88;background:#e4735a12}
+.art-c .pair-row.miss b {color:var(--rust)}
+.art-c .pair-links {position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.art-c .pair-links .link {fill:none;stroke:var(--sage);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.art-c .pair-links .link-miss {stroke:var(--rust);stroke-dasharray:3 3}
+.art-c .pair-flag {position:absolute;right:3%;top:50%;padding:4px 7px;font-family:'JetBrains Mono',monospace;font-weight:400;font-size:9px;color:var(--deep);background:var(--rust);opacity:0;transform:translate(42%,-50%) scale(.6)}
+.art-c .art-check {bottom:8%;left:6%;right:auto}
+/* --- c "Buehne": Hintergrundtiefe je Abschnitt, Vorhang je Abschnitt --- */
+html[data-variant=c] body {background:var(--stage,var(--deep))}
+html[data-variant=c] .background-section {background:transparent}
+@media(max-width:760px) {
+  html[data-variant=b] #smooth-content {padding-top:99px}
+  .art-b .field {gap:4px}
+  .art-c .pairs {font-size:8px;inset:12% 4% 26%}
+  .art-c .pair-row {padding:0 8px}
 }
