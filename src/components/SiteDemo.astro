@@ -1,0 +1,28 @@
+---
+import type { Lang } from '../data/portfolio';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = (de: string, en: string) => lang === 'de' ? de : en;
+const facts = [
+  ['12', t('Seiten, Deutsch und Englisch', 'pages, German and English')],
+  ['0', t('externe Anfragen beim Laden', 'external requests on load')],
+  ['10', t('Tests gegen den Produktionsbuild', 'tests against the production build')],
+  ['3', t('Gestaltungsvarianten, eine Codebasis', 'design variants, one codebase')],
+  ['100', t('Barrierefreiheit, Lighthouse gegen die Live-Adresse', 'accessibility, Lighthouse against the live address')],
+];
+const checks = [
+  t('Kopf- und Fußzeile auf jeder Inhaltsseite gleich', 'same header and footer on every content page'),
+  t('genau eine Hauptüberschrift je Seite', 'exactly one main heading per page'),
+  t('Datenschutzerklärung beschreibt, was die Seite tut', 'privacy statement describes what the site does'),
+  t('keine Platzhalter, keine Ersatzzeichen im Build', 'no placeholders, no replacement characters in the build'),
+];
+---
+<div class="demo site-demo">
+  <div class="demo-top"><span class="micro">{t('05 / DIESE SEITE', '05 / THIS SITE')}</span><span class="demo-tag">{t('Gemessen, nicht behauptet', 'Measured, not claimed')}</span></div>
+  <dl class="fact-grid">{facts.map(([n, label]) => <div><dt>{n}</dt><dd>{label}</dd></div>)}</dl>
+  <div class="prose-block">
+    <div class="file-label"><span>tests/site-build.test.mjs</span><span class="prose-count">10 / 10</span></div>
+    <ul class="check-list">{checks.map(c => <li>{c}</li>)}</ul>
+  </div>
+  <p class="demo-caption">{t('Die Suchmaschinen-Kennzahl bleibt absichtlich niedrig, denn die Seite trägt noindex.', 'The search score stays low on purpose, because the site is noindex.')}</p>
+</div>

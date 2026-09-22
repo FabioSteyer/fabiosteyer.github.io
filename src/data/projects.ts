@@ -116,4 +116,68 @@ export const projects: Project[] = [
         'Not a detector for machine-written text, and it does not become one by inversion. The rule list is my own, with no basis in the literature. The shipped reviewer answers are labelled stand-ins and were not recorded from a model; real runs need two API keys.',
     },
   },
+  {
+    repo: 'gated-routine-runner',
+    url: 'https://github.com/FabioSteyer/gated-routine-runner',
+    stackDe: 'Python · nur Standardbibliothek',
+    stackEn: 'Python · standard library only',
+    eyebrow: 'PYTHON · STANDARD LIBRARY · THREADS',
+    statValue: '8 → 0',
+    statDe: 'Irreversible Aktionen ohne Freigabe im Vergleichslauf.',
+    statEn: 'Irreversible actions without approval in the comparison run.',
+    de: {
+      title: 'Routinen auf einem Ordnerbaum, mit Freigabe vor dem Unumkehrbaren',
+      problem:
+        'Eine kleine Organisation hält ihre Arbeit in Ordnern. Menschen arbeiten in Sitzungen, Routinen laufen unbeaufsichtigt nach Zeitplan. Ohne Protokoll landen zwei Schreiber im selben Projekt, eine Routine verschickt oder löscht, weil die Aufgabe es sagte, und was ein Lauf herausfindet, sieht die nächste Person nie.',
+      approach:
+        'Jeder Lauf nimmt ein Projekt nach dem anderen in Besitz; belegte werden übersprungen, abgelaufene Besitzrechte nie still übernommen. Umkehrbare Aufgaben erledigt er. Unumkehrbare Verben wie senden, veröffentlichen, löschen oder zahlen führt er nie selbst aus. Sie werden als Entscheidung festgehalten, ein Mensch gibt frei, ein späterer Lauf führt aus und schreibt den Namen dazu. Am Ende kompiliert ein Integrator die Übergabe aus allen Abschlüssen, mit Prüfsummen.',
+      result:
+        'Zwei Läufe und eine Sitzung gleichzeitig, mit und ohne Protokoll, aus den Dateien gezählt. Ohne Protokoll: 8 unumkehrbare Aktionen ohne Entscheidung, jede doppelt, die Änderung der Sitzung überschrieben, keine Übergabe. Mit Protokoll: 0 und 0, die Änderung erhalten, 8 Befunde in der Übergabe, 3 Entscheidungen nach Freigabe ausgeführt, 1 abgelehnt. 16 Tests.',
+      notShown:
+        'Keine echte Arbeit, eine Aufgabe erledigen heißt eine Zeile anhängen. Kein Netz, ein Rechner. Kein Zeitplaner, kein Sprachmodell. Das Schreibjournal steckt bewusst nicht noch einmal drin, das zeigt das Projekt zu den gleichzeitigen Schreibzugriffen. Zwei Entwurfsfehler, die der Vergleichslauf gefunden hat, stehen in der README.',
+    },
+    en: {
+      title: 'Routine runs on a folder tree, with approval before anything irreversible',
+      problem:
+        'A small organisation keeps its work in folders. People work in sessions, routines run unattended on a schedule. Without a protocol two writers land in the same project, a routine sends or deletes because the task said so, and what a run finds out is never seen by the next person.',
+      approach:
+        'A run takes projects one at a time; leased ones are skipped, expired leases are never taken over silently. Reversible tasks it does. Irreversible verbs such as send, publish, delete or pay it never executes itself. They are recorded as decisions, a person approves, a later run executes and writes down who approved. At the end an integrator compiles the handover from every completion, with checksums.',
+      result:
+        'Two runs and one session at the same moment, with and without the protocol, counted from the files. Without: 8 irreversible actions with no decision, each done twice, the session edit overwritten, no handover. With: 0 and 0, the edit kept, 8 findings in the handover, 3 decisions executed after approval, 1 rejected. 16 tests.',
+      notShown:
+        'No real work, doing a task means appending a line. No network, one machine. No scheduler, no language model. The write journal is deliberately not repeated here; the concurrent-writes project shows it. Two design mistakes the comparison run found are in the README.',
+    },
+  },
+  {
+    repo: 'fabiosteyer.github.io',
+    url: 'https://github.com/FabioSteyer/fabiosteyer.github.io',
+    stackDe: 'Astro · GSAP · Playwright',
+    stackEn: 'Astro · GSAP · Playwright',
+    eyebrow: 'ASTRO · GSAP · NODE TEST',
+    statValue: '0',
+    statDe: 'Externe Anfragen beim Laden dieser Seite.',
+    statEn: 'External requests when this page loads.',
+    de: {
+      title: 'Diese Seite',
+      problem:
+        'Eine Bewerbungsseite muss zwei Dinge zugleich, gefallen und nachprüfbar sein. Alles, was hier steht, soll sich auf ein Repository, einen Test oder eine Messung zurückführen lassen, und die Seite selbst soll denselben Maßstab aushalten.',
+      approach:
+        'Statisch gebaut mit Astro, ausgeliefert ohne Server, ohne Analytics, ohne Verbindung zu Schriftendiensten. Die Bewegung läuft über GSAP mit Bewegungsreduzierung als Grundzustand. Drei Gestaltungsvarianten liegen auf einer Codebasis und werden per Build-Schalter gewählt. Tests laufen gegen den Produktionsbuild und prüfen unter anderem, dass die Datenschutzerklärung beschreibt, was die Seite wirklich tut.',
+      result:
+        '12 Seiten in zwei Sprachen, 0 externe Anfragen, 10 Tests gegen den Build, Barrierefreiheit 100 im Lighthouse-Lauf gegen die Live-Adresse. Die Texte der Seite sind mit dem Linter aus dem dritten Projekt geprüft.',
+      notShown:
+        'Kein Backend, kein Formular, keine Nutzerdaten. Das Repository enthält Bewerbungstexte und ein Foto und steht deshalb ohne Lizenz. Die Suchmaschinen-Kennzahl ist absichtlich niedrig, denn die Seite trägt noindex und ist nur über den geteilten Link zu finden.',
+    },
+    en: {
+      title: 'This site',
+      problem:
+        'An application site has to do two things at once, look right and be verifiable. Everything here should trace back to a repository, a test or a measurement, and the site itself should hold to the same standard.',
+      approach:
+        'Built statically with Astro, served without a server, without analytics, without a connection to any font service. Motion runs through GSAP with reduced motion as the resting state. Three design variants sit on one codebase and are chosen by a build switch. Tests run against the production build and check, among other things, that the privacy statement describes what the site actually does.',
+      result:
+        '12 pages in two languages, 0 external requests, 10 tests against the build, accessibility 100 in the Lighthouse run against the live address. The texts on this site went through the linter from the third project.',
+      notShown:
+        'No backend, no form, no user data. The repository contains application texts and a photo and therefore carries no licence. The search score is low on purpose, because the site is noindex and only reachable through the shared link.',
+    },
+  },
 ];

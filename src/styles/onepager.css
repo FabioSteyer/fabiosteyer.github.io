@@ -292,3 +292,17 @@ html[data-variant=c] .background-section {background:transparent}
 .prose-after .prose-count {color:var(--sage)}
 .prose-rule {display:block;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 @media(max-width:760px) {.chain-steps {grid-template-columns:repeat(2,minmax(0,1fr))} .chain-steps li+li::before {display:none} .prose-block p {font-size:15px}}
+
+/* fourth and fifth project panels */
+.compare-table {width:100%;border-collapse:collapse;font-size:13px}
+.compare-table th,.compare-table td {text-align:left;padding:9px 10px;border-top:1px solid #65857345;vertical-align:top}
+.compare-table thead th {font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-top:0;padding-top:0}
+.compare-table tbody th {font-weight:400;color:var(--ink)}
+.compare-table td {font-family:'Newsreader',Georgia,serif;font-size:19px;line-height:1;white-space:nowrap;width:1%}
+.cmp-bad {color:var(--copper-soft)} .cmp-good {color:var(--sage)}
+.fact-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:0 0 12px}
+.fact-grid>div {border:1px solid #65857345;background:#0b211c66;padding:12px 12px 10px}
+.fact-grid dt {font-family:'Newsreader',Georgia,serif;font-size:30px;line-height:1;color:var(--sage)}
+.fact-grid dd {margin:6px 0 0;font-size:11px;line-height:1.4;color:var(--muted)}
+.check-list {list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px;font-size:13px;color:var(--ink)}
+.check-list li::before {content:"✓";color:var(--sage);margin-right:8px}
