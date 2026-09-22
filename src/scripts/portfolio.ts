@@ -120,10 +120,14 @@ if (toggle) {
 syncPreference();
 
 // Behavior does not depend on the optional animation bundle loading successfully.
-import('./portfolio-motion').then(({ createMotion }) => {
+// Geladen, sobald der Hauptthread frei ist (Lighthouse 22.09.2026: 190-250 ms
+// Blockierzeit, wenn das Buendel sofort startet); spaetestens nach 1,5 s.
+const loadMotion = () => import('./portfolio-motion').then(({ createMotion }) => {
   motion = createMotion(reduced());
   onMotion.forEach(register => register(motion!));
 }).catch(() => { /* The static layout and both examples remain fully usable. */ });
+if ('requestIdleCallback' in window) requestIdleCallback(() => { loadMotion(); }, { timeout: 1500 });
+else setTimeout(loadMotion, 200);
 
 document.querySelectorAll('details').forEach(details => {
   details.addEventListener('toggle', () => motion?.refresh());
