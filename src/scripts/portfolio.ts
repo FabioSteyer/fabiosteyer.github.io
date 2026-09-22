@@ -87,6 +87,9 @@ document.querySelectorAll<HTMLElement>('[data-concurrency]').forEach(root => {
   onMotion.push(motion => motion.onEnter(root, run));
 });
 
+// Statische Panels der Projekte 3 bis 5 laufen beim ersten Sichtbarwerden einmal auf.
+document.querySelectorAll<HTMLElement>('[data-panel]').forEach(root => onMotion.push(motion => motion.onEnter(root, () => motion.panel(root))));
+
 const toggle = document.querySelector<HTMLButtonElement>('[data-motion-toggle]');
 const syncPreference = () => {
   document.documentElement.dataset.reducedMotion = String(reduced());

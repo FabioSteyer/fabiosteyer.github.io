@@ -40,6 +40,8 @@ export function createMotion(initiallyReduced: boolean) {
   let finishWrites: (() => void) | undefined;
   let invoiceRoot: HTMLElement | undefined;
   let writeRoot: HTMLElement | undefined;
+  const panelTimelines = new Map<HTMLElement, gsap.core.Timeline>();
+  const panelSelector = '.chain-steps li,.chain-node,.prose-before mark,.prose-after,.compare-table tbody tr,.cmp-bad,.cmp-good,.check-list li,.tick';
   let introSplit: SplitText | undefined;
   let layoutRef: (() => void) | undefined;
   const enterHooks: EnterHook[] = [];
@@ -56,6 +58,12 @@ export function createMotion(initiallyReduced: boolean) {
     if (writeRoot) gsap.set(writeRoot.querySelector('.write-packet'), { clearProps: 'transform,opacity' });
     finishWrites?.();
     finishWrites = undefined;
+    panelTimelines.forEach((tl, root) => {
+      tl.kill();
+      gsap.set(root.querySelectorAll(panelSelector), { clearProps: 'all' });
+      root.querySelectorAll<HTMLElement>('[data-countdown]').forEach(el => { if (el.dataset.final) el.textContent = el.dataset.final; });
+    });
+    panelTimelines.clear();
   };
 
   /** Kennzahlen zaehlen hoch; am Ende steht exakt der Text aus dem Markup. */
@@ -350,6 +358,45 @@ export function createMotion(initiallyReduced: boolean) {
         .from(root.querySelector('[data-paper="invoice"]'), { x: 10, rotation: 2, duration: .35, ease: 'power2.out' }, 0)
         .to(root.querySelector('.match-orbit'), { rotation: 180, duration: .65, ease: 'power2.inOut' }, .08)
         .from(root.querySelector('.demo-result'), { y: 7, opacity: .45, duration: .3, clearProps: 'transform,opacity' }, .3);
+    },
+    /** Statische Panels (Textpruefung, automatische Laeufe, diese Website): laufen
+     *  einmal beim ersten Sichtbarwerden, zeitbasiert, Endzustand = Markup. */
+    panel(root: HTMLElement) {
+      panelTimelines.get(root)?.kill();
+      gsap.set(root.querySelectorAll(panelSelector), { clearProps: 'all' });
+      if (disabled) return;
+      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+      panelTimelines.set(root, tl);
+      const steps = root.querySelectorAll('.chain-steps li');
+      let at = 0;
+      if (steps.length) {
+        tl.from(steps, { opacity: .3, y: 8, duration: .45, stagger: .24, clearProps: 'transform,opacity' }, 0)
+          .from(root.querySelectorAll('.chain-node'), { color: '#658573', duration: .35, stagger: .24, clearProps: 'color' }, .08);
+        at = .24 * steps.length + .2;
+      }
+      if (root.dataset.panel === 'prose') {
+        const counter = root.querySelector<HTMLElement>('[data-countdown]');
+        tl.from(root.querySelector('.prose-before mark'), { backgroundColor: 'rgba(0,0,0,0)', duration: .6, clearProps: 'backgroundColor' }, at)
+          .from(root.querySelector('.prose-after'), { y: 14, opacity: 0, duration: .55, clearProps: 'transform,opacity' }, at + .5);
+        if (counter) {
+          const [fail, warn] = (counter.dataset.countdown ?? '').split(',').map(Number);
+          counter.dataset.final = counter.textContent ?? '';
+          const state = { f: fail, w: warn };
+          tl.call(() => { counter.textContent = `FAIL ${fail} · WARN ${warn}`; }, [], 0);
+          tl.to(state, { f: 0, w: 0, duration: .9, ease: 'power1.inOut',
+            onUpdate: () => { counter.textContent = `FAIL ${Math.round(state.f)} · WARN ${Math.round(state.w)}`; },
+            onComplete: () => { counter.textContent = counter.dataset.final!; } }, at + .7);
+        }
+      }
+      if (root.dataset.panel === 'runner') {
+        tl.from(root.querySelectorAll('.compare-table tbody tr'), { opacity: .25, x: -8, duration: .4, stagger: .12, clearProps: 'transform,opacity' }, at)
+          .from(root.querySelectorAll('.cmp-bad'), { opacity: 0, y: -6, duration: .35, stagger: .12, clearProps: 'transform,opacity' }, at + .15)
+          .from(root.querySelectorAll('.cmp-good'), { opacity: 0, scale: .5, transformOrigin: '0 50%', duration: .4, stagger: .12, ease: 'back.out(2)', clearProps: 'transform,opacity' }, at + .75);
+      }
+      if (root.dataset.panel === 'site') {
+        tl.from(root.querySelectorAll('.check-list li'), { opacity: .35, duration: .4, stagger: .2, clearProps: 'opacity' }, .3)
+          .from(root.querySelectorAll('.tick'), { scale: 0, transformOrigin: '50% 50%', duration: .45, stagger: .2, ease: 'back.out(3)', clearProps: 'transform' }, .35);
+      }
     },
     writes(root: HTMLElement, trace: WriteEvent[], render: (event: WriteEvent) => void, finish: () => void) {
       writeTimeline?.kill();

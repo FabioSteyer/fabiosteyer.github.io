@@ -1,10 +1,13 @@
 /* Seitenwechsel innerhalb der Domain (Startseite <-> Unterseiten).
    Die Kopfzeile traegt view-transition-name: topbar (shell.css) und bleibt
    beim Wechsel stehen; nur der uebrige Inhalt wechselt. Je Variante anders:
-   a Ueberblendung, b Schub von unten, c Wischen von oben. Browser ohne
+   Fusszeile ebenso (footer). a Ueberblendung, b Schub von unten, c Wischen von oben. Browser ohne
    Unterstuetzung navigieren regulaer. */
 @view-transition { navigation: auto; }
 ::view-transition-old(topbar), ::view-transition-new(topbar) { animation: none; mix-blend-mode: normal; }
+/* Die Fusszeile gleitet nur an ihre neue Position, statt mit dem Inhalt zu verschwinden. */
+::view-transition-old(footer), ::view-transition-new(footer) { animation: none; mix-blend-mode: normal; }
+::view-transition-group(footer) { animation-duration: .45s; animation-timing-function: cubic-bezier(.2,.7,.2,1); }
 ::view-transition-old(root) { animation: page-out .18s ease both; }
 ::view-transition-new(root) { animation: page-in .35s ease both; }
 html[data-variant=b]::view-transition-old(root) { animation: slide-out .25s ease-in both; }

@@ -5,27 +5,27 @@ const { lang } = Astro.props;
 const t = (de: string, en: string) => lang === 'de' ? de : en;
 // Numbers from `python -m runner compare` in the repository (final rows).
 const rows = [
-  [t('Unumkehrbare Aktionen ohne Entscheidung', 'Irreversible actions without a decision'), '8', '0'],
+  [t('Unumkehrbare Aktionen ohne Freigabe', 'Irreversible actions without approval'), '8', '0'],
   [t('Aufgaben doppelt erledigt', 'Tasks done twice'), '7–12', '0'],
-  [t('Änderung der Sitzung erhalten', 'Session edit kept'), t('nein', 'no'), t('ja', 'yes')],
+  [t('Änderung der Person erhalten', 'Person’s edit kept'), t('nein', 'no'), t('ja', 'yes')],
   [t('Befunde in der Übergabe', 'Findings in the handover'), '0', '8'],
-  [t('Nach Freigabe ausgeführt', 'Executed after approval'), '–', '3'],
+  [t('Nach Freigabe ausgeführt', 'Carried out after approval'), '–', '3'],
 ];
 const flow = [
-  [t('Besitz nehmen', 'Acquire'), t('belegt: überspringen', 'leased: skip')],
-  [t('Arbeiten', 'Work'), t('unumkehrbar: vorlegen', 'irreversible: propose')],
-  [t('Abschließen', 'Complete'), t('Prüfsummen, sonst Stopp', 'checksums, else stop')],
-  [t('Übergeben', 'Hand over'), t('aus allen Abschlüssen', 'from all completions')],
+  [t('Sperren', 'Lock'), t('belegtes Projekt überspringen', 'skip a project in use')],
+  [t('Arbeiten', 'Work'), t('Unumkehrbares vorlegen', 'put irreversible steps to a person')],
+  [t('Abschließen', 'Close'), t('Prüfsummen, sonst Abbruch', 'checksums, else stop')],
+  [t('Übergeben', 'Hand over'), t('Befunde aller Läufe', 'findings from all runs')],
 ];
 ---
-<div class="demo runner-demo">
-  <div class="demo-top"><span class="micro">{t('04 / ROUTINEN MIT FREIGABE', '04 / GATED ROUTINES')}</span><span class="demo-tag">{t('Erfundene Organisation', 'Invented organisation')}</span></div>
+<div class="demo runner-demo" data-panel="runner">
+  <div class="demo-top"><span class="micro">{t('04 / AUTOMATISCHE LÄUFE', '04 / UNATTENDED RUNS')}</span><span class="demo-tag">{t('Erfundene Beispielorganisation', 'Invented example organisation')}</span></div>
   <ol class="chain-steps" aria-label={t('Ablauf eines Laufs', 'Steps of a run')}>
     {flow.map(([name, note], i) => <li><span class="chain-node">{i + 1}</span><b>{name}</b><small>{note}</small></li>)}
   </ol>
   <table class="compare-table">
-    <thead><tr><th scope="col">{t('Zwei Läufe, eine Sitzung, gleichzeitig', 'Two runs, one session, at once')}</th><th scope="col">{t('ohne', 'without')}</th><th scope="col">{t('mit', 'with')}</th></tr></thead>
+    <thead><tr><th scope="col">{t('Zwei Läufe und eine Person, gleichzeitig', 'Two runs and one person, at the same time')}</th><th scope="col">{t('ohne Protokoll', 'without protocol')}</th><th scope="col">{t('mit Protokoll', 'with protocol')}</th></tr></thead>
     <tbody>{rows.map(([label, a, b]) => <tr><th scope="row">{label}</th><td class="cmp-bad">{a}</td><td class="cmp-good">{b}</td></tr>)}</tbody>
   </table>
-  <p class="demo-caption">{t('Aus den Dateien gezählt, nicht aus den Meldungen der Akteure. Die Zahl der doppelt erledigten Aufgaben hängt vom Timing ab; die Tabelle im Repository sagt das.', 'Counted from the files, not from what the actors report. The number of tasks done twice depends on timing; the table in the repository says so.')}</p>
+  <p class="demo-caption">{t('Aus den Dateien gezählt, nicht aus den Meldungen der Beteiligten. Wie viele Aufgaben doppelt erledigt werden, hängt vom Zeitpunkt ab; die Tabelle im Repository sagt das dazu.', 'Counted from the files rather than from what the participants report. How many tasks get done twice depends on timing; the table in the repository says so.')}</p>
 </div>
