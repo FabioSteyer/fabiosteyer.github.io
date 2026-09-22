@@ -94,24 +94,24 @@ export const projects: Project[] = [
     statDe: 'Eingebaute Muster in Testsätzen erkannt. Keine Fehlalarme.',
     statEn: 'Planted patterns in test sentences caught. No false alarms.',
     de: {
-      title: 'Anschreiben automatisch auf Floskeln prüfen',
+      title: 'Texte automatisch auf Floskeln prüfen und umschreiben lassen',
       problem:
-        'Wer viele Bewerbungen liest, erkennt Schablonentext in Sekunden und liest dann nicht weiter. Die Muster, die diesen Eindruck erzeugen, sind wenige und lassen sich benennen. Die Gegenüberstellung „nicht X, sondern Y", der Gedankenstrich mitten im Satz, Floskeln, fünf gleich lange Sätze hintereinander.',
+        'Ein Text, der nach Schablone klingt, wird überflogen, egal ob Anschreiben, Angebot, Bericht oder Produkttext. Die Muster, die diesen Eindruck erzeugen, sind wenige und lassen sich benennen. Die Gegenüberstellung „nicht X, sondern Y", der Gedankenstrich mitten im Satz, Floskeln, fünf gleich lange Sätze hintereinander.',
       approach:
         'Ein fester Satz aus 17 Regeln findet diese Muster zuverlässig und immer gleich. Für die Umschreibung holt das Werkzeug Vorschläge von zwei KI-Modellen verschiedener Hersteller ein, eines ohne jede Vorgeschichte des Textes, das zweite als Gegenprobe. Jeder Vorschlag wird einzeln eingesetzt und nur behalten, wenn die Regeln danach nicht mehr Befunde zählen als vorher. Die Modelle schlagen vor, die Regeln entscheiden.',
       result:
-        'Geprüft an 50 erfundenen Testsätzen, darunter 18 unauffällige, bei denen kein Werkzeug anschlagen darf: 36 von 36 eingebauten Mustern gefunden, 0 Fehlalarme, 29 automatische Tests. Ein englischer Beispielbrief geht durch das Verfahren von 6 Befunden auf 0. Der deutsche behält eine Warnung, weil die Umschreibungen alle Sätze gleich lang gemacht haben, und das Werkzeug sagt das auch.',
+        'Geprüft an 50 erfundenen Testsätzen, darunter 18 unauffällige, bei denen kein Werkzeug anschlagen darf: 36 von 36 eingebauten Mustern gefunden, 0 Fehlalarme, 29 automatische Tests. Ein englischer Beispieltext geht durch das Verfahren von 6 Befunden auf 0. Der deutsche behält eine Warnung, weil die Umschreibungen alle Sätze gleich lang gemacht haben, und das Werkzeug sagt das auch.',
       notShown:
         'Kein Detektor für KI-Texte, und durch Umkehrung wird auch keiner daraus. Die Regelliste beruht auf eigener Beobachtung, nicht auf Literatur. Die mitgelieferten Modellantworten sind gekennzeichnete Platzhalter; echte Läufe brauchen zwei API-Schlüssel.',
     },
     en: {
-      title: 'Checking a cover letter for stock phrasing, automatically',
+      title: 'Checking any text for stock phrasing and having it rewritten',
       problem:
-        'Anyone who reads many applications spots template prose within seconds and stops reading. The patterns that create that impression are few and can be named. The contrast "not X, but Y", the dash in the middle of a sentence, stock phrases, five sentences of the same length in a row.',
+        'A text that reads like a template gets skimmed, whether it is a cover letter, a quote, a report or product copy. The patterns that create that impression are few and can be named. The contrast "not X, but Y", the dash in the middle of a sentence, stock phrases, five sentences of the same length in a row.',
       approach:
         'A fixed set of 17 rules finds those patterns reliably and always in the same way. For the rewrite, the tool collects suggestions from two AI models by different vendors, one with no history of the text, the second as a cross-check. Each suggestion is applied on its own and kept only if the rules afterwards count no more findings than before. The models propose, the rules decide.',
       result:
-        'Checked against 50 invented test sentences, 18 of them clean ones no tool may flag: 36 of 36 planted patterns found, 0 false alarms, 29 automated tests. An English example letter goes through the procedure from 6 findings to 0. The German one keeps one warning because the rewrites made every sentence the same length, and the tool says so.',
+        'Checked against 50 invented test sentences, 18 of them clean ones no tool may flag: 36 of 36 planted patterns found, 0 false alarms, 29 automated tests. An English example text goes through the procedure from 6 findings to 0. The German one keeps one warning because the rewrites made every sentence the same length, and the tool says so.',
       notShown:
         'Not a detector for AI-written text, and inverting it does not make one. The rule list rests on my own observation rather than on literature. The shipped model answers are labelled placeholders; real runs need two API keys.',
     },
@@ -122,30 +122,30 @@ export const projects: Project[] = [
     stackDe: 'Python · nur Standardbibliothek',
     stackEn: 'Python · standard library only',
     eyebrow: 'PYTHON · STANDARD LIBRARY · THREADS',
-    statValue: '8 → 0',
-    statDe: 'Unumkehrbare Aktionen ohne Freigabe, erst ohne, dann mit Protokoll.',
-    statEn: 'Irreversible actions without approval, first without, then with the protocol.',
+    statValue: '12 / 12',
+    statDe: 'Aufgaben abgearbeitet oder vorgelegt, ohne dass jemand einen Lauf begleitet.',
+    statEn: 'Tasks worked through or put forward, with nobody attending a run.',
     de: {
-      title: 'Automatisierung, die vor unumkehrbaren Schritten nachfragt',
+      title: 'Arbeit, die von selbst weiterläuft, ohne dass jemand sie anstößt',
       problem:
-        'Ein Skript arbeitet nachts eine Aufgabenliste ab, während tagsüber Menschen an denselben Dateien arbeiten. Drei Dinge gehen dabei leise schief. Zwei Bearbeiter landen im selben Projekt, und der langsamere überschreibt den schnelleren. Das Skript verschickt eine E-Mail oder löscht etwas, weil es in der Liste stand. Und was das Skript herausgefunden hat, sieht am nächsten Morgen niemand.',
+        'In einer kleinen Organisation bleibt vieles liegen, weil jemand es anstoßen müsste: Listen abarbeiten, Zahlen zusammentragen, Ergebnisse festhalten. Sollen geplante Läufe das nachts von selbst erledigen, während tagsüber Menschen an denselben Dateien arbeiten, braucht es drei Dinge. Eine Regel, wer gerade woran darf. Eine Übergabe, damit am nächsten Morgen sichtbar ist, was passiert ist. Und eine Grenze für das, was ein Lauf nie ohne Menschen tun darf.',
       approach:
-        'Jeder Lauf sperrt ein Projekt für sich, bevor er es anfasst; ein gesperrtes Projekt wird übersprungen, eine verwaiste Sperre nie stillschweigend übernommen. Umkehrbare Aufgaben erledigt der Lauf selbst. Unumkehrbare wie Senden, Veröffentlichen, Löschen oder Bezahlen legt er einem Menschen zur Entscheidung vor; erst ein späterer Lauf führt das Freigegebene aus und hält fest, wer freigegeben hat. Zum Schluss fasst ein Abschlussschritt zusammen, was alle Läufe getan und gefunden haben, als Übergabe für die nächste Person.',
+        'Jeder Lauf nimmt sich ein Projekt nach dem anderen vor, sperrt es kurz für sich und arbeitet die offenen Aufgaben ab; ein Projekt, an dem gerade jemand sitzt, wird übersprungen und beim nächsten Lauf erledigt. Zum Schluss fasst ein Abschlussschritt zusammen, was alle Läufe getan und gefunden haben, als Übergabe für die nächste Person. Was unumkehrbar ist, etwa Senden, Veröffentlichen, Löschen oder Bezahlen, legt ein Lauf nur vor; ein Mensch entscheidet, ein späterer Lauf führt aus und hält fest, wer freigegeben hat.',
       result:
-        'Zwei Läufe und eine Person gleichzeitig auf demselben Beispiel, einmal ohne und einmal mit Protokoll, danach aus den Dateien gezählt. Ohne Protokoll: 8 unumkehrbare Aktionen ohne Freigabe, jede doppelt ausgeführt, die Änderung der Person überschrieben, keine Übergabe. Mit Protokoll: 0 unumkehrbare Aktionen ohne Freigabe, keine Aufgabe doppelt, die Änderung erhalten, 8 Befunde in der Übergabe. 16 automatische Tests.',
+        'Zwei geplante Läufe und eine Person gleichzeitig auf demselben Beispiel mit 12 Aufgaben in drei Projekten, einmal ohne und einmal mit Protokoll, danach aus den Dateien gezählt. Mit Protokoll: alle 12 Aufgaben abgearbeitet oder zur Entscheidung vorgelegt, keine doppelt, 8 Befunde in der Übergabe, die Änderung der Person erhalten, 0 unumkehrbare Aktionen ohne Freigabe. Ohne Protokoll: Aufgaben doppelt erledigt, die Änderung der Person überschrieben, keine Übergabe, 8 unumkehrbare Aktionen ohne Freigabe. 16 automatische Tests.',
       notShown:
-        'Die Aufgaben sind Attrappen; eine erledigen heißt eine Zeile anhängen. Ein Rechner, kein Netzwerk, kein Zeitplaner, kein Sprachmodell. Zwei Entwurfsfehler, die erst der Vergleichslauf sichtbar gemacht hat, stehen offen in der README.',
+        'Die Aufgaben sind Attrappen; eine erledigen heißt eine Zeile anhängen. Wann ein Lauf startet, bestimmt ein Zeitplaner außerhalb, der nicht mitgeliefert ist. Ein Rechner, kein Netzwerk, kein Sprachmodell. Zwei Entwurfsfehler, die erst der Vergleichslauf sichtbar gemacht hat, stehen offen in der README.',
     },
     en: {
-      title: 'Unattended automation that asks a person before anything irreversible',
+      title: 'Work that keeps going by itself, with nobody having to start it',
       problem:
-        'A script works through a task list at night while people work on the same files during the day. Three things go quietly wrong. Two editors land in the same project, and the slower one overwrites the faster. The script sends an email or deletes something because the list said so. And whatever the script found out, nobody sees the next morning.',
+        'In a small organisation a lot stays undone because somebody would have to start it: working through lists, gathering figures, writing down results. If scheduled runs are to do that at night by themselves while people work on the same files during the day, three things are needed. A rule for who may work on what right now. A handover, so that the next morning it is visible what happened. And a line for what a run must never do without a person.',
       approach:
-        'Each run locks a project for itself before touching it; a locked project is skipped, and an abandoned lock is never taken over silently. Reversible tasks the run does itself. Irreversible ones such as sending, publishing, deleting or paying it puts to a person for a decision; only a later run carries out what was approved and records who approved it. At the end a closing step sums up what all runs did and found, as a handover for the next person.',
+        'Each run takes one project at a time, locks it briefly for itself and works through the open tasks; a project somebody is sitting at is skipped and done on the next run. At the end a closing step sums up what all runs did and found, as a handover for the next person. Anything irreversible, such as sending, publishing, deleting or paying, a run only puts forward; a person decides, a later run carries it out and records who approved.',
       result:
-        'Two runs and one person at the same moment on the same example, once without and once with the protocol, then counted from the files. Without: 8 irreversible actions without approval, each carried out twice, the person\'s edit overwritten, no handover. With: 0 irreversible actions without approval, no task done twice, the edit kept, 8 findings in the handover. 16 automated tests.',
+        'Two scheduled runs and one person at the same moment on the same example with 12 tasks in three projects, once without and once with the protocol, then counted from the files. With the protocol: all 12 tasks worked through or put forward for a decision, none twice, 8 findings in the handover, the person\'s edit kept, 0 irreversible actions without approval. Without: tasks done twice, the person\'s edit overwritten, no handover, 8 irreversible actions without approval. 16 automated tests.',
       notShown:
-        'The tasks are dummies; doing one means appending a line. One machine, no network, no scheduler, no language model. Two design mistakes that only the comparison run made visible are stated openly in the README.',
+        'The tasks are dummies; doing one means appending a line. When a run starts is up to a scheduler outside, which is not included. One machine, no network, no language model. Two design mistakes that only the comparison run made visible are stated openly in the README.',
     },
   },
   {
@@ -154,30 +154,30 @@ export const projects: Project[] = [
     stackDe: 'Astro · GSAP · Playwright',
     stackEn: 'Astro · GSAP · Playwright',
     eyebrow: 'ASTRO · GSAP · NODE TEST',
-    statValue: '0',
-    statDe: 'Anfragen an Dritte beim Besuch dieser Seite.',
-    statEn: 'Requests to third parties when you visit this page.',
+    statValue: '6',
+    statDe: 'Arbeitstage vom leeren Repository bis zu dieser Seite mit fünf Projekten.',
+    statEn: 'Working days from an empty repository to this page with five projects.',
     de: {
-      title: 'Diese Website, nach demselben Maßstab gebaut',
+      title: 'Diese Website, mit KI-Werkzeugen in sechs Arbeitstagen gebaut',
       problem:
-        'Eine Bewerbungsseite soll gefallen und zugleich standhalten, wenn jemand nachrechnet. Jede Zahl hier soll auf ein Repository, einen Test oder eine Messung zurückführbar sein, und das gilt auch für die Seite selbst.',
+        'Eine Seite wie diese hätte vor wenigen Jahren Wochen gekostet: Gestaltung, zwei Sprachen, Bewegung, Rechtstexte, Tests. Mit KI-Werkzeugen als Mitarbeiter geht das in Tagen, wenn man weiß, was man will, die Entscheidungen selbst trifft und jedes Ergebnis nachprüft. Diese Seite ist der Beleg dafür, samt Commit-Verlauf.',
       approach:
-        'Statisch gebaut, ohne Server, ohne Tracking, ohne Schriften von fremden Diensten; beim Besuch verlässt keine Anfrage diese Adresse. Die Bewegung ist ein Zusatz, der sich abschalten lässt und bei der Systemeinstellung „weniger Bewegung" von selbst aus bleibt. Automatische Tests laufen gegen die fertige Seite und prüfen unter anderem, dass die Datenschutzerklärung beschreibt, was die Seite wirklich tut.',
+        'Erst ein schriftlicher Entwurf, dann der Code, von KI-Werkzeugen geschrieben und von mir abgenommen. Drei Gestaltungsvarianten an einem Tag auf einer Codebasis gebaut, im Browser verglichen, eine gewählt. Automatische Tests laufen gegen die fertige Seite und prüfen unter anderem, dass die Datenschutzerklärung beschreibt, was die Seite wirklich tut. Statisch ausgeliefert, ohne Tracking und ohne fremde Dienste; beim Besuch verlässt keine Anfrage diese Adresse.',
       result:
-        '8 Seiten in zwei Sprachen, 0 Anfragen an Dritte, 10 Tests gegen den fertigen Build, Barrierefreiheit 100 im Lighthouse-Lauf gegen die Live-Adresse. Die Texte dieser Seite sind mit dem Werkzeug aus dem dritten Projekt geprüft.',
+        'Über 30 Commits an 6 Arbeitstagen, live seit dem zweiten Tag. 8 Seiten in zwei Sprachen, 0 Anfragen an Dritte, 10 Tests gegen den fertigen Build, Barrierefreiheit 100 im Lighthouse-Lauf gegen die Live-Adresse. Die Texte dieser Seite sind mit dem Werkzeug aus dem dritten Projekt geprüft.',
       notShown:
-        'Kein Backend, kein Formular, keine Nutzerdaten. Das Repository enthält Bewerbungstexte und ein Foto und steht deshalb ohne freie Lizenz. In Suchmaschinen ist die Seite absichtlich nicht zu finden; sie ist nur über den geteilten Link erreichbar.',
+        'Sechs Arbeitstage heißt nicht sechs volle Tage am Stück; sie liegen über zwei Wochen verteilt. Kein Backend, kein Formular, keine Nutzerdaten. Das Repository enthält Bewerbungstexte und ein Foto und steht deshalb ohne freie Lizenz. In Suchmaschinen ist die Seite absichtlich nicht zu finden; sie ist nur über den geteilten Link erreichbar.',
     },
     en: {
-      title: 'This website, built to the same standard',
+      title: 'This website, built with AI tools in six working days',
       problem:
-        'An application site should look right and still hold up when somebody checks the numbers. Every figure here should trace back to a repository, a test or a measurement, and that applies to the site itself.',
+        'A site like this would have taken weeks a few years ago: design, two languages, motion, legal pages, tests. With AI tools as collaborators it takes days, provided you know what you want, make the decisions yourself and check every result. This site is the evidence, commit history included.',
       approach:
-        'Built statically, without a server, without tracking, without fonts from outside services; no request leaves this address when you visit. Motion is an extra that can be switched off and stays off by itself under the system setting "reduce motion". Automated tests run against the finished site and check, among other things, that the privacy statement describes what the site actually does.',
+        'A written design first, then the code, written by AI tools and reviewed by me. Three design variants built in one day on one codebase, compared in the browser, one chosen. Automated tests run against the finished site and check, among other things, that the privacy statement describes what the site actually does. Served statically, without tracking and without outside services; no request leaves this address when you visit.',
       result:
-        '8 pages in two languages, 0 requests to third parties, 10 tests against the finished build, accessibility 100 in the Lighthouse run against the live address. The texts on this site went through the tool from the third project.',
+        'Over 30 commits across 6 working days, live since day two. 8 pages in two languages, 0 requests to third parties, 10 tests against the finished build, accessibility 100 in the Lighthouse run against the live address. The texts on this site went through the tool from the third project.',
       notShown:
-        'No backend, no form, no user data. The repository contains application texts and a photo and therefore carries no open licence. The site is deliberately not findable through search engines; it is reachable only through the shared link.',
+        'Six working days does not mean six full days in a row; they are spread over two weeks. No backend, no form, no user data. The repository contains application texts and a photo and therefore carries no open licence. The site is deliberately not findable through search engines; it is reachable only through the shared link.',
     },
   },
 ];

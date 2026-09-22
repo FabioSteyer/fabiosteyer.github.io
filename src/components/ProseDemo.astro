@@ -22,7 +22,7 @@ const steps = [
 ];
 ---
 <div class="demo prose-demo" data-panel="prose">
-  <div class="demo-top"><span class="micro">{t('03 / TEXTPRÜFUNG', '03 / TEXT CHECK')}</span><span class="demo-tag">{t('Erfundener Beispielbrief', 'Invented example letter')}</span></div>
+  <div class="demo-top"><span class="micro">{t('03 / TEXTPRÜFUNG', '03 / TEXT CHECK')}</span><span class="demo-tag">{t('Erfundener Beispieltext', 'Invented example text')}</span></div>
   <ol class="chain-steps" aria-label={t('Ablauf der Prüfung', 'Steps of the check')}>
     {steps.map(([name, note], i) => <li><span class="chain-node">{i + 1}</span><b>{name}</b><small>{note}</small></li>)}
   </ol>
@@ -38,5 +38,5 @@ const steps = [
       <small class="prose-rule">{t('Vorschlag 1, von der Regelprüfung bestätigt', 'Suggestion 1, confirmed by the rule check')}</small>
     </div>
   </div>
-  <p class="demo-caption">{t('Ein Satz aus dem englischen Beispielbrief, hier übersetzt. Die Zähler stammen aus dem gemessenen Lauf über den ganzen Brief. Zwei Runden, fünf Vorschläge übernommen, keiner verworfen.', 'One sentence from the example letter. The counters come from the measured run over the whole letter. Two rounds, five suggestions applied, none rejected.')}</p>
+  <p class="demo-caption">{t('Ein Satz aus dem englischen Beispieltext, hier übersetzt. Die Zähler stammen aus dem gemessenen Lauf über den ganzen Text. Zwei Runden, fünf Vorschläge übernommen, keiner verworfen.', 'One sentence from the example text. The counters come from the measured run over the whole text. Two rounds, five suggestions applied, none rejected.')}</p>
 </div>

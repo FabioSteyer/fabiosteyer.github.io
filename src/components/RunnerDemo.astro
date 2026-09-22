@@ -5,21 +5,21 @@ const { lang } = Astro.props;
 const t = (de: string, en: string) => lang === 'de' ? de : en;
 // Numbers from `python -m runner compare` in the repository (final rows).
 const rows = [
-  [t('Unumkehrbare Aktionen ohne Freigabe', 'Irreversible actions without approval'), '8', '0'],
-  [t('Aufgaben doppelt erledigt', 'Tasks done twice'), '7–12', '0'],
-  [t('Änderung der Person erhalten', 'Person’s edit kept'), t('nein', 'no'), t('ja', 'yes')],
+  [t('Aufgaben abgearbeitet oder vorgelegt', 'Tasks worked through or put forward'), '12', '12'],
   [t('Befunde in der Übergabe', 'Findings in the handover'), '0', '8'],
-  [t('Nach Freigabe ausgeführt', 'Carried out after approval'), '–', '3'],
+  [t('Änderung der Person erhalten', 'Person’s edit kept'), t('nein', 'no'), t('ja', 'yes')],
+  [t('Aufgaben doppelt erledigt', 'Tasks done twice'), '7–12', '0'],
+  [t('Unumkehrbare Aktionen ohne Freigabe', 'Irreversible actions without approval'), '8', '0'],
 ];
 const flow = [
-  [t('Sperren', 'Lock'), t('belegtes Projekt überspringen', 'skip a project in use')],
-  [t('Arbeiten', 'Work'), t('Unumkehrbares vorlegen', 'put irreversible steps to a person')],
+  [t('Übernehmen', 'Take on'), t('belegtes Projekt überspringen', 'skip a project in use')],
+  [t('Abarbeiten', 'Work through'), t('Unumkehrbares nur vorlegen', 'only put forward what is irreversible')],
   [t('Abschließen', 'Close'), t('Prüfsummen, sonst Abbruch', 'checksums, else stop')],
   [t('Übergeben', 'Hand over'), t('Befunde aller Läufe', 'findings from all runs')],
 ];
 ---
 <div class="demo runner-demo" data-panel="runner">
-  <div class="demo-top"><span class="micro">{t('04 / AUTOMATISCHE LÄUFE', '04 / UNATTENDED RUNS')}</span><span class="demo-tag">{t('Erfundene Beispielorganisation', 'Invented example organisation')}</span></div>
+  <div class="demo-top"><span class="micro">{t('04 / ARBEIT OHNE ANSTOSS', '04 / WORK THAT RUNS ITSELF')}</span><span class="demo-tag">{t('Erfundene Beispielorganisation', 'Invented example organisation')}</span></div>
   <ol class="chain-steps" aria-label={t('Ablauf eines Laufs', 'Steps of a run')}>
     {flow.map(([name, note], i) => <li><span class="chain-node">{i + 1}</span><b>{name}</b><small>{note}</small></li>)}
   </ol>
