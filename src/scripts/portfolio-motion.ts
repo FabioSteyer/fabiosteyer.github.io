@@ -42,7 +42,7 @@ export function createMotion(initiallyReduced: boolean) {
   let writeRoot: HTMLElement | undefined;
   const panelTimelines = new Map<HTMLElement, gsap.core.Timeline>();
   const panelSplits = new Map<HTMLElement, SplitText>();
-  const panelSelector = '.chain-steps li,.chain-node,.chain-packet,.scan-bar,.prose-before mark,.prose-after,.prose-rule,.compare-table tbody tr,.cmp-bad,.cmp-good,.check-list li,.tick,.run-actors,.run-actor,.run-project,.run-project li,.run-handover,.run-hlines li,.build-strip li,.build-strip b,.build-strip span,.build-marker,.build-track,.fact-grid dt';
+  const panelSelector = '.chain-steps li,.chain-node,.chain-packet,.scan-bar,.prose-before mark,.prose-after,.prose-rule,.compare-table tbody tr,.cmp-bad,.cmp-good,.check-list li,.tick,.run-actors,.run-actor,.run-project,.run-project li,.run-handover,.run-hlines li,.build-strip li,.build-strip b,.build-strip span,.build-marker,.build-track,.fact-grid dt,.calc-list div,.order-list li,.order-list strong';
   let introSplit: SplitText | undefined;
   let layoutRef: (() => void) | undefined;
   const enterHooks: EnterHook[] = [];
@@ -523,6 +523,37 @@ export function createMotion(initiallyReduced: boolean) {
           tl.from(q('.compare-table tbody tr'), { opacity: .25, x: -8, duration: .4, stagger: .1, clearProps: 'transform,opacity' }, 6.6)
             .from(q('.cmp-bad'), { opacity: 0, y: -6, duration: .35, stagger: .1, clearProps: 'transform,opacity' }, 6.7)
             .from(q('.cmp-good'), { opacity: 0, scale: .5, transformOrigin: '0 50%', duration: .4, stagger: .1, ease: 'back.out(2)', clearProps: 'transform,opacity' }, 7.2);
+        }
+      }
+
+      if (root.dataset.panel === 'reorder') {
+        // Regel in vier Schritten, dann die Rechnung fuer einen Artikel Zeile fuer Zeile,
+        // dann die vier Bestellungen mit hochzaehlenden Summen; der gemeldete Lieferant pulst.
+        if (full) tl.from(steps, { opacity: .3, y: 8, duration: .4, stagger: .1, clearProps: 'transform,opacity' }, 0);
+        const at = runPacket(.3, .5);
+        const rows = Array.from(q('.calc-list div'));
+        if (full) {
+          tl.from(rows, { opacity: 0, x: -6, duration: .35, stagger: .22, clearProps: 'transform,opacity' }, at - .4);
+          const items = Array.from(q('.order-list li'));
+          const ordersAt = at - .4 + rows.length * .22 + .2;
+          tl.from(items, { opacity: 0, y: 8, duration: .4, stagger: .15, clearProps: 'transform,opacity' }, ordersAt);
+          q('[data-sum]').forEach((el, i) => {
+            const original = el.textContent ?? '';
+            const m = original.match(/\d+[.,]\d+/);
+            if (!m) return;
+            const target = Number(m[0].replace(',', '.'));
+            const state = { v: 0 };
+            const de = document.documentElement.lang === 'de';
+            const fmt = (v: number) => v.toFixed(2).replace('.', de ? ',' : '.');
+            tl.call(() => { el.textContent = original.replace(m[0], fmt(0)); }, [], 0);
+            tl.to(state, { v: target, duration: .8, ease: 'power2.out',
+              onUpdate: () => { el.textContent = original.replace(m[0], fmt(state.v)); },
+              onComplete: () => { el.textContent = original; } }, ordersAt + .1 + i * .15);
+          });
+          tl.fromTo(one('.order-list li.flagged'), { boxShadow: '0 0 0 0 #d98a4f00' }, { boxShadow: '0 0 0 3px #d98a4f44', duration: .35, yoyo: true, repeat: 3, clearProps: 'boxShadow' }, ordersAt + 1.2);
+        } else {
+          tl.fromTo(one('.calc-list div:last-child dd'), { color: '#9fd3b8' }, { color: '#d98a4f', duration: .3, yoyo: true, repeat: 1, clearProps: 'color' }, at - .2)
+            .fromTo(one('.order-list li.flagged'), { boxShadow: '0 0 0 0 #d98a4f00' }, { boxShadow: '0 0 0 3px #d98a4f44', duration: .35, yoyo: true, repeat: 1, clearProps: 'boxShadow' }, at + .2);
         }
       }
 

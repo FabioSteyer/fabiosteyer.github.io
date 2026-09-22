@@ -1,0 +1,46 @@
+---
+import type { Lang } from '../data/portfolio';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = (de: string, en: string) => lang === 'de' ? de : en;
+// Numbers from `python -m reorder propose --check` on the committed example data.
+const steps = [
+  [t('Zählen', 'Count'), t('letzte Zählung minus Verkäufe seitdem', 'last count minus sales since')],
+  [t('Verbrauch', 'Rate'), t('Verkäufe der letzten 14 Tage', 'sales of the last 14 days')],
+  [t('Reichweite', 'Projection'), t('Bestand am Liefertag', 'stock on delivery day')],
+  [t('Gebinde', 'Packs'), t('ganze Kisten bis zum Ziel', 'whole cases up to the target')],
+];
+// One planted article, as the rule sees it: Cola 0,33, stock 40, 6 a day, delivery in 2 days.
+const calc = [
+  [t('Bestand heute', 'stock today'), '40'],
+  [t('6 je Tag × 2 Tage', '6 a day × 2 days'), '− 12'],
+  [t('am Liefertag', 'on delivery day'), '28'],
+  [t('Minimum', 'minimum'), '48'],
+  [t('bis Ziel 144 fehlen', 'short of target 144'), '116'],
+  [t('Kisten à 24', 'cases of 24'), '5'],
+];
+const orders = [
+  ['Getraenke Nord', '3', '268,80', false],
+  ['Brauerei Falkenau', '3', '767,20', false],
+  ['Spirituosen Hensel', '3', '564,00', false],
+  ['Bar Bedarf Kruse', '1', '112,00', true],
+] as const;
+---
+<div class="demo reorder-demo" data-panel="reorder">
+  <div class="demo-top"><span class="micro">{t('06 / BESTELLVORSCHLAG', '06 / REORDER PROPOSAL')}</span><span class="demo-tag">{t('Erfundene Bar', 'Invented bar')}</span></div>
+  <ol class="chain-steps" aria-label={t('Die Regel in vier Schritten', 'The rule in four steps')}>
+    {steps.map(([name, note], i) => <li><span class="chain-node">{i + 1}</span><b>{name}</b><small>{note}</small></li>)}
+    <i class="chain-packet" aria-hidden="true"></i>
+  </ol>
+  <div class="reorder-pair">
+    <div class="prose-block calc-block">
+      <div class="file-label"><span>{t('Cola 0,33 · Keller A2', 'Cola 0.33 · cellar A2')}</span><span class="prose-count">{t('bestellen', 'order')}</span></div>
+      <dl class="calc-list">{calc.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+    </div>
+    <div class="prose-block orders-block">
+      <div class="file-label"><span>{t('Bestellung je Lieferant', 'Order per supplier')}</span><span class="prose-count">4 × CSV + TXT</span></div>
+      <ul class="order-list">{orders.map(([name, lines, sum, flag]) => <li class={flag ? 'flagged' : ''}><b>{name}</b><span>{lines} {t('Pos.', 'lines')}</span><strong data-sum>{sum} €</strong>{flag && <small>{t('unter Mindestbestellwert 150 €', 'below minimum order 150 €')}</small>}</li>)}</ul>
+    </div>
+  </div>
+  <div class="demo-bottom"><p class="demo-caption">{t('Zahlen aus dem Lauf über die mitgelieferten Beispieldaten: 10 von 10 Engpässen bestellt, 0 unnötig, 1 Lieferant gemeldet. Versendet wird nichts; die Bestellung endet als Datei.', 'Numbers from the run over the shipped example data: 10 of 10 shortages ordered, 0 unnecessary, 1 supplier flagged. Nothing is sent; the order ends as a file.')}</p><button type="button" class="replay" data-panel-replay hidden>{t('Ablauf wiederholen', 'Replay sequence')} <span aria-hidden="true">↻</span></button></div>
+</div>

@@ -155,8 +155,8 @@ export const projects: Project[] = [
     stackEn: 'Astro · GSAP · Playwright',
     eyebrow: 'ASTRO · GSAP · NODE TEST',
     statValue: '6',
-    statDe: 'Arbeitstage vom leeren Repository bis zu dieser Seite mit fünf Projekten.',
-    statEn: 'Working days from an empty repository to this page with five projects.',
+    statDe: 'Arbeitstage vom leeren Repository bis zu dieser Seite mit sechs Projekten.',
+    statEn: 'Working days from an empty repository to this page with six projects.',
     de: {
       title: 'Diese Website, mit KI-Werkzeugen in sechs Arbeitstagen gebaut',
       problem:
@@ -178,6 +178,38 @@ export const projects: Project[] = [
         'Over 30 commits across 6 working days, live since day two. 8 pages in two languages, 0 requests to third parties, 10 tests against the finished build, accessibility 100 in the Lighthouse run against the live address. The texts on this site went through the tool from the third project.',
       notShown:
         'Six working days does not mean six full days in a row; they are spread over two weeks. No backend, no form, no user data. The repository contains application texts and a photo and therefore carries no open licence. The site is deliberately not findable through search engines; it is reachable only through the shared link.',
+    },
+  },
+  {
+    repo: 'pos-reorder-proposal',
+    url: 'https://github.com/FabioSteyer/pos-reorder-proposal',
+    stackDe: 'Python · CSV · nur Standardbibliothek',
+    stackEn: 'Python · CSV · standard library only',
+    eyebrow: 'PYTHON · CSV · STANDARD LIBRARY',
+    statValue: '10 / 10',
+    statDe: 'Eingebaute Engpässe bestellt, Gebindezahl exakt. Keine unnötige Bestellung.',
+    statEn: 'Planted shortages ordered, pack counts exact. No unnecessary order.',
+    de: {
+      title: 'Bestellvorschlag aus den Zahlen des Kassensystems',
+      problem:
+        'Eine Bar bucht jeden Verkauf im Kassensystem und zählt einmal pro Woche die Regale. Bestellt wird trotzdem mit Notizblock im Keller. Wie viel von was reicht bis zur nächsten Lieferung, und in wie vielen Kisten? Vier Lieferanten, vier Formulare, jede Woche.',
+      approach:
+        'Das Werkzeug nimmt, was das System schon weiß, Verkäufe je Tag und die letzte Zählung, und rechnet je Artikel den Bestand heute, den Tagesverbrauch der letzten zwei Wochen und den Bestand am Liefertag. Fällt der unter das Minimum, wird in ganzen Gebinden bis zum Zielbestand bestellt. Artikel ohne Verkäufe werden gelistet statt bestellt, ein Lieferant unter Mindestbestellwert wird gemeldet statt aufgefüllt. Dazu eine Zählliste in Regalreihenfolge für die nächste Inventur.',
+      result:
+        'Erfundene Bar mit 33 Artikeln und 4 Lieferanten. Ein Generator baut vier Wochen Verkäufe und protokolliert, was er einbaut. Ergebnis: 10 von 10 Engpässen bestellt, Gebindezahl 10 von 10 exakt, 0 unnötige Bestellungen, 3 von 3 Grenzfällen unangetastet, 2 von 2 Artikel ohne Verbrauch gelistet, 1 Lieferant unter Mindestbestellwert gemeldet. 21 Tests, darunter einer, der zeigt, dass die Prüfung durchfallen kann.',
+      notShown:
+        'Kein echter Kassenexport; die Dateien sind nur so geformt. Kein Versand, die Bestellung endet als Datei je Lieferant, weil das Versandskript an der Bar begonnen und nie fertig wurde. Kein Forecast, ein Zwei-Wochen-Schnitt glättet Wochenenden und Ereignisse. Kein SQL, damals nicht und hier nicht.',
+    },
+    en: {
+      title: 'Order proposal from the numbers the till already has',
+      problem:
+        'A bar books every sale in its point-of-sale system and counts the shelves once a week. Ordering still happens with a notepad in the cellar. How much of what will last until the next delivery, and in how many cases? Four suppliers, four forms, every week.',
+      approach:
+        'The tool takes what the system already knows, sales per day and the last count, and works out per article the stock today, the daily consumption of the last two weeks and the stock on delivery day. If that falls below the minimum, it orders whole packs up to the target. Articles without sales go on a list instead of an order; a supplier below its minimum order value gets a flag, and nobody pads the order for it. Plus a count list in shelf order for the next inventory.',
+      result:
+        'An invented bar with 33 articles and 4 suppliers. A generator builds four weeks of sales and records what it plants. Result: 10 of 10 shortages ordered, pack count exact in 10 of 10, 0 unnecessary orders, 3 of 3 boundary cases left alone, 2 of 2 articles without consumption listed, 1 supplier flagged below its minimum. 21 tests, one of which shows that the check can fail.',
+      notShown:
+        'No real POS export; the files are only shaped like one. No sending, the order ends as a file per supplier because the sending script at the bar was started and never finished. No forecast, a two-week average flattens weekends and events. No SQL, neither then nor here.',
     },
   },
 ];

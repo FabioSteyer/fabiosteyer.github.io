@@ -6,6 +6,7 @@ import ConcurrencyDemo from './ConcurrencyDemo.astro';
 import ProseDemo from './ProseDemo.astro';
 import RunnerDemo from './RunnerDemo.astro';
 import SiteDemo from './SiteDemo.astro';
+import ReorderDemo from './ReorderDemo.astro';
 import ProjectCard from './ProjectCard.astro';
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
@@ -25,7 +26,7 @@ const label = (de: string, en: string) => lang === 'de' ? de : en;
       <div class="hero-copy"><p class="eyebrow">{t.eyebrow}</p><h1>{t.headline.map((line, i) => <span class="line-mask"><span class:list={['hero-line', i === 2 && 'italic']}>{line}</span></span>)}</h1><p class="hero-answer">{t.answer}</p><p class="hero-intro">{t.intro}</p><div class="cta-row"><a class="cta" href="#projekte">{t.explore}<span aria-hidden="true">↗</span></a><a class="text-link" href="#kontakt">{t.contact}</a></div><p class="availability"><i aria-hidden="true"></i>{t.availability}</p></div>
       <HeroArt lang={lang} />
     </section>
-    <div class="metrics wrap" data-reveal-group>{[lang === 'de' ? '≈ 3.000' : '≈ 3,000', '4 / 4', '83'].map((value, i) => <div class="metric" data-reveal><strong data-count>{value}</strong><div><span>{t.metrics[i]}</span><small class:list={[i > 0 && 'public-evidence']}>{i === 0 ? t.privateEvidence : t.publicEvidence}</small></div></div>)}</div>
+    <div class="metrics wrap" data-reveal-group>{[lang === 'de' ? '≈ 3.000' : '≈ 3,000', '4 / 4', '104'].map((value, i) => <div class="metric" data-reveal><strong data-count>{value}</strong><div><span>{t.metrics[i]}</span><small class:list={[i > 0 && 'public-evidence']}>{i === 0 ? t.privateEvidence : t.publicEvidence}</small></div></div>)}</div>
     <section class="section wrap" id="arbeitsweise">
       <div class="section-heading" data-reveal><p class="eyebrow">{t.workLabel}</p><h2><span class="line-mask"><span class="line">{t.workTitle}</span></span><span class="line-mask"><span class="line"><em>{t.workEm}</em></span></span></h2><p class="section-intro">{t.workIntro}</p></div>
       <div class="approach-line" aria-hidden="true"><i></i></div><ol class="approach-track" data-reveal-group>{t.steps.map(([title, body], i) => <li data-reveal><span class="step-node">0{i + 1}</span><h3>{title}</h3><p>{body}</p></li>)}</ol>
@@ -38,6 +39,7 @@ const label = (de: string, en: string) => lang === 'de' ? de : en;
       <article class="project project-prose" data-reveal><ProjectCard lang={lang} index={2}/><ProseDemo lang={lang}/></article>
       <article class="project project-runner" data-reveal><ProjectCard lang={lang} index={3}/><RunnerDemo lang={lang}/></article>
       <article class="project project-site" data-reveal><ProjectCard lang={lang} index={4}/><SiteDemo lang={lang}/></article>
+      <article class="project project-reorder" data-reveal><ProjectCard lang={lang} index={5}/><ReorderDemo lang={lang}/></article>
     </section>
     <section class="section background-section" id="hintergrund"><div class="wrap background-grid"><div data-reveal><p class="eyebrow">{t.backgroundLabel}</p><h2><span class="line-mask"><span class="line">{t.backgroundTitle}</span></span><span class="line-mask"><span class="line"><em>{t.backgroundEm}</em></span></span></h2><p>{t.background}</p><p>{t.practice}</p><a class="text-link" href={t.aboutPath}>{t.evidence} <span aria-hidden="true">↗</span></a></div><aside class="ai-note"><i class="note-rule" aria-hidden="true"></i><h3>{t.aiTitle}</h3><p>{t.ai}</p><span class="micro">{label('ENTSCHEIDUNG → CODE → PRÜFUNG', 'DECISION → CODE → VERIFICATION')}</span></aside></div></section>
     <section class="section contact-section wrap" id="kontakt"><div data-reveal><p class="eyebrow">{t.contactLabel}</p><h2><span class="line-mask"><span class="line">{t.contactTitle}</span></span><span class="line-mask"><span class="line"><em>{t.contactEm}</em></span></span></h2><p>{t.contactIntro}</p><a class="contact-email" href="mailto:steyerfabio@gmail.com">steyerfabio@gmail.com <span aria-hidden="true">↗</span></a></div><div class="contact-links"><a class="text-link" href="https://www.linkedin.com/in/fabio-steyer-795a0a200">LinkedIn ↗</a><a class="text-link" href="https://github.com/FabioSteyer">GitHub ↗</a><span>{label('Berlin, Deutschland', 'Berlin, Germany')}</span></div></section>
