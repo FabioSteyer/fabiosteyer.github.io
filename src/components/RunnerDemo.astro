@@ -11,21 +11,35 @@ const rows = [
   [t('Aufgaben doppelt erledigt', 'Tasks done twice'), '7–12', '0'],
   [t('Unumkehrbare Aktionen ohne Freigabe', 'Irreversible actions without approval'), '8', '0'],
 ];
-const flow = [
-  [t('Übernehmen', 'Take on'), t('belegtes Projekt überspringen', 'skip a project in use')],
-  [t('Abarbeiten', 'Work through'), t('Unumkehrbares nur vorlegen', 'only put forward what is irreversible')],
-  [t('Abschließen', 'Close'), t('Prüfsummen, sonst Abbruch', 'checksums, else stop')],
-  [t('Übergeben', 'Hand over'), t('Befunde aller Läufe', 'findings from all runs')],
+// The three invented projects and their task verbs, as in example.py of the
+// repository; verbs marked irreversible there are marked here.
+const verb = (v: string) => ({ note: t('notieren', 'note'), update: t('aktualisieren', 'update'), send: t('senden', 'send'), publish: t('veröffentlichen', 'publish'), pay: t('zahlen', 'pay'), delete: t('löschen', 'delete') }[v]);
+const irreversible = ['send', 'publish', 'delete', 'pay'];
+const projects: [string, string[]][] = [
+  ['atlas', ['note', 'update', 'send', 'note']],
+  ['birch', ['update', 'publish', 'note']],
+  ['cedar', ['note', 'update', 'pay', 'note', 'delete']],
 ];
+const actors = [['a', t('Lauf A', 'Run A')], ['b', t('Lauf B', 'Run B')], ['m', t('Person', 'Person')]];
 ---
 <div class="demo runner-demo" data-panel="runner">
   <div class="demo-top"><span class="micro">{t('04 / ARBEIT OHNE ANSTOSS', '04 / WORK THAT RUNS ITSELF')}</span><span class="demo-tag">{t('Erfundene Beispielorganisation', 'Invented example organisation')}</span></div>
-  <ol class="chain-steps" aria-label={t('Ablauf eines Laufs', 'Steps of a run')}>
-    {flow.map(([name, note], i) => <li><span class="chain-node">{i + 1}</span><b>{name}</b><small>{note}</small></li>)}
-  </ol>
+  <div class="run-board" aria-hidden="true">
+    <div class="run-actors">{actors.map(([id, label]) => <span class="run-actor" data-actor={id}>{label}</span>)}</div>
+    <div class="run-projects">
+      {projects.map(([id, verbs]) => <div class="run-project" data-project={id}>
+        <div class="run-head"><b>{id}</b><span class="run-state"></span></div>
+        <ul>{verbs.map(v => <li class={irreversible.includes(v) ? 'irr' : ''}><i class="run-box"></i>{verb(v)}</li>)}</ul>
+      </div>)}
+    </div>
+    <div class="run-handover">
+      <div class="file-label"><span>handover.md</span><span class="run-hcount">8 / 8</span></div>
+      <ul class="run-hlines">{Array.from({ length: 8 }, () => <li></li>)}</ul>
+    </div>
+  </div>
   <table class="compare-table">
     <thead><tr><th scope="col">{t('Zwei Läufe und eine Person, gleichzeitig', 'Two runs and one person, at the same time')}</th><th scope="col">{t('ohne Protokoll', 'without protocol')}</th><th scope="col">{t('mit Protokoll', 'with protocol')}</th></tr></thead>
     <tbody>{rows.map(([label, a, b]) => <tr><th scope="row">{label}</th><td class="cmp-bad">{a}</td><td class="cmp-good">{b}</td></tr>)}</tbody>
   </table>
-  <p class="demo-caption">{t('Aus den Dateien gezählt, nicht aus den Meldungen der Beteiligten. Wie viele Aufgaben doppelt erledigt werden, hängt vom Zeitpunkt ab; die Tabelle im Repository sagt das dazu.', 'Counted from the files rather than from what the participants report. How many tasks get done twice depends on timing; the table in the repository says so.')}</p>
+  <div class="demo-bottom"><p class="demo-caption">{t('Ablauf oben nachgestellt aus dem Vergleichslauf im Repository, Aufgaben und Projekte wie dort. Die Tabelle ist aus den Dateien gezählt; wie viele Aufgaben ohne Protokoll doppelt erledigt werden, hängt vom Zeitpunkt ab.', 'The sequence above re-enacts the comparison run in the repository, tasks and projects as there. The table is counted from the files; how many tasks get done twice without the protocol depends on timing.')}</p><button type="button" class="replay" data-panel-replay hidden>{t('Ablauf wiederholen', 'Replay sequence')} <span aria-hidden="true">↻</span></button></div>
 </div>

@@ -87,8 +87,18 @@ document.querySelectorAll<HTMLElement>('[data-concurrency]').forEach(root => {
   onMotion.push(motion => motion.onEnter(root, run));
 });
 
-// Statische Panels der Projekte 3 bis 5 laufen beim ersten Sichtbarwerden einmal auf.
-document.querySelectorAll<HTMLElement>('[data-panel]').forEach(root => onMotion.push(motion => motion.onEnter(root, () => motion.panel(root))));
+// Panels der Projekte 3 bis 5: beim ersten Sichtbarwerden voller Aufbau, bei jedem
+// weiteren Eintritt (zurueck- oder weitergescrollt) nur die Bewegungsakzente, damit
+// Text und Zahlen beim erneuten Lesen nicht verschwinden. Der Knopf wiederholt alles.
+document.querySelectorAll<HTMLElement>('[data-panel]').forEach(root => {
+  const replay = root.querySelector<HTMLButtonElement>('[data-panel-replay]');
+  replay?.addEventListener('click', () => motion?.panel(root, 'full'));
+  onMotion.push(motion => {
+    if (replay) replay.hidden = false;
+    motion.onEnter(root, () => motion.panel(root, 'full'));
+    motion.onReturn(root, () => motion.panel(root, 'light'));
+  });
+});
 
 const toggle = document.querySelector<HTMLButtonElement>('[data-motion-toggle]');
 const syncPreference = () => {

@@ -3,7 +3,7 @@ import type { Lang } from '../data/portfolio';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = (de: string, en: string) => lang === 'de' ? de : en;
-// One sentence from the invented example letter, before and after the procedure.
+// One sentence from the invented example text, before and after the procedure.
 // Numbers are the measured run over examples/letter_en.md in the repository.
 const before = t(
   'Ich suche nicht irgendeine Stelle, sondern eine, in der die Abläufe noch entstehen.',
@@ -25,18 +25,20 @@ const steps = [
   <div class="demo-top"><span class="micro">{t('03 / TEXTPRÜFUNG', '03 / TEXT CHECK')}</span><span class="demo-tag">{t('Erfundener Beispieltext', 'Invented example text')}</span></div>
   <ol class="chain-steps" aria-label={t('Ablauf der Prüfung', 'Steps of the check')}>
     {steps.map(([name, note], i) => <li><span class="chain-node">{i + 1}</span><b>{name}</b><small>{note}</small></li>)}
+    <i class="chain-packet" aria-hidden="true"></i>
   </ol>
   <div class="prose-pair">
     <div class="prose-block prose-before">
+      <i class="scan-bar" aria-hidden="true"></i>
       <div class="file-label"><span>{t('vorher', 'before')}</span><span class="prose-count">FAIL 6 · WARN 4</span></div>
       <p><mark>{before}</mark></p>
       <small class="prose-rule">{rule}</small>
     </div>
     <div class="prose-block prose-after">
       <div class="file-label"><span>{t('nachher', 'after')}</span><span class="prose-count" data-countdown="6,4">FAIL 0 · WARN 0</span></div>
-      <p>{after}</p>
+      <p data-words>{after}</p>
       <small class="prose-rule">{t('Vorschlag 1, von der Regelprüfung bestätigt', 'Suggestion 1, confirmed by the rule check')}</small>
     </div>
   </div>
-  <p class="demo-caption">{t('Ein Satz aus dem englischen Beispieltext, hier übersetzt. Die Zähler stammen aus dem gemessenen Lauf über den ganzen Text. Zwei Runden, fünf Vorschläge übernommen, keiner verworfen.', 'One sentence from the example text. The counters come from the measured run over the whole text. Two rounds, five suggestions applied, none rejected.')}</p>
+  <div class="demo-bottom"><p class="demo-caption">{t('Ein Satz aus dem englischen Beispieltext, hier übersetzt. Die Zähler stammen aus dem gemessenen Lauf über den ganzen Text. Zwei Runden, fünf Vorschläge übernommen, keiner verworfen.', 'One sentence from the example text. The counters come from the measured run over the whole text. Two rounds, five suggestions applied, none rejected.')}</p><button type="button" class="replay" data-panel-replay hidden>{t('Ablauf wiederholen', 'Replay sequence')} <span aria-hidden="true">↻</span></button></div>
 </div>

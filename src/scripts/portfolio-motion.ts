@@ -41,15 +41,24 @@ export function createMotion(initiallyReduced: boolean) {
   let invoiceRoot: HTMLElement | undefined;
   let writeRoot: HTMLElement | undefined;
   const panelTimelines = new Map<HTMLElement, gsap.core.Timeline>();
-  const panelSelector = '.chain-steps li,.chain-node,.prose-before mark,.prose-after,.compare-table tbody tr,.cmp-bad,.cmp-good,.check-list li,.tick';
+  const panelSplits = new Map<HTMLElement, SplitText>();
+  const panelSelector = '.chain-steps li,.chain-node,.chain-packet,.scan-bar,.prose-before mark,.prose-after,.prose-rule,.compare-table tbody tr,.cmp-bad,.cmp-good,.check-list li,.tick,.run-actors,.run-actor,.run-project,.run-project li,.run-handover,.run-hlines li,.build-strip li,.build-strip b,.build-strip span,.build-marker,.build-track,.fact-grid dt';
   let introSplit: SplitText | undefined;
   let layoutRef: (() => void) | undefined;
   const enterHooks: EnterHook[] = [];
+  const returnHooks: EnterHook[] = [];
   const variant = (document.documentElement.dataset.variant ?? 'a') as Variant;
   // Startdeckkraft .85: Elemente unterhalb des sichtbaren Bereichs warten in diesem
   // Zustand; darunter faellt gedaempfter Text unter 4,5:1 (Lighthouse, 16.09.2026).
   const reveal = { y: 25, opacity: .85, duration: .8, ease: 'power3.out', clearProps: 'transform,opacity' } as const;
   const watchEnter = ({ element, run }: EnterHook) => ScrollTrigger.create({ trigger: element, start: 'top 78%', once: true, onEnter: run });
+  // Erneuter Eintritt: der erste onEnter gehoert dem vollen Aufbau (watchEnter), danach
+  // zaehlt jedes Zurueck- (onEnterBack) oder Wiederkommen (onEnter) als Rueckkehr.
+  const watchReturn = ({ element, run }: EnterHook) => {
+    let seen = false;
+    ScrollTrigger.create({ trigger: element, start: 'top 78%', end: 'bottom 22%',
+      onEnter: () => { if (seen) run(); seen = true; }, onEnterBack: run });
+  };
 
   const resetDemos = () => {
     invoiceTimeline?.kill();
@@ -60,10 +69,15 @@ export function createMotion(initiallyReduced: boolean) {
     finishWrites = undefined;
     panelTimelines.forEach((tl, root) => {
       tl.kill();
+      panelSplits.get(root)?.revert();
       gsap.set(root.querySelectorAll(panelSelector), { clearProps: 'all' });
+      root.querySelectorAll('.locked,.held,.done,.wait,.lit').forEach(el => el.classList.remove('locked', 'held', 'done', 'wait', 'lit'));
+      root.querySelectorAll<HTMLElement>('.run-state').forEach(el => { el.textContent = ''; });
       root.querySelectorAll<HTMLElement>('[data-countdown]').forEach(el => { if (el.dataset.final) el.textContent = el.dataset.final; });
+      root.querySelectorAll<HTMLElement>('.run-hcount').forEach(el => { el.textContent = '8 / 8'; });
     });
     panelTimelines.clear();
+    panelSplits.clear();
   };
 
   /** Kennzahlen zaehlen hoch; am Ende steht exakt der Text aus dem Markup. */
@@ -270,6 +284,7 @@ export function createMotion(initiallyReduced: boolean) {
         gsap.from(element, { ...reveal, scrollTrigger: { trigger: element, start: 'top 94%', once: true } });
       });
       enterHooks.forEach(watchEnter);
+      returnHooks.forEach(watchReturn);
 
       // Arbeitsweise: Laufline ueber die vier Schritte, Marken leuchten auf.
       // a: zeitbasiert beim ersten Sichtbarwerden; b/c: an den Scrollweg gebunden, geglaettet.
@@ -346,6 +361,11 @@ export function createMotion(initiallyReduced: boolean) {
       enterHooks.push(hook);
       if (!disabled) context?.add(() => watchEnter(hook));
     },
+    onReturn(element: Element, run: () => void) {
+      const hook = { element, run };
+      returnHooks.push(hook);
+      if (!disabled) context?.add(() => watchReturn(hook));
+    },
     setReduced(value: boolean) { if (disabled === value) return; disabled = value; resetDemos(); setup(); },
     invoice(root: HTMLElement) {
       invoiceTimeline?.kill();
@@ -359,43 +379,194 @@ export function createMotion(initiallyReduced: boolean) {
         .to(root.querySelector('.match-orbit'), { rotation: 180, duration: .65, ease: 'power2.inOut' }, .08)
         .from(root.querySelector('.demo-result'), { y: 7, opacity: .45, duration: .3, clearProps: 'transform,opacity' }, .3);
     },
-    /** Statische Panels (Textpruefung, automatische Laeufe, diese Website): laufen
-     *  einmal beim ersten Sichtbarwerden, zeitbasiert, Endzustand = Markup. */
-    panel(root: HTMLElement) {
+    /** Panels der Karten 3 bis 5. 'full' baut den Inhalt auf (erster Anblick, Wiederholen-
+     *  Knopf); 'light' spielt nur die Bewegungsakzente, ohne Text oder Zahlen zu verstecken
+     *  (erneuter Eintritt beim Zurueck- oder Weiterscrollen). Endzustand = Markup. */
+    panel(root: HTMLElement, mode: 'full' | 'light' = 'full') {
+      if (mode === 'light' && panelTimelines.get(root)?.isActive()) return;
       panelTimelines.get(root)?.kill();
+      panelSplits.get(root)?.revert();
+      panelSplits.delete(root);
       gsap.set(root.querySelectorAll(panelSelector), { clearProps: 'all' });
-      if (disabled) return;
-      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-      panelTimelines.set(root, tl);
-      const steps = root.querySelectorAll('.chain-steps li');
-      let at = 0;
-      if (steps.length) {
-        tl.from(steps, { opacity: .3, y: 8, duration: .45, stagger: .24, clearProps: 'transform,opacity' }, 0)
-          .from(root.querySelectorAll('.chain-node'), { color: '#658573', duration: .35, stagger: .24, clearProps: 'color' }, .08);
-        at = .24 * steps.length + .2;
+      const full = mode === 'full';
+      root.querySelectorAll('.locked,.held').forEach(el => el.classList.remove('locked', 'held'));
+      if (full) {
+        // Nur der volle Aufbau nimmt Haken, Marken und Zaehler zurueck; die leichte
+        // Wiederholung laesst den gelesenen Inhalt stehen.
+        root.querySelectorAll('.done,.wait,.lit').forEach(el => el.classList.remove('done', 'wait', 'lit'));
+        root.querySelectorAll<HTMLElement>('.run-state').forEach(el => { el.textContent = ''; });
+        root.querySelectorAll<HTMLElement>('[data-countdown]').forEach(el => { if (el.dataset.final) el.textContent = el.dataset.final; });
       }
+      if (disabled) return;
+      const tl = gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: () => { panelSplits.get(root)?.revert(); panelSplits.delete(root); } });
+      panelTimelines.set(root, tl);
+      const q = (sel: string) => root.querySelectorAll<HTMLElement>(sel);
+      const one = (sel: string) => root.querySelector<HTMLElement>(sel);
+
+      // Paket laeuft ueber die Kettenknoten; Knoten leuchten, wenn es ankommt.
+      const packet = one('.chain-packet');
+      const steps = Array.from(q('.chain-steps li'));
+      const runPacket = (at: number, hop: number) => {
+        if (!packet || !steps.length) return at;
+        const ol = packet.parentElement!;
+        const xAt = (li: HTMLElement) => li.offsetLeft + 14 - packet.offsetLeft;
+        tl.set(packet, { x: xAt(steps[0]), opacity: 1 }, at);
+        steps.forEach((li, i) => {
+          const t0 = at + i * hop;
+          if (i) tl.to(packet, { x: xAt(li), duration: hop * .7, ease: 'power1.inOut' }, t0 - hop * .7);
+          tl.fromTo(li.querySelector('.chain-node'), { color: '#658573' }, { color: '#d98a4f', duration: .25, clearProps: 'color' }, t0)
+            .fromTo(li, { borderColor: '#65857345' }, { borderColor: '#d98a4f99', duration: .25, yoyo: true, repeat: 1, clearProps: 'borderColor' }, t0);
+        });
+        tl.to(packet, { opacity: 0, duration: .3 }, at + (steps.length - 1) * hop + .3);
+        void ol;
+        return at + (steps.length - 1) * hop + .6;
+      };
+
       if (root.dataset.panel === 'prose') {
-        const counter = root.querySelector<HTMLElement>('[data-countdown]');
-        tl.from(root.querySelector('.prose-before mark'), { backgroundColor: 'rgba(0,0,0,0)', duration: .6, clearProps: 'backgroundColor' }, at)
-          .from(root.querySelector('.prose-after'), { y: 14, opacity: 0, duration: .55, clearProps: 'transform,opacity' }, at + .5);
-        if (counter) {
-          const [fail, warn] = (counter.dataset.countdown ?? '').split(',').map(Number);
-          counter.dataset.final = counter.textContent ?? '';
-          const state = { f: fail, w: warn };
-          tl.call(() => { counter.textContent = `FAIL ${fail} · WARN ${warn}`; }, [], 0);
-          tl.to(state, { f: 0, w: 0, duration: .9, ease: 'power1.inOut',
-            onUpdate: () => { counter.textContent = `FAIL ${Math.round(state.f)} · WARN ${Math.round(state.w)}`; },
-            onComplete: () => { counter.textContent = counter.dataset.final!; } }, at + .7);
+        const mark = one('.prose-before mark');
+        const scan = one('.scan-bar');
+        const counter = one('[data-countdown]');
+        const afterP = one('[data-words]');
+        let at = 0;
+        if (full) tl.from(steps, { opacity: .3, y: 8, duration: .4, stagger: .1, clearProps: 'transform,opacity' }, 0);
+        // Scanbalken ueber den Vorher-Satz, die Fundstelle leuchtet auf.
+        if (scan) {
+          const h = scan.parentElement!.offsetHeight;
+          tl.fromTo(scan, { y: 0, opacity: 0 }, { opacity: 1, duration: .15 }, .3)
+            .to(scan, { y: h, duration: .9, ease: 'power1.inOut' }, .3)
+            .to(scan, { opacity: 0, duration: .2 }, 1.1);
+        }
+        tl.fromTo(mark, { backgroundColor: 'rgba(0,0,0,0)' }, { backgroundColor: '#e4735a55', duration: .3 }, .75)
+          .to(mark, { backgroundColor: '#e4735a22', duration: .5, clearProps: 'backgroundColor' }, 1.15);
+        if (full) tl.from(one('.prose-before .prose-rule'), { y: 6, opacity: 0, duration: .4, clearProps: 'transform,opacity' }, .9);
+        at = runPacket(1.3, .55);
+        if (full) {
+          tl.from(one('.prose-after'), { y: 14, opacity: 0, duration: .5, clearProps: 'transform,opacity' }, at - .3);
+          if (afterP) {
+            const split = SplitText.create(afterP, { type: 'words', wordsClass: 'word', aria: 'none' });
+            panelSplits.set(root, split);
+            tl.from(split.words, { yPercent: 60, opacity: 0, duration: .45, stagger: .05, ease: 'power3.out' }, at - .1);
+          }
+          if (counter) {
+            const [fail, warn] = (counter.dataset.countdown ?? '').split(',').map(Number);
+            counter.dataset.final = counter.textContent ?? '';
+            const state = { f: fail, w: warn };
+            tl.call(() => { counter.textContent = `FAIL ${fail} · WARN ${warn}`; }, [], 0);
+            tl.to(state, { f: 0, w: 0, duration: .9, ease: 'power1.inOut',
+              onUpdate: () => { counter.textContent = `FAIL ${Math.round(state.f)} · WARN ${Math.round(state.w)}`; },
+              onComplete: () => { counter.textContent = counter.dataset.final!; } }, at);
+          }
+          tl.from(one('.prose-after .prose-rule'), { opacity: 0, duration: .4, clearProps: 'opacity' }, at + .8);
+        } else {
+          tl.fromTo(one('.prose-after'), { boxShadow: '0 0 0 0 #9fd3b800' }, { boxShadow: '0 0 0 3px #9fd3b833', duration: .3, yoyo: true, repeat: 1, clearProps: 'boxShadow' }, at - .2);
         }
       }
+
       if (root.dataset.panel === 'runner') {
-        tl.from(root.querySelectorAll('.compare-table tbody tr'), { opacity: .25, x: -8, duration: .4, stagger: .12, clearProps: 'transform,opacity' }, at)
-          .from(root.querySelectorAll('.cmp-bad'), { opacity: 0, y: -6, duration: .35, stagger: .12, clearProps: 'transform,opacity' }, at + .15)
-          .from(root.querySelectorAll('.cmp-good'), { opacity: 0, scale: .5, transformOrigin: '0 50%', duration: .4, stagger: .12, ease: 'back.out(2)', clearProps: 'transform,opacity' }, at + .75);
+        // Nachgestellt aus dem Vergleichslauf: Person haelt atlas, Lauf A nimmt birch,
+        // Lauf B nimmt cedar, beide ueberspringen atlas; Unumkehrbares wird vorgelegt;
+        // nach dem Ende der Sitzung erledigt Lauf A atlas; die Uebergabe fuellt sich.
+        const actors = { a: one('[data-actor=a]'), b: one('[data-actor=b]'), m: one('[data-actor=m]') };
+        const proj = (id: string) => one(`[data-project=${id}]`)!;
+        const lane = one('.run-actors')!;
+        const moveTo = (actor: HTMLElement | null, id: string, at: number) => {
+          if (!actor) return;
+          tl.to(actor, { x: () => proj(id).offsetLeft + proj(id).offsetWidth / 2 - (actor.offsetLeft + actor.offsetWidth / 2), duration: .45, ease: 'power2.inOut' }, at);
+        };
+        const setState = (id: string, text: string, cls: '' | 'locked' | 'held', at: number) => {
+          tl.call(() => { const p = proj(id); p.classList.remove('locked', 'held'); if (cls) p.classList.add(cls); p.querySelector('.run-state')!.textContent = text; }, [], at);
+        };
+        const de = document.documentElement.lang === 'de';
+        const tx = (d: string, e: string) => de ? d : e;
+        const hlines = Array.from(q('.run-hlines li'));
+        const hcount = one('.run-hcount');
+        let done = 0;
+        const tick = (id: string, index: number, at: number) => {
+          const li = proj(id).querySelectorAll('li')[index] as HTMLElement;
+          const irr = li.classList.contains('irr');
+          tl.call(() => {
+            li.classList.add(irr ? 'wait' : 'done');
+            if (!irr && full) { done += 1; if (hcount) hcount.textContent = `${done} / 8`; }
+          }, [], at);
+          if (!irr && full) tl.fromTo(hlines[Math.min(done, 7)] ?? hlines[7], { scaleX: 0, transformOrigin: 'left' }, { scaleX: 1, duration: .3, clearProps: 'transform' }, at + .05);
+          if (irr) tl.fromTo(li, { x: 0 }, { x: 3, duration: .12, yoyo: true, repeat: 1, clearProps: 'transform' }, at);
+        };
+        if (full) {
+          tl.set(hlines, { scaleX: 0, transformOrigin: 'left' }, 0);
+          tl.call(() => { if (hcount) hcount.textContent = '0 / 8'; }, [], 0);
+          tl.from([lane, ...Array.from(q('.run-project')), one('.run-handover')], { opacity: 0, y: 8, duration: .4, stagger: .08, clearProps: 'transform,opacity' }, 0);
+        }
+        // t = .5: Person haelt atlas; Laeufe versuchen atlas, springen weiter.
+        moveTo(actors.m, 'atlas', .5); setState('atlas', tx('Sitzung offen', 'session open'), 'held', .9);
+        // Die Laeufe pruefen atlas (kurzes Aufleuchten), finden es belegt und gehen weiter.
+        tl.fromTo(proj('atlas'), { boxShadow: 'inset 0 0 0 1px #9fd3b833' }, { boxShadow: 'inset 0 0 0 3px #d98a4f66', duration: .2, yoyo: true, repeat: 3, clearProps: 'boxShadow' }, 1.1);
+        tl.call(() => { proj('atlas').querySelector('.run-state')!.textContent = tx('belegt, übersprungen', 'in use, skipped'); }, [], 1.3);
+        moveTo(actors.a, 'birch', 1.5); setState('birch', tx('Lauf A', 'run A'), 'locked', 1.9);
+        moveTo(actors.b, 'cedar', 1.6); setState('cedar', tx('Lauf B', 'run B'), 'locked', 2.0);
+        // Arbeit in birch und cedar, versetzt.
+        const birchAt = [2.1, 2.5, 2.9], cedarAt = [2.2, 2.6, 3.0, 3.4, 3.8];
+        birchAt.forEach((t0, i) => tick('birch', i, t0));
+        cedarAt.forEach((t0, i) => tick('cedar', i, t0));
+        setState('birch', tx('abgeschlossen', 'complete'), '', 3.3);
+        setState('cedar', tx('abgeschlossen', 'complete'), '', 4.2);
+        // Sitzung endet, Lauf A holt atlas nach.
+        tl.call(() => { proj('atlas').querySelector('.run-state')!.textContent = tx('Sitzung geschlossen', 'session closed'); proj('atlas').classList.remove('held'); }, [], 3.6);
+        moveTo(actors.m, 'atlas', 3.6);
+        tl.to(actors.m, { x: 0, duration: .45, ease: 'power2.inOut', clearProps: 'transform' }, 3.7);
+        moveTo(actors.a, 'atlas', 3.9); setState('atlas', tx('Lauf A', 'run A'), 'locked', 4.3);
+        [4.5, 4.9, 5.3, 5.7].forEach((t0, i) => tick('atlas', i, t0));
+        setState('atlas', tx('abgeschlossen', 'complete'), '', 6.1);
+        tl.to([actors.a, actors.b], { x: 0, duration: .5, ease: 'power2.inOut', clearProps: 'transform', stagger: .1 }, 6.2);
+        tl.call(() => { proj('atlas').querySelector('.run-state')!.textContent = tx('Übergabe geschrieben', 'handover written'); }, [], 6.4);
+        tl.fromTo(one('.run-handover'), { boxShadow: '0 0 0 0 #9fd3b800' }, { boxShadow: '0 0 0 3px #9fd3b833', duration: .35, yoyo: true, repeat: 1, clearProps: 'boxShadow' }, 6.4);
+        if (full) {
+          tl.from(q('.compare-table tbody tr'), { opacity: .25, x: -8, duration: .4, stagger: .1, clearProps: 'transform,opacity' }, 6.6)
+            .from(q('.cmp-bad'), { opacity: 0, y: -6, duration: .35, stagger: .1, clearProps: 'transform,opacity' }, 6.7)
+            .from(q('.cmp-good'), { opacity: 0, scale: .5, transformOrigin: '0 50%', duration: .4, stagger: .1, ease: 'back.out(2)', clearProps: 'transform,opacity' }, 7.2);
+        }
       }
+
       if (root.dataset.panel === 'site') {
-        tl.from(root.querySelectorAll('.check-list li'), { opacity: .35, duration: .4, stagger: .2, clearProps: 'opacity' }, .3)
-          .from(root.querySelectorAll('.tick'), { scale: 0, transformOrigin: '50% 50%', duration: .45, stagger: .2, ease: 'back.out(3)', clearProps: 'transform' }, .35);
+        // Zeitmarke laeuft die sechs Arbeitstage ab, dann zaehlen die Fakten hoch.
+        const days = Array.from(q('.build-strip li'));
+        const marker = one('.build-marker');
+        const track = one('.build-track');
+        const hop = .42;
+        if (marker && track && days.length && getComputedStyle(marker).display !== 'none') {
+          const xAt = (li: HTMLElement) => li.offsetLeft + 6 - marker.offsetLeft;
+          tl.set(track, { '--progress': 0 }, 0).set(marker, { x: xAt(days[0]), opacity: 1 }, 0);
+          days.forEach((li, i) => {
+            const t0 = .2 + i * hop;
+            if (i) tl.to(marker, { x: xAt(li), duration: hop * .8, ease: 'power1.inOut' }, t0 - hop * .8)
+              .to(track, { '--progress': i / (days.length - 1), duration: hop * .8, ease: 'power1.inOut' }, t0 - hop * .8);
+            tl.call(() => li.classList.add('lit'), [], t0);
+            if (full) tl.from(li.querySelectorAll('b,span'), { opacity: 0, y: 5, duration: .35, stagger: .05, clearProps: 'transform,opacity' }, t0);
+          });
+          tl.to(marker, { opacity: 0, duration: .3 }, .2 + days.length * hop);
+          tl.set(track, { clearProps: '--progress' }, .2 + days.length * hop + .3);
+        } else if (full) {
+          tl.from(days, { opacity: 0, y: 5, duration: .35, stagger: .08, clearProps: 'transform,opacity' }, .1);
+          days.forEach((li, i) => tl.call(() => li.classList.add('lit'), [], .2 + i * .1));
+        }
+        const factsAt = full ? .2 + days.length * hop : .2;
+        if (full) {
+          q('[data-fact]').forEach((dt, i) => {
+            const original = dt.textContent ?? '';
+            const match = original.match(/\d+/);
+            if (!match) return;
+            const target = Number(match[0]);
+            const state = { v: 0 };
+            dt.style.minWidth = dt.offsetWidth + 'px';
+            tl.call(() => { dt.textContent = original.replace(match[0], '0'); }, [], 0);
+            tl.to(state, { v: target, duration: 1, ease: 'power2.out',
+              onUpdate: () => { dt.textContent = original.replace(match[0], String(Math.round(state.v))); },
+              onComplete: () => { dt.textContent = original; dt.style.minWidth = ''; } }, factsAt + i * .12);
+          });
+          tl.from(q('.check-list li'), { opacity: .35, duration: .4, stagger: .18, clearProps: 'opacity' }, factsAt + .6)
+            .from(q('.tick'), { scale: 0, transformOrigin: '50% 50%', duration: .45, stagger: .18, ease: 'back.out(3)', clearProps: 'transform' }, factsAt + .65);
+        } else {
+          tl.fromTo(q('.fact-grid dt'), { color: '#9fd3b8' }, { color: '#d98a4f', duration: .25, stagger: .08, yoyo: true, repeat: 1, clearProps: 'color' }, factsAt);
+        }
       }
     },
     writes(root: HTMLElement, trace: WriteEvent[], render: (event: WriteEvent) => void, finish: () => void) {

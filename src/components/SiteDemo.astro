@@ -3,9 +3,17 @@ import type { Lang } from '../data/portfolio';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = (de: string, en: string) => lang === 'de' ? de : en;
-// 8 real pages; the four redirect pages are not counted. Lighthouse: run of
-// 16.09.2026 against the live address (see the Umsetzungsplan).
-// Working days = distinct commit dates (git log, 11.09. to 22.09.2026); commit count rounded down so it does not go stale.
+// Working days = distinct commit dates (git log, 11.09. to 22.09.2026); labels
+// summarise the commit messages of each day. Commit count rounded down so it
+// does not go stale.
+const days = [
+  ['11.09.', t('Gerüst und Gestaltung', 'scaffold and design')],
+  ['12.09.', t('live, Rechtstexte, Lighthouse', 'live, legal pages, Lighthouse')],
+  ['14.09.', t('Auslieferung über Actions', 'delivery via Actions')],
+  ['15.09.', t('Feinschliff', 'polish')],
+  ['16.09.', t('drei Varianten, Bewegung', 'three variants, motion')],
+  ['22.09.', t('fünf Projekte', 'five projects')],
+];
 const facts = [
   ['6', t('Arbeitstage, verteilt über zwei Wochen', 'working days, spread over two weeks')],
   ['30+', t('Commits, live seit dem zweiten Tag', 'commits, live since day two')],
@@ -23,10 +31,14 @@ const checks = [
 ---
 <div class="demo site-demo" data-panel="site">
   <div class="demo-top"><span class="micro">{t('05 / DIESE WEBSITE', '05 / THIS WEBSITE')}</span><span class="demo-tag">{t('Mit KI gebaut, von mir abgenommen', 'Built with AI, signed off by me')}</span></div>
-  <dl class="fact-grid">{facts.map(([n, label]) => <div><dt data-count>{n}</dt><dd>{label}</dd></div>)}</dl>
+  <ol class="build-strip" aria-label={t('Sechs Arbeitstage', 'Six working days')}>
+    <i class="build-track" aria-hidden="true"></i><i class="build-marker" aria-hidden="true"></i>
+    {days.map(([d, label]) => <li><b>{d}</b><span>{label}</span></li>)}
+  </ol>
+  <dl class="fact-grid">{facts.map(([n, label]) => <div><dt data-fact>{n}</dt><dd>{label}</dd></div>)}</dl>
   <div class="prose-block">
     <div class="file-label"><span>tests/site-build.test.mjs</span><span class="prose-count">10 / 10</span></div>
     <ul class="check-list">{checks.map(c => <li><i class="tick" aria-hidden="true">✓</i>{c}</li>)}</ul>
   </div>
-  <p class="demo-caption">{t('Alle Zahlen stammen aus dem Repository dieser Seite, die Arbeitstage aus den Commit-Daten. Dort lässt sich beides nachrechnen.', 'Every number comes from this site’s repository, the working days from the commit dates. Both can be checked there.')}</p>
+  <div class="demo-bottom"><p class="demo-caption">{t('Alle Zahlen stammen aus dem Repository dieser Seite, die Arbeitstage aus den Commit-Daten. Dort lässt sich beides nachrechnen.', 'Every number comes from this site’s repository, the working days from the commit dates. Both can be checked there.')}</p><button type="button" class="replay" data-panel-replay hidden>{t('Ablauf wiederholen', 'Replay sequence')} <span aria-hidden="true">↻</span></button></div>
 </div>
