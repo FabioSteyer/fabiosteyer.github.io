@@ -1,0 +1,42 @@
+---
+import type { Lang } from '../data/portfolio';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = (de: string, en: string) => lang === 'de' ? de : en;
+// One sentence from the invented example letter, before and after the chain.
+// Numbers are the measured run over examples/letter_en.md in the repository.
+const before = t(
+  'Ich suche nicht irgendeine Stelle, sondern eine, in der die Abläufe noch entstehen.',
+  'I am not applying for any operations role, but for one where the process is still being built.',
+);
+const after = t(
+  'Ich suche eine Stelle, in der die Abläufe noch entstehen.',
+  'I am applying for an operations role where the process is still being built.',
+);
+const rule = t('Antithese „nicht X, sondern Y“', 'antithesis "not X, but Y"');
+const steps = [
+  [t('Lint', 'Lint'), t('17 Regeln, deterministisch', '17 rules, deterministic')],
+  [t('Prüfer 1', 'Reviewer 1'), t('ohne Vorkenntnis', 'no prior knowledge')],
+  [t('Prüfer 2', 'Reviewer 2'), t('anderer Hersteller', 'different vendor')],
+  [t('Lint', 'Lint'), t('entscheidet, was bleibt', 'decides what stays')],
+];
+---
+<div class="demo prose-demo">
+  <div class="demo-top"><span class="micro">{t('03 / STILPRÜFKETTE', '03 / STYLE CHAIN')}</span><span class="demo-tag">{t('Erfundener Brief', 'Invented letter')}</span></div>
+  <ol class="chain-steps" aria-label={t('Ablauf der Kette', 'Steps of the chain')}>
+    {steps.map(([name, note], i) => <li><span class="chain-node">{i + 1}</span><b>{name}</b><small>{note}</small></li>)}
+  </ol>
+  <div class="prose-pair">
+    <div class="prose-block prose-before">
+      <div class="file-label"><span>{t('vorher', 'before')}</span><span class="prose-count">FAIL 6 · WARN 4</span></div>
+      <p><mark>{before}</mark></p>
+      <small class="prose-rule">{rule}</small>
+    </div>
+    <div class="prose-block prose-after">
+      <div class="file-label"><span>{t('nachher', 'after')}</span><span class="prose-count">FAIL 0 · WARN 0</span></div>
+      <p>{after}</p>
+      <small class="prose-rule">{t('Vorschlag von Prüfer 1, vom Linter bestätigt', 'Suggested by reviewer 1, confirmed by the linter')}</small>
+    </div>
+  </div>
+  <p class="demo-caption">{t('Ein Satz aus dem englischen Beispielbrief, hier übersetzt. Zahlen aus dem gemessenen Lauf über den ganzen Brief. Zwei Runden, fünf Vorschläge angewendet, keiner abgelehnt.', 'One sentence from the example letter. Numbers from the measured run over the whole letter. Two rounds, five suggestions applied, none rejected.')}</p>
+</div>

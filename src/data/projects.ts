@@ -11,6 +11,10 @@ export interface Project {
   url: string;
   stackDe: string;
   stackEn: string;
+  eyebrow: string;
+  statValue: string;
+  statDe: string;
+  statEn: string;
   de: ProjectText;
   en: ProjectText;
 }
@@ -21,6 +25,10 @@ export const projects: Project[] = [
     url: 'https://github.com/FabioSteyer/invoice-quote-reconciliation',
     stackDe: 'Python · pdfplumber · reportlab',
     stackEn: 'Python · pdfplumber · reportlab',
+    eyebrow: 'PYTHON · PDFPLUMBER · PYTEST',
+    statValue: '4 / 4',
+    statDe: 'Abweichungen erkannt. Keine Fehlalarme.',
+    statEn: 'Deviations detected. No false alarms.',
     de: {
       title: 'Rechnungen gegen Angebote prüfen',
       problem:
@@ -49,6 +57,10 @@ export const projects: Project[] = [
     url: 'https://github.com/FabioSteyer/concurrent-file-writes',
     stackDe: 'Python · nur Standardbibliothek',
     stackEn: 'Python · standard library only',
+    eyebrow: 'PYTHON · STANDARD LIBRARY',
+    statValue: '14 → 0',
+    statDe: 'Verlorene Einträge im dokumentierten Vergleichslauf.',
+    statEn: 'Lost entries in the documented comparison run.',
     de: {
       title: 'Gleichzeitige Schreibzugriffe ohne Server koordinieren',
       problem:
@@ -70,6 +82,38 @@ export const projects: Project[] = [
         'Same work, four processes, twenty writes expected: without coordination 14 lost and 18 chain gaps, with coordination 0 and 0. Neither run reports an error. That is exactly what makes this class of bug expensive. 18 tests.',
       notShown:
         'Not a distributed system: one machine, one filesystem. Not a lock manager: a single global lease serialises everything, which is right when writes are rare and wrong when they are not. Detecting undeclared changes hashes the whole tree and does not scale to hundreds of thousands of files.',
+    },
+  },
+  {
+    repo: 'prose-check-chain',
+    url: 'https://github.com/FabioSteyer/prose-check-chain',
+    stackDe: 'Python · nur Standardbibliothek',
+    stackEn: 'Python · standard library only',
+    eyebrow: 'PYTHON · REGEX · STANDARD LIBRARY',
+    statValue: '36 / 36',
+    statDe: 'Erwartete Befunde im Korpus gefunden. Keine Fehlalarme.',
+    statEn: 'Expected findings in the corpus raised. No false alarms.',
+    de: {
+      title: 'Musterhafte Sätze finden und ersetzen lassen',
+      problem:
+        'Ein Anschreiben, das nach Schablone klingt, wird überflogen. Die Konstruktionen, die diesen Eindruck erzeugen, sind wenige und regelmäßig. Der Gedankenstrich mitten im Satz, „nicht X, sondern Y", die Floskeln, drei kurze Wörter in Reihe, fünf gleich lange Sätze.',
+      approach:
+        'Ein deterministischer Linter findet diese Konstruktionen mit regulären Ausdrücken und zwei Satzstatistiken. Dahinter steht eine Kette. Der Text und die Befunde gehen an zwei Prüfer, einen ohne jede Vorkenntnis und ein Modell eines anderen Herstellers. Jeder Vorschlag wird einzeln angewendet und nur behalten, wenn der Linter danach nicht mehr harte Befunde zählt als vorher. Die Modelle haben nie das letzte Wort.',
+      result:
+        '17 Regeln für Deutsch und Englisch, geprüft an einem Korpus aus 50 erfundenen Sätzen mit 18 sauberen Fallen: 36 von 36 erwarteten Befunden gefunden, 0 Fehlalarme, 29 Tests. Der englische Beispielbrief geht durch die Kette von 6 harten Befunden auf 0. Der deutsche behält eine Warnung, weil die Umschreibungen alle Sätze gleich lang gemacht haben. Das steht so in der Ausgabe.',
+      notShown:
+        'Kein Detektor für maschinell geschriebene Texte, und keiner wird durch Umkehrung daraus. Die Regelliste ist meine eigene, ohne Literaturgrundlage. Die mitgelieferten Prüferantworten sind gekennzeichnete Stand-ins, keine aufgezeichneten Modellantworten; echte Läufe brauchen zwei API-Schlüssel.',
+    },
+    en: {
+      title: 'Finding formulaic sentences and having them rewritten',
+      problem:
+        'A cover letter that reads as formulaic gets skimmed. The constructions that create that impression are few and regular. The dash mid-sentence, "not X, but Y", the stock phrases, three short words in a row, five sentences of the same length.',
+      approach:
+        'A deterministic linter finds those constructions with regular expressions and two sentence statistics. Behind it sits a chain. The text and the findings go to two reviewers, one with no prior knowledge and a model from a different vendor. Each suggestion is applied on its own and kept only if the linter, run again, counts no more hard findings than before. The models never get the last word.',
+      result:
+        '17 rules for German and English, checked against a corpus of 50 invented sentences with 18 clean traps: 36 of 36 expected findings raised, 0 false alarms, 29 tests. The English example letter goes through the chain from 6 hard findings to 0. The German one keeps one warning because the rewrites made every sentence the same length. The output says so.',
+      notShown:
+        'Not a detector for machine-written text, and it does not become one by inversion. The rule list is my own, with no basis in the literature. The shipped reviewer answers are labelled stand-ins and were not recorded from a model; real runs need two API keys.',
     },
   },
 ];

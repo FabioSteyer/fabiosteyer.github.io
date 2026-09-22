@@ -8,10 +8,10 @@ const content = project[lang];
 const t = (de: string, en: string) => lang === 'de' ? de : en;
 ---
 <div class="project-story">
-  <span class="eyebrow">{index === 0 ? 'PYTHON · PDFPLUMBER · PYTEST' : 'PYTHON · STANDARD LIBRARY'}</span>
+  <span class="eyebrow">{project.eyebrow}</span>
   <h3>{content.title}</h3>
   <p>{content.problem}</p>
-  <div class="project-stat"><strong>{index === 0 ? '4 / 4' : '14 → 0'}</strong><span>{index === 0 ? t('Abweichungen erkannt. Keine Fehlalarme.', 'Deviations detected. No false alarms.') : t('Verlorene Einträge im dokumentierten Vergleichslauf.', 'Lost entries in the documented comparison run.')}</span></div>
+  <div class="project-stat"><strong>{project.statValue}</strong><span>{lang === 'de' ? project.statDe : project.statEn}</span></div>
   <details class="project-details"><summary>{t('Entscheidungen, Ergebnis und Grenzen', 'Decisions, result and limitations')}<span aria-hidden="true">+</span></summary><div class="details-body"><h4>{t('Der Ansatz', 'The approach')}</h4><p>{content.approach}</p><h4>{t('Das gemessene Ergebnis', 'The measured result')}</h4><p>{content.result}</p><h4>{t('Was das nicht zeigt', 'What this does not show')}</h4><p>{content.notShown}</p></div></details>
   <a class="text-link repo-link" href={project.url} aria-label={t('Code und Messwerte auf GitHub', 'Code and measurements on GitHub') + ': ' + project.repo}>{t('Code und Messwerte auf GitHub', 'Code and measurements on GitHub')} <span aria-hidden="true">↗</span></a>
 </div>

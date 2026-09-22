@@ -33,6 +33,7 @@ test('both languages keep noindex, project destinations and real text evidence',
     assert.match(html, /noindex/);
     assert.match(html, /github.com\/FabioSteyer\/invoice-quote-reconciliation/);
     assert.match(html, /github.com\/FabioSteyer\/concurrent-file-writes/);
+    assert.match(html, /github.com\/FabioSteyer\/prose-check-chain/);
     assert.match(html, /<h1\b/);
     assert.doesNotMatch(html, /Physicist \(M.Sc., TU Berlin\)|Physiker \(M.Sc., TU Berlin\)/);
   }
